@@ -13,4 +13,6 @@
     - Volume d'un simplex
     - calcul des coordonnée barycentriques
     - truc du threshold
-  
+
+- Un acticle intéressant
+    - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3549276/
