@@ -41,3 +41,17 @@ Pour compiler le site web, executer `web/run.bat`, il devrait s'ouvrir dans le n
 
 - Un acticle intéressant
     - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3549276/
+
+
+# Plan
+
+Plan provisoire de l'article
+
+- Explication du problème
+- Pourquoi les methodes usuelles d' interpolation ne marche pas
+- présentation des coordonnées barycentres
+- unicite dans un simplex
+- comment les calculer (preuve des trois trucs)
+- protocole d'interpolation
+- présentation du code 
+- examples en animation
