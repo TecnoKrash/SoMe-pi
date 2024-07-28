@@ -2,9 +2,10 @@
 <document>
     <head>
         <title>Some-π test</title>
+
+        // Links in head don't work, so they are added manually in the body
     </head>
     <body>
-
         // Manually setting up the links for default cowtchoox ressources to make it work on the web
         //<script defer="defer" src="cowtchoox-res/js/main.js"></script>
         <link rel="stylesheet" href="cowtchoox-res/default/util.css"/>
@@ -21,7 +22,7 @@
             }
         </script>
 
-        // Link for the website
+        // Links for the website
         <script defer="defer" type="module" src="main.js"></script>
         <link rel="stylesheet" href="base.css"/>
         <link rel="stylesheet" href="main.css"/>
@@ -35,9 +36,15 @@
             $$
 
             And this is a test canvas with an animation: 
-            <div id="test-canvas"></div>
+            <!figure id="test-canvas" :caption="A rotating cube"></figure>
 
             Look in the console to see rust in action (ignore all the errors)!
+
+            <br/>
+            <br/>
+
+            There is also draggable handles:
+            <!figure id="test-handles" :caption="Draggable handles!"></figure>
             
         </main>
     </body>

@@ -4,6 +4,7 @@
 * {
     color: var(--txt);
     box-sizing: border-box;
+    --counter-reset: ;
 }
 
 body {

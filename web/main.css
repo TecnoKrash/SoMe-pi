@@ -8,12 +8,28 @@ main {
     font-size: 1.3rem;
 }
 
-#test-canvas {
+figure {
+    width: 800px;
+    height: 550px;
     margin: 30px calc(50% - 400px);
-    padding: 10px;
+}
+
+figure > .figure {
+    margin: 0 0 20px 0;
+    overflow: hidden;
     width: 800px;
     height: 500px;
     background-color: black;
     border-radius: 10px;
 }
+
+figure > .figure-caption {
+    color: var(--txt-d);
+}
+
+figure > .figure > inner {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+} 
 
