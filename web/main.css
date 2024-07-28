@@ -1,0 +1,19 @@
+
+* {
+    font-family: latex-font;
+}
+
+main {
+    margin: 100px 200px 0 200px;
+    font-size: 1.3rem;
+}
+
+#test-canvas {
+    margin: 30px calc(50% - 400px);
+    padding: 10px;
+    width: 800px;
+    height: 500px;
+    background-color: black;
+    border-radius: 10px;
+}
+

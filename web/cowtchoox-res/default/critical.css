@@ -1,0 +1,57 @@
+
+/* DO NOT MODIFY THESE RULES */
+/* Cowtchoox may produce incorrect behavior, or can even crash if this file is modified. */
+/* Do not attempt either to override these. */
+
+body {
+    font-optical-sizing: none; /* Just in case */
+    text-rendering: geometricPrecision;
+    
+    margin: 0px;
+    padding: 0px;
+}
+
+/* Using !important to prevent further CSS rules form breaking everything */
+page {
+    position: relative;
+    display: flex;
+    overflow: auto; /* Ensures that overflow is properly detected by JS */
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+mathnode {
+    display: inline-block;
+    text-indent: 0;
+}
+
+mathnode * {
+    display: inline-block;
+}
+
+page-inside {
+    position: relative;
+    width: 100%;
+    flex-grow: 2;
+}
+
+doc_footer {
+    width: 100%;
+    flex-grow: 0;
+}
+
+
+/* Whn an element is split across a page, each half has on class */
+.first-half::after {
+    content: " ";
+}
+
+.second-half {
+    margin-top: 0;
+    text-indent: 0;
+}
+
+.second-half::before, .second-half::marker {
+    content: " ";
+}

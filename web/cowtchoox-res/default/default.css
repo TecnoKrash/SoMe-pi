@@ -1,0 +1,759 @@
+/* Default look of cowtchoox */
+/* Also contains style for default.cowx */
+/* Changing some rules can cause unexpected behavior. */
+
+
+/* General properties */
+page {
+    padding: 1.5cm 1.5cm;
+    font-family: latex-font;
+    background-color: white;
+}
+
+mathnode {
+    font-family: maths-font, latex-font;
+    text-align: center;
+    --frac-shrink: 1em;
+}
+
+mathnode.center {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    margin: 1em 0;
+}
+
+mathnode.center:has(> double-amp-split) {
+    display: table;
+    width: fit-content;
+    margin: 1em auto;
+}
+
+mathnode double-amp-split {
+    display: table-row;
+}
+
+mathnode amp-split {
+    display: table-cell;
+    text-align: left;
+}
+
+a {
+    font-family: cascadia-code;
+    font-size: 0.85em;
+}
+
+@font-face {
+    font-family: latex-font;
+    src: url("../fonts/cmunrm.ttf");
+}
+
+@font-face {
+    font-family: maths-font;
+    src: url("../fonts/cmunti.ttf");
+    unicode-range: U+0041-007A, U+370-3FF;
+}
+
+@font-face {
+    font-family: cascadia-code;
+    src: url("../fonts/CascadiaCode.ttf");
+}
+
+@font-face {
+    font-family: bb;
+    src: url("../fonts/jsmath-bbold.ttf");
+}
+
+@font-face {
+    font-family: cal;
+    src: url("../fonts/jsmath-cal.ttf");
+    unicode-range: U+0041-005A;
+}
+
+@font-face {
+    font-family: frak;
+    src: url("../fonts/jsmath-frak.ttf");
+}
+
+/* Footer */
+doc-footer {
+    padding-top: 1rem;
+    height: 1.5rem;
+    text-align: center;
+}
+
+
+/* Code */
+code {
+    display: inline;
+    font-family: cascadia-code;
+    font-size: 0.85em;
+
+    background-color: #f2f2f2;
+    border-radius: 0.2em;
+    padding: 0.1em 0.3em;
+    margin: 0;
+
+    font-variant-ligatures: no-contextual;
+}
+
+pre {
+    display: block;
+    font-family: cascadia-code;
+    font-size: 0.85em;
+
+    background-color: white;
+    margin: 3mm 0;
+    padding: 3mm 5mm;
+
+    border-radius: 0.4em;
+    border: 0.5mm solid #ccc;
+
+    font-variant-ligatures: no-contextual;
+}
+
+
+/* Figures */
+.figure {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 7mm 0;
+}
+
+.figure>* {
+    margin: 0 3mm;
+}
+
+.figure-caption,
+.table-caption {
+    display: block;
+    text-align: center;
+    margin-bottom: 7mm;
+}
+
+.figure-caption {
+    counter-increment: figure;
+}
+
+.figure-caption::before {
+    content: "Figure "counter(figure) ": ";
+}
+
+.table-caption {
+    counter-increment: table;
+}
+
+.table-caption::before {
+    content: "Table "counter(table) ": ";
+}
+
+body {
+    counter-reset: figure table var(--counter-reset);
+}
+
+cowtable>inner {
+    margin: 1em auto;
+    display: table;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+cowtable>inner double-amp-split {
+    border: 0.02mm solid black;
+    display: table-row;
+}
+
+cowtable>inner double-amp-split amp-split {
+    border: 0.02mm solid black;
+    display: table-cell;
+    padding: 0.2em 0.5em;
+    text-align: center;
+}
+
+th {
+    font-weight: normal;
+    border: 0.02mm solid black;
+    padding: 0.2em;
+}
+
+
+/* ?sqrt */
+sqrt {
+    position: relative;
+    display: inline-block;
+    padding-left: 0.15em;
+    margin-top: 0.1em;
+}
+
+sqrt>svg {
+    display: block;
+    position: absolute;
+    width: 0.5em;
+    height: calc(100% - 0.25em);
+    top: 0.05em;
+    left: 0;
+}
+
+.sqrt-inner {
+    display: block;
+    padding-left: 0.35em;
+    padding-right: 0.15em;
+}
+
+.sqrt-bar {
+    display: block;
+    border-top: 0.02em solid currentcolor;
+    margin-top: 0.05em;
+    margin-left: 0.295em;
+}
+
+
+/* ?frac */
+frac {
+    display: inline-block;
+    text-align: center;
+    vertical-align: 7%;
+    /* https://xymaths.fr/Informatique-Programmation/html-css/ecrire-maths-fractions.php#frac */
+    margin: 0 0.1em;
+    font-size: var(--frac-shrink);
+    --temp: max(calc(var(--frac-shrink) * 0.75), 0.4rem);
+}
+
+.frac-bar {
+    display: block;
+    width: 100%;
+    height: 0.04em;
+    background-color: currentcolor;
+    margin-top: 0;
+    margin-bottom: 0.1em;
+}
+
+.frac-up,
+.frac-down {
+    display: inline-block;
+    --frac-shrink: var(--temp);
+}
+
+.frac-down {
+    vertical-align: top;
+}
+
+
+/* ?normalfont */
+normalfont {
+    font-family: latex-font;
+    display: inline;
+}
+
+
+/* ?txt */
+txt {
+    font-family: latex-font;
+    display: inline;
+    margin: 0 0.5em;
+}
+
+
+/* ?exponent */
+exponent {
+    display: inline-flex !important;
+    flex-direction: row;
+    align-items: start;
+}
+
+.exponent-before {
+    padding-top: 0.05em;
+}
+
+.exponent-inner {
+    font-size: 0.75em;
+}
+
+
+/* ?subscript */
+subscript {
+    display: inline-flex !important;
+    flex-direction: row;
+    align-items: end;
+}
+
+.subscript-before {
+    padding-bottom: 0.05em;
+}
+
+.subscript-inner {
+    font-size: 0.75em;
+}
+
+
+/* ?underset */
+underset {
+    display: inline-flex !important;
+    flex-direction: column;
+    align-items: center;
+}
+
+.underset-under {
+    margin-top: -0.4em;
+    font-size: 0.7em;
+}
+
+
+/* ?overset */
+overset {
+    display: inline-flex !important;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.overset-over {
+    margin-bottom: -0.4em;
+    font-size: 0.7em;
+}
+
+
+
+/* ?comma */
+comma {
+    margin-right: 0.35em;
+}
+
+
+/* ?equal, ?simeq, ?equiv, ?mless, ?mgreater */
+equal,
+simeq,
+equiv,
+less,
+greater,
+leq,
+geq,
+mless,
+mgreater,
+noteq {
+    margin-left: 0.3em;
+    margin-right: 0.3em;
+}
+
+
+/* ?plus, ?minus */
+plus,
+minus,
+x {
+    margin-left: 0.18em;
+    margin-right: 0.15em;
+    height: 0.8em;
+    vertical-align: -10%;
+}
+
+plus>svg,
+minus>svg,
+x>svg {
+    display: inline;
+    width: 0.7em;
+    height: 0.7em;
+    overflow: visible;
+}
+
+x {
+    transform: rotate(45deg);
+}
+
+/* ?inf */
+inf {
+    height: 1em;
+    vertical-align: 0%;
+}
+
+inf>svg {
+    display: inline;
+    width: 1em;
+    height: 0.5em;
+    overflow: visible;
+}
+
+
+/* ?belongsto */
+belongsto {
+    margin-left: 0.1em;
+}
+
+
+/* ?un */
+un {
+    margin: 0;
+    position: relative;
+}
+
+un::after {
+    content: " ";
+    position: absolute;
+    background-color: currentColor;
+    height: 0.04em;
+    width: 100%;
+    bottom: 0.15em;
+    left: 0;
+}
+
+
+/* Arrows */
+leftarrow>svg,
+longleftarrow>svg,
+rightarrow>svg,
+longrightarrow>svg,
+leftrightdoublearrow>svg,
+rightdoublearrow>svg,
+leftdoublearrow>svg,
+longleftrightdoublearrow>svg,
+longrightdoublearrow>svg,
+longleftdoublearrow>svg,
+longleftrightarrow>svg {
+    height: 0.5em;
+    width: fit-content;
+    overflow: visible;
+    margin-bottom: 0.3em;
+}
+
+leftrightdoublearrow,
+rightdoublearrow,
+leftdoublearrow,
+longleftrightdoublearrow,
+longrightdoublearrow,
+longleftdoublearrow,
+longleftrightarrow {
+    display: inline-flex !important;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 1.2em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+leftarrow,
+longleftarrow,
+rightarrow,
+longrightarrow {
+    display: inline-flex !important;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 1.2em;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+
+leftarrow,
+leftdoublearrow,
+longleftarrow,
+longleftdoublearrow {
+    transform: rotate(180deg);
+}
+
+
+/* ?abs */
+abs {
+    border-right: 0.02em solid currentColor;
+    border-left: 0.02em solid currentColor;
+    padding: 0 0.1em;
+}
+
+
+/* Parenthesizes */
+div:has(> openingparenthesis, > closingparenthesis, > openingsquarebracket, > closingsquarebracket, > openingbrace, > closingbrace) {
+    position: relative;
+}
+
+openingparenthesis,
+openingsquarebracket {
+    margin-left: 0.2em;
+}
+
+closingparenthesis,
+closingsquarebracket {
+    margin-right: 0.15em;
+}
+
+openingparenthesis,
+closingparenthesis,
+openingsquarebracket,
+closingsquarebracket {
+    height: 0;
+    width: 0.25em;
+    overflow: visible;
+}
+
+openingparenthesis>div,
+closingparenthesis>div,
+openingsquarebracket>div,
+closingsquarebracket>div {
+    position: absolute;
+    top: 0.05em;
+    width: 0.25em;
+    height: 90%;
+}
+
+openingparenthesis:first-child>div,
+openingsquarebracket:first-child>div,
+closingsquarebracket:first-child>div,
+closingparenthesis:first-child>div {
+    left: 0.2em;
+}
+
+openingparenthesis:last-child>div,
+openingsquarebracket:last-child>div,
+closingsquarebracket:last-child>div,
+closingparenthesis:last-child>div {
+    right: 0.15em;
+}
+
+closingparenthesis>div,
+closingsquarebracket>div {
+    transform: scaleX(-1);
+}
+
+openingparenthesis>div,
+closingparenthesis>div {
+    background: url(parenthesis.svg);
+    background-size: 100% 100%;
+}
+
+openingsquarebracket>div,
+closingsquarebracket>div {
+    border-top: 0.02em solid currentColor;
+    border-bottom: 0.02em solid currentColor;
+    border-left: 0.02em solid currentColor;
+}
+
+openingbrace,
+closingbrace {
+    width: 0.3em;
+}
+
+openingbrace {
+    padding-left: 0.2em;
+}
+
+closingbrace {
+    padding-right: 0.2em;
+}
+
+closingbrace>.brace-inner {
+    transform: rotate(180deg);
+}
+
+.brace-inner {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0.05em;
+    width: 0.3em;
+    height: 100%;
+}
+
+.brace-top,
+.brace-bottom {
+    background: url(brace_top.svg);
+    background-size: 100% 100%;
+    height: 0.4em;
+    width: 100%;
+}
+
+.brace-bar {
+    background-color: currentColor;
+    flex-grow: 5;
+    width: 25%;
+}
+
+.brace-bottom {
+    transform: scaleY(-1) translateX(-1%);
+}
+
+.brace-middle {
+    background: url(brace_middle.svg);
+    background-size: 100% 100%;
+    height: 0.4em;
+    width: 100%;
+    transform: translateX(-75%);
+}
+
+
+/* ?system */
+system {
+    display: table;
+}
+
+system double-amp-split {
+    display: table-row;
+}
+
+system double-amp-split>amp-split {
+    display: table-cell;
+    text-align: left;
+}
+
+
+/* ?v */
+v {
+    position: relative;
+    padding-top: 0.1em;
+    padding: 0 0.1em;
+}
+
+.v-bar {
+    position: absolute;
+    top: 0;
+    width: calc(100% - 0.1em);
+    left: 0.1em;
+    border-bottom: 0.04em solid black;
+}
+
+.v-arrow-cap {
+    position: absolute;
+    width: 0.25em;
+    height: 0.25em;
+    right: 0;
+    top: 0;
+    border-right: 0.04em solid black;
+    border-top: 0.04em solid black;
+    transform: translateY(-0.12em) skewX(-5deg) rotate(45deg);
+}
+
+
+/* ?overdot, ?overddot, ?overdddot */
+overdot,
+overddot,
+overdddot {
+    position: relative;
+    padding-top: 0.1em;
+}
+
+.overdot-dots {
+    position: absolute;
+    text-align: center;
+    top: 0.1em;
+    left: 0.1em;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.overdot-dot {
+    width: 0.1em;
+    height: 0.1em;
+    background-color: currentColor;
+    border-radius: 50%;
+    margin: 0 0.03em;
+}
+
+
+/* ?vert-flex */
+vert-flex>div>div {
+    display: inline-flex !important;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+}
+
+
+/* ?space */
+space {
+    width: 0.3em;
+}
+
+
+/* !eq */
+eq {
+    display: flex;
+    flex-direction: flex-row;
+    align-items: center;
+    justify-content: center;
+}
+
+eq>div,
+eq>mathnode {
+    width: 2.5em
+}
+
+eq>mathnode {
+    text-align: right;
+}
+
+/* ?int */
+int {
+    display: inline-flex !important;
+    align-items: baseline;
+}
+
+int-symbol {
+    display: inline-flex !important;
+    flex-direction: row;
+    align-items: center;
+    transform: translateY(28%);
+}
+
+int-left>up,
+int-left>down {
+    font-size: 0.75em;
+}
+
+int-left>down {
+    transform: translateX(-0.5em);
+}
+
+int-left {
+    margin-right: -0.25em;
+    height: 4em;
+    display: inline-flex !important;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+}
+
+int>int-symbol>svg {
+    height: 3em;
+    overflow: visible;
+}
+
+/* ?bb, ?cal, ?frak */
+bb {
+    font-family: bb;
+}
+
+cal {
+    font-family: cal;
+    height: 1.3em;
+    font-weight: lighter;
+}
+
+frak {
+    font-family: frak;
+}
+
+
+/* Additional styling for html viewing */
+@media screen {
+    page {
+        box-shadow: black 0 0 20px -10px;
+        margin: 20px auto;
+    }
+
+    #cowtchoox-error-reporter {
+        position: absolute;
+        top: 0;
+        background-color: #f55c;
+        display: block !important;
+        margin: 5px 20% 5px 20%;
+    }
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    body {
+        background: #555;
+    }
+}
+
+@media screen and (prefers-color-scheme: light) {
+    body {
+        background: #eee;
+    }
+}

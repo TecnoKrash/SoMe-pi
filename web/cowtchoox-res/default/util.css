@@ -1,0 +1,46 @@
+
+/* Default useful things*/
+
+box {
+    border: 0.2mm solid black;
+    display: inline;
+    padding: 0 0.3em;
+}
+
+table {
+    border: 0.2mm solid black;
+}
+
+.variations {
+    position: relative;
+    margin: 1em auto;
+
+    width: fit-content;
+    display: grid;
+    border: 0.2mm solid black;
+    grid-template-columns: repeat(var(--columns), auto);
+    justify-items: center;
+    align-items: baseline;
+}
+
+.variations > * {
+    padding: 0.5mm 2mm;
+    text-align: center;
+}
+
+.variations > .v-sep {
+    height: 100%;
+    display: block;
+    min-width: 0.2mm;
+    background-color: black;
+    padding: 0;
+}
+
+.h-sep {
+    grid-column-start: 1;
+    grid-column-end: calc(var(--columns) + 1);
+    background-color: black;
+    height: 0.2mm;
+    width: 100%;
+    padding: 0;
+}

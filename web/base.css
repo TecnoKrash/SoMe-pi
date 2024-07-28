@@ -1,0 +1,208 @@
+
+/* A default css template that I use */
+
+* {
+    color: var(--txt);
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg);
+    overflow: auto;
+}
+
+button,
+.btn,
+input,
+select,
+textarea {
+    display: inline-block;
+    padding: 5px;
+
+    background-color: var(--bg-lll);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+
+    transition: 200ms;
+}
+
+button,
+.btn {
+    cursor: default;
+}
+
+input,
+select {
+    height: 30px;
+}
+
+textarea {
+    width: 500px;
+}
+
+button.big,
+.btn.big,
+input.big,
+select.big {
+    padding: 10px 15px;
+}
+
+button.prim,
+.btn.prim {
+    background-color: var(--prim-d);
+}
+
+button.prim:hover,
+.btn.prim:hover {
+    background-color: var(--prim);
+}
+
+button:hover,
+.btn:hover,
+input:hover,
+select:hover,
+textarea:hover {
+    background-color: var(--hover);
+}
+
+button:focus-visible,
+.btn:focus-visible,
+input:focus,
+select:focus,
+textarea:focus {
+    border: none;
+    outline: none;
+
+    box-shadow: var(--prim) 0 0 0 2px;
+}
+
+button.margin-right,
+.btn.margin-right,
+input.margin-right,
+select.margin-right {
+    margin-right: 10px;
+}
+
+button.delete:hover,
+.btn.delete:hover {
+    background-color: var(--red);
+}
+
+*::selection {
+    background-color: var(--prim);
+    color: var(--txt);
+}
+
+*::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--bg-lll);
+    border-radius: 2px;
+
+    min-width: 32px;
+    min-height: 32px;
+}
+
+*::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+/* UTIL */
+
+.flex-center {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.flex-center>* {
+    margin: 10px 0;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-row>* {
+    margin: 0 5px;
+}
+
+.margin {
+    margin: 5px;
+}
+
+.txt-d {
+    color: var(--txt-d);
+}
+
+.upside-down {
+    rotate: 180deg;
+}
+
+.key {
+    background-color: var(--key);
+    border-radius: 5px;
+    padding: 3px 5px;
+    margin: 0 2px;
+    color: var(--txt-d)
+}
+
+/* ICONS */
+
+.maticon {
+    font-family: "icons";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+}
+
+.maticon.big {
+    font-size: 48px;
+}
+
+/* COLORS */
+* {
+    --bg: #252525;
+    --bg-l: #2a2a2a;
+    --bg-ll: #303030;
+    --bg-lll: #353535;
+
+    --prim-d: #29630c;
+    --prim: #398811;
+
+    --txt: #eee;
+    --txt-d: #aaa;
+
+    --hover: #444;
+    --key: #fff2;
+    --red: #c22;
+}
+
+/* Invert image */
+.invert-dark {
+    filter: invert(1) hue-rotate(180deg) saturate(20);
+}
+
+@font-face {
+    font-family: "icons";
+    font-style: normal;
+    src: url("../google-icons.ttf");
+}
