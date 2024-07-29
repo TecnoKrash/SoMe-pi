@@ -1,40 +1,21 @@
-// File containing the interface for the caculation of barycentric coordinate
-use std::ops::Add;
 
-// Failed attempt at implementing Add for Vec<f64> (I don't no if it's possible but would be could so I let that there
-/*
-impl Add for Vec<f64> {
-    type Output = Self;
+// Disable warnings for unused functions
+#![allow(dead_code)]
 
-    fn add(self, other: Self) -> Self{
-        let n = self.len();
-        let mut res = Vec::with_capacity(n);
-        for i in 0..n{
-            res.push(self[i]+other[i]);
-        }
-        res
-    }
-}
-*/
+use std::fmt::Display;
 
-// TODO: 
-// - Might want to modify the "to_vector()" method into a method taking another point to build the vector
-// - Error handaling (especially verification of matching dimentions)
-
-// Structur for points
+// Struct for points
 pub struct Point {
-    pub dim: usize,
-    pub co: Vec<f64>,
+    pub pos: Vector,
     pub val: f64
 }
 
-// Struct for Vectors to handle the caculation of the projection 
-pub struct Vector{
-    pub dim: usize,
+// Struct for Vectors to handle the calculation of the projection 
+pub struct Vector {
     pub co: Vec<f64>,
 }
 
-// To stock the points we want to interpolate
+// To store the points we want to interpolate
 pub struct Space {
     pub dim: usize,
     pub points: Vec<Point>,
@@ -49,82 +30,169 @@ pub struct Plane {
 
 
 impl Point {
-    // Transform a Point into a vector
-    pub fn to_vector(self: &Point) -> Vector{
-        Vector {
-            dim: self.dim,
-            co: self.co.clone()
-        }
+    // Basically the distance between two point
+    pub fn dist(self: &Point, p: &Point) -> f64 {
+        (&p.pos - &self.pos).len()
     }
-
-    // basicly tyhe distaénce beetween two point
-    pub fn dist(self: &Point, p: &Point) -> f64{
-        let u = self.to_vector();
-        let v = p.to_vector();
-        u.sp(&v).sqrt()
-    }
-
 }
 
-// to easaly add vectors
-impl Add for Vector {
-    type Output = Self;
+// All operators represents operations that COPIES the vector
+// For in place operations, see add_in_place, sub_in_place, etc
+impl std::ops::Add for &Vector {
+    type Output = Vector;
 
-    fn add(self, other: Self) -> Self{
-        let n = self.dim;
+    fn add(self, other: &Vector) -> Vector {
+        assert!(self.dim() == other.dim(), "Tried to add vectors with different dimensions!");
+
+        let n = self.dim();
         let mut res = Vec::with_capacity(n);
-        for i in 0..n{
+        for i in 0..n {
             res.push(self.co[i] + other.co[i]);
         }
-        Self {
-            dim: n,
+        Vector {
             co: res
         }
     }
 }
 
-impl Vector {
-    // scalar multiplication
-    pub fn sm(self: &Vector, l: f64) -> Vector{
-        let n = self.dim;
-        let mut res = Vector {dim: n, co: Vec::with_capacity(n)};
+impl std::ops::Sub for &Vector {
+    type Output = Vector;
+
+    fn sub(self, other: &Vector) -> Vector {
+        assert!(self.dim() == other.dim(), "Tried to subtract vectors with different dimensions!");
+
+        let n = self.dim();
+        let mut res = Vec::with_capacity(n);
+        for i in 0..n {
+            res.push(self.co[i] - other.co[i]);
+        }
+        Vector {
+            co: res
+        }
+    }
+}
+
+impl std::ops::Mul<f64> for &Vector {
+    type Output = Vector;
+
+    fn mul(self, l: f64) -> Vector {
+        let n = self.dim();
+        let mut res = Vector { co: Vec::with_capacity(n) };
         for i in 0..n{
-            res.co.push(self.co[i]*l);
+            res.co.push(self.co[i] * l);
         }
         res
     }
+}
 
-    // scalar product
-    pub fn sp(self: &Vector, u: &Vector) -> f64{
-        let mut sum  = 0.0;
-        for i in 0..self.dim{
-            sum += (u.co[i] - self.co[i])*(u.co[i] - self.co[i]);
+impl Clone for Vector {
+    fn clone(&self) -> Vector {
+        let n = self.dim();
+        let mut res = Vector { co: Vec::with_capacity(n) };
+        for i in 0..n{
+            res.co[i] = self.co[i];
         }
+        res
+    }
+}
+
+impl Display for Vector {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut res = String::from("[");
+        for i in 0..(self.dim() - 1) {
+            res.push_str(&self.co[i].to_string());
+            res.push_str(", ");
+        }
+        res.push_str(&self.co[self.dim() - 1].to_string());
+        res.push_str("]");
+
+        write!(f, "{}", res)
+    }
+}
+
+pub fn vect_from_arr(v: &[f64]) -> Vector {
+    Vector {
+        co: v.to_vec()
+    }
+}
+
+pub fn vect_from_vec(v: Vec<f64>) -> Vector {
+    Vector {
+        co: v
+    }
+}
+
+
+impl Vector {
+    // Get dimension
+    pub fn dim(self: &Vector) -> usize {
+        self.co.len()
+    }
+
+    // Same as add, but write the result in self
+    pub fn add_in_place(mut self, other: &Vector) -> Vector {
+        assert!(self.dim() == other.dim(), "Tried to add vectors with different dimensions!");
+
+        for i in 0..self.dim() {
+            self.co[i] += other.co[i];
+        }
+
+        self
+    }
+
+    // Same as subtraction, but write the result in self
+    pub fn sub_in_place(mut self, other: &Vector) -> Vector {
+        assert!(self.dim() == other.dim(), "Tried to subtract vectors with different dimensions!");
+
+        for i in 0..self.dim() {
+            self.co[i] -= other.co[i];
+        }
+
+        self
+    }
+
+    // scalar multiplication, in place
+    pub fn scale_in_place(mut self: Vector, l: f64) -> Vector {
+        for i in 0..self.dim() {
+            self.co[i] *= l;
+        }
+
+        self
+    }
+
+    // dot product
+    pub fn dot(self: &Vector, u: &Vector) -> f64 {
+        assert!(self.dim() == u.dim(), "Tried to dot vectors with different dimensions!");
+
+        let mut sum  = 0.0;
+        for i in 0..self.dim() {
+            sum += u.co[i] * self.co[i];
+        }
+        
         sum
     }
 
-    //distance beetween two vectors
-    pub fn dist(self: &Vector, u: &Vector) -> f64{
-        self.sp(&u).sqrt()
+    // Length of the vector
+    pub fn len(self: &Vector) -> f64 {
+        self.dot(&self).sqrt()
     }
 }
 
 impl Plane {
     //Projection of a vector on a plane
-    pub fn projection(self: &Plane, p: &Vector) -> Vector{
+    pub fn projection(self: &Plane, p: &Vector) -> Vector {
         let n = self.dim;
-        let mut res = self.base[0].sm(self.base[0].sp(p));
-        for i in 1..n{
-            res = res + self.base[i].sm(self.base[i].sp(p));
+        let mut res = &self.base[0] * self.base[0].dot(p);
+        for i in 0..n {
+            res = res.add_in_place(&(&self.base[i] * self.base[i].dot(p)));
         }
         res
     }
 
     // Distance beetween the plane and a point
-    pub fn dist_to_point(self: &Plane, p: &Point) -> f64{
-        let u = p.to_vector();
-        let proj = self.projection(&u);
-        proj.dist(&u)
+    pub fn dist_to_point(self: &Plane, p: &Point) -> f64 {
+        let proj = self.projection(&p.pos);
+        (&proj - &p.pos).len()
     }
 }
 
