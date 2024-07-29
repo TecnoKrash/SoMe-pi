@@ -44,47 +44,47 @@
             
             <h4>Existence</h4>
 
-            Soit $(A_k)_{k € [0, n]} € E^{n + 1}$, tq $(A_k - A_0)_{k € [1, n]}$ soit une base.
-            Soit $M € E$.
-            Il existe $(§a_k)_{k € [1, n]}$ tq
+            Let $(A_k)_{k € [0, n]} € E^{n + 1}$, so that $(A_k - A_0)_{k € [1, n]}$ is a basis.
+            Let $M € E$.
+            There exists $(§a_k)_{k € [1, n]}$ so that:
             $$
                 M - A_0 = §S__{k=1}^^n §a_k (A_k - A_0)
             $$
 
-            Donc:
+            Thus:
             $$
                 M = §S__{k=1}^^n §a_k A_k + A_0(1 - §S__{k=1}^^n §a_k)
             $$
 
-            On pose alors:
+            We can then define:
             $$
                 ?a k € [0; n], §b_k = <!system style="vertical-align: middle;">
-                    1 - §S__{k=1}^^n §a_k & ?txt{si} k = 0 &&
-                    §a_k & ?txt{sinon}
+                    1 - §S__{k=1}^^n §a_k & ?txt{if} k = 0 &&
+                    §a_k & ?txt{otherwise}
                 </system>
             $$
 
-            On a donc:
+            That satisfies the definition of barycentric coordinates:
             $$
                 M = |{bar}((A_k, §b_k)_{k € [0, n]}) ?txt{et} §S__{k=0}^^n §b_k = 1
             $$
 
-            <h4>Unicité</h4>
+            <h4>Uniqueness</h4>
             
-            Soit $M € E$, on suppose $(a_k)_{k € [0, n]}$ et $(b_k)_{k € [0, n]}$ des coordonnées barycentrique de $M$ dans $(A_k)_{k € [0, n]}$.
-            On a alors:
+            Let $M € E$, we suppose that $(a_k)_{k € [0, n]}$ et $(b_k)_{k € [0, n]}$ are barycentric coordinates for $M$ in $(A_k)_{k € [0, n]}$.
+            We have then:
             $$
                 M = §S__{k=1}^^n §a_k A_k = §S__{k=1}^^n §b_k A_k
             $$
 
-            Donc:
+            Then:
             $$
                 §S__{k=1}^^n A_k (§a_k - §b_k) = 0 &&
                 §S__{k=1}^^n (A_k - A_0) (§a_k - §b_k) = -A_0 §S__{k=1}^^n (§a_k - §b_k)
             $$
 
-            Or $§S__{k=1}^^n §a_k = §S__{k=1}^^n §b_k = 1$ donc l'expression est nulle. Comme $(A_k - A_0)_{k € [1, n]}$ est une base,
-            $(a_k)_{k € [0, n]} = (b_k)_{k € [0, n]}$.
+            We have $§S__{k=1}^^n §a_k = §S__{k=1}^^n §b_k = 1$, so the last expression in null. $(A_k - A_0)_{k € [1, n]}$ is a basis,
+            so $?a k € [1, n], §a_k - §b_k = 0$, and finally $(a_k)_{k € [0, n]} = (b_k)_{k € [0, n]}$.
 
         </main>
     </body>
