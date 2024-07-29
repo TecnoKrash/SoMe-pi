@@ -304,6 +304,7 @@ underset {
 
 /* ?overset */
 overset {
+    vertical-align: middle; /* HACK to fix align bug */
     display: inline-flex !important;
     flex-direction: column-reverse;
     align-items: center;
@@ -516,6 +517,8 @@ openingparenthesis>div,
 closingparenthesis>div {
     background: url(parenthesis.svg);
     background-size: 100% 100%;
+
+    filter: invert(1); /* HACK to make parentheses white */
 }
 
 openingsquarebracket>div,
@@ -553,6 +556,7 @@ closingbrace>.brace-inner {
 
 .brace-top,
 .brace-bottom {
+    filter: invert(1); /* HACK to make parentheses white */
     background: url(brace_top.svg);
     background-size: 100% 100%;
     height: 0.4em;
@@ -570,6 +574,7 @@ closingbrace>.brace-inner {
 }
 
 .brace-middle {
+    filter: invert(1); /* HACK to make parentheses white */
     background: url(brace_middle.svg);
     background-size: 100% 100%;
     height: 0.4em;
