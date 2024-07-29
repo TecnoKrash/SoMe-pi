@@ -2,3 +2,4 @@
 .vscode
 backend/pkg
 backend/target
+*.html

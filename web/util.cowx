@@ -1,0 +1,23 @@
+
+<!include-things>
+        // Manually setting up the links for default cowtchoox ressources to make it work on the web
+        //<script defer="defer" src="cowtchoox-res/js/main.js"></script>
+        <link rel="stylesheet" href="cowtchoox-res/default/util.css"/>
+        <link rel="stylesheet" href="cowtchoox-res/default/default.css"/>
+        <link rel="stylesheet" href="cowtchoox-res/default/critical.css"/>
+
+        // Import Three.js
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https:\/\/cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js",
+                    "three/addons/": "https:\/\/cdn.jsdelivr.net/npm/three@0.167.0/examples/jsm/"
+                }
+            }
+        </script>
+
+        // Links for the website
+        <script defer="defer" type="module" src="main.js"></script>
+        <link rel="stylesheet" href="base.css"/>
+        <link rel="stylesheet" href="main.css"/>
+</include-things>

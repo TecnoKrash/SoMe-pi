@@ -2,50 +2,17 @@
 <document>
     <head>
         <title>Some-π test</title>
+        <cowx>util.cowx</cowx>
 
         // Links in head don't work, so they are added manually in the body
     </head>
     <body>
-        // Manually setting up the links for default cowtchoox ressources to make it work on the web
-        //<script defer="defer" src="cowtchoox-res/js/main.js"></script>
-        <link rel="stylesheet" href="cowtchoox-res/default/util.css"/>
-        <link rel="stylesheet" href="cowtchoox-res/default/default.css"/>
-        <link rel="stylesheet" href="cowtchoox-res/default/critical.css"/>
-
-        // Import Three.js
-        <script type="importmap">
-            {
-                "imports": {
-                    "three": "https:\/\/cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js",
-                    "three/addons/": "https:\/\/cdn.jsdelivr.net/npm/three@0.167.0/examples/jsm/"
-                }
-            }
-        </script>
-
-        // Links for the website
-        <script defer="defer" type="module" src="main.js"></script>
-        <link rel="stylesheet" href="base.css"/>
-        <link rel="stylesheet" href="main.css"/>
+        <!include-things/> // Links in head don't work, so they are added manually with this
 
         <main>
-            <h1>This is a title</h1>
-
-            This is some text with maths: 
-            $$
-                {?sqrt 2} / 2 = 1 / {?sqrt 2} 
-            $$
-
-            And this is a test canvas with an animation: 
-            <!figure id="test-canvas" :caption="A rotating cube"></figure>
-
-            Look in the console to see rust in action (ignore all the errors)!
-
+            TODO: do everything
             <br/>
-            <br/>
-
-            There is also draggable handles:
-            <!figure id="test-handles" :caption="Draggable handles!"></figure>
-            
+            <a href="tests.html">Navigate to test page</a>
         </main>
     </body>
 </document>
