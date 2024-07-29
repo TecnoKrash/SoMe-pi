@@ -28,6 +28,11 @@
             There is also draggable handles:
             <!figure id="test-handles" :caption="Draggable handles!"></figure>
 
+            Here is hidden text:
+            <!hidden id="test-proof" :id="test-proof" :title="A boring proof">
+                The proof is obvious.
+            </hidden>
+
             <h2>Proofs</h2>
 
             <h3>
@@ -39,8 +44,8 @@
             
             <h4>Existence</h4>
 
-            Soit $(A_k)_{k € [0, n]} € §e{n + 1}$, tq $(A_k - A_0)_{k € [1, n]}$ soit une base.
-            Soit $M € §e$.
+            Soit $(A_k)_{k € [0, n]} € E^{n + 1}$, tq $(A_k - A_0)_{k € [1, n]}$ soit une base.
+            Soit $M € E$.
             Il existe $(§a_k)_{k € [1, n]}$ tq
             $$
                 M - A_0 = §S__{k=1}^^n §a_k (A_k - A_0)
@@ -66,7 +71,7 @@
 
             <h4>Unicité</h4>
             
-            Soit $M € §e$, on suppose $(a_k)_{k € [0, n]}$ et $(b_k)_{k € [0, n]}$ des coordonnées barycentrique de $M$ dans $(A_k)_{k € [0, n]}$.
+            Soit $M € E$, on suppose $(a_k)_{k € [0, n]}$ et $(b_k)_{k € [0, n]}$ des coordonnées barycentrique de $M$ dans $(A_k)_{k € [0, n]}$.
             On a alors:
             $$
                 M = §S__{k=1}^^n §a_k A_k = §S__{k=1}^^n §b_k A_k

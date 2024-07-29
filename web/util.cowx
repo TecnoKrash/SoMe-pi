@@ -1,7 +1,7 @@
 
 <!include-things>
         // Manually setting up the links for default cowtchoox ressources to make it work on the web
-        //<script defer="defer" src="cowtchoox-res/js/main.js"></script>
+        <script defer="defer" src="cowtchoox-res/js/main.js"></script>
         <link rel="stylesheet" href="cowtchoox-res/default/util.css"/>
         <link rel="stylesheet" href="cowtchoox-res/default/default.css"/>
         <link rel="stylesheet" href="cowtchoox-res/default/critical.css"/>
@@ -21,3 +21,19 @@
         <link rel="stylesheet" href="base.css"/>
         <link rel="stylesheet" href="main.css"/>
 </include-things>
+
+<!hidden :inner :title :id>
+    <div class="top">
+        <:title/>
+    </div>
+
+    <:inner/>
+
+    <!evaluate>
+        let el = document.querySelector("hidden#<:id/>");
+        el.addEventListener("click", ev => {
+            el.classList.toggle("expanded");
+        });
+        ""
+    </evaluate>
+</hidden>

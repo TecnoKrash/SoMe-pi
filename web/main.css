@@ -33,3 +33,43 @@ figure > .figure > inner {
     margin: 0;
 } 
 
+hidden {
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    transition: 200ms;
+
+    width: 100%;
+    background-color: var(--bg-l);
+    border-radius: 10px;
+    padding: 0 10px 10px 10px;
+
+    margin: 20px 0;
+
+    max-height: calc(1.3em + 20px);
+}
+
+hidden.expanded {
+    max-height: none;
+}
+
+hidden > .top {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--bg-lll);
+    margin-bottom: 10px;
+}
+
+hidden > .top > span::after {
+    content: " — Click to expand";
+    color: var(--txt-d);    
+}
+
+hidden.expanded > .top > span::after {
+    content: " — Click to collapse";
+}
+
+hidden > .top:hover > span::after {
+    color: var(--txt);    
+}
+
