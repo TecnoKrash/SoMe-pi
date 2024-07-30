@@ -31,9 +31,27 @@
 
     <!evaluate>
         let el = document.querySelector("hidden#<:id/>");
-        el.addEventListener("click", ev => {
+        let top = document.querySelector("hidden#<:id/> > .top");
+        top.addEventListener("click", ev => {
             el.classList.toggle("expanded");
         });
         ""
     </evaluate>
 </hidden>
+
+<!def :inner :title>
+    <span class="bold">Definition.</span> (<:title/>)
+    <span class="space"></span>
+    <:inner/>
+</def>
+
+<!prop :inner :title>
+    <span class="bold">Proposition.</span> (<:title/>)
+    <span class="space"></span>
+    <:inner/>
+</prop>
+
+<?norm :inner>
+    ?abs{?abs{<:inner/>}}
+</norm>
+
