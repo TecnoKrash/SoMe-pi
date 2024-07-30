@@ -6,6 +6,7 @@ import init, { test_export_function } from './wasm-gen/somepi_backend.js';
 import * as Three from 'three';
 import * as Handle from './handle.js';
 import * as Util from './util.js';
+import * as InterpolationVis from './interpolation-vis.js';
 
 init().then(() => {
     Util.SetupMouseEvents();
@@ -27,13 +28,62 @@ init().then(() => {
         }
     );
 
-    CreateCanvas("test-handles", false, 
+    CreateCanvas("nearest", false, 
         function Init(info) {
+            InterpolationVis.Init(info);
             Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.01, 0x0000ff)
-            Handle.CreateHandle(info, new Three.Vector3(0, 0.1, 0), 0.01, 0x00ff00)
-            Handle.CreateHandle(info, new Three.Vector3(0.1, 0.1, 0), 0.01, 0xff0000)
+            Handle.CreateHandle(info, new Three.Vector3(0, 0.2, 0.0), 0.01, 0x00ff00)
+            Handle.CreateHandle(info, new Three.Vector3(0.1, 0.3, 0), 0.01, 0xff0000)
+            Handle.CreateHandle(info, new Three.Vector3(0.3, 0.2, 0.0), 0.01, 0xdd2200)
+            Handle.CreateHandle(info, new Three.Vector3(-0.4, -0.3, 0.0), 0.01, 0x3300cc)
         },
         function Update(info) {
+            InterpolationVis.Update(info, (pos, handles) => {
+                let minDist = 1000000;
+                let res = 0xffffff;
+
+                for (let h of handles) {
+                    let l = (h.position.clone().sub(pos)).length();
+                    if (l <= minDist) {
+                        minDist = l;
+                        res = h.color;
+                    }
+                }
+
+                return new Three.Color(res);
+            });
+
+            Handle.UpdateHandles(info);
+        }
+    );
+
+    CreateCanvas("inverse-distance", false, 
+        function Init(info) {
+            InterpolationVis.Init(info);
+            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.01, 0x0000ff)
+            Handle.CreateHandle(info, new Three.Vector3(0, 0.2, 0.0), 0.01, 0x00ff00)
+            Handle.CreateHandle(info, new Three.Vector3(0.1, 0.3, 0), 0.01, 0xff0000)
+            Handle.CreateHandle(info, new Three.Vector3(0.3, 0.2, 0.0), 0.01, 0xdd2200)
+            Handle.CreateHandle(info, new Three.Vector3(-0.4, -0.3, 0.0), 0.01, 0x3300cc)
+        },
+        function Update(info) {
+            InterpolationVis.Update(info, (pos, handles) => {
+                let invDistSum = 0;
+                let colorSum = new Three.Color(0x000000);
+
+                for (let h of handles) {
+                    let dist = (h.position.clone().sub(pos)).length();
+                    invDistSum += 1 / dist;
+                }
+
+                for (let h of handles) {
+                    let dist = (h.position.clone().sub(pos)).length();
+                    colorSum.add(new Three.Color(h.color).multiplyScalar(1 / dist / invDistSum));
+                }
+
+                return colorSum;
+            });
+
             Handle.UpdateHandles(info);
         }
     );
@@ -46,6 +96,7 @@ function CreateCanvas(id, is3D, init, update) {
     let canvasInfo = {
         parent: parent,
         ratio: ratio,
+        is3D : is3D,
         scene: new Three.Scene()
     };
 

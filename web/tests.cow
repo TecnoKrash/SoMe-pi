@@ -26,10 +26,8 @@
             <br/>
 
             There is also draggable handles:
-            <!figure id="test-handles" :caption="Draggable handles!"></figure>
-
-            Here is hidden text:
-                The proof is obvious.
+            <!figure id="nearest" :caption="Nearest neighbor interpolation"></figure>
+            <!figure id="inverse-distance" :caption="Inverse distance interpolation"></figure>
 
             <h2>Proofs</h2>
 

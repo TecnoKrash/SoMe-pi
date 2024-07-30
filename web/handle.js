@@ -9,6 +9,7 @@ export function CreateHandle(info, position, size, color) {
     let handleObject = {
         position: position,
         baseSize: size,
+        color: color,
         dragged: false,
     };
 
