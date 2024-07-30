@@ -191,6 +191,7 @@ impl Plane {
     //Projection of a vector on a plane
     pub fn projection(self: &Plane, p: &Vector) -> Vector {
         let n = self.dim;
+        // println!("n : {}", n);
         let mut res = &self.base[0] * self.base[0].dot(p);
         for i in 1..n {
             res.add_in_place(&(&self.base[i] * self.base[i].dot(p)));
