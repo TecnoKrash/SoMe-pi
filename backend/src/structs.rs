@@ -199,9 +199,9 @@ impl Plane {
     }
 
     // Distance beetween the plane and a point
-    pub fn dist_to_point(self: &Plane, p: &Point) -> f64 {
+    pub fn dist_to_point(self: &Plane, p: &Vector) -> f64 {
         // println!("o : {}, p : {}", self.o, p.pos);
-        let u = &p.pos - &self.o;
+        let u = p - &self.o;
         // println!("u : {}", u);
         let proj = self.projection(&u);
         // println!("proj : {}", proj);

@@ -3,7 +3,7 @@ use crate::structs::*;
 // Useless
 /*
 
-pub fn simplex_volume(simp: &Vec<Vector>) -> f64{
+pub fn simplex_volume(simp: &Vec<Vector>) -> f64 {
     if simp.len() <= 2 {
         return (&simp[0]- &simp[1]).len();
     }
@@ -14,7 +14,7 @@ pub fn simplex_volume(simp: &Vec<Vector>) -> f64{
 
     match s_base.pop(){
         Some(x) => p.pos = x,
-        None    => println!("should not happen"),
+        None    => panic!("should not happen"),
     }
 
     let plane = simplex_to_plane(&s_base);
@@ -23,7 +23,7 @@ pub fn simplex_volume(simp: &Vec<Vector>) -> f64{
     
 }
 
-pub fn barycentric_co(simp: &Vec<Vector>, p: &Point) -> Vec<f64>{
+pub fn barycentric_co(simp: &Vec<Vector>, p: &Point) -> Vec<f64> {
     let n = simp.len();
     let vol = simplex_volume(simp);
     println!("vol : {}", vol);
@@ -39,17 +39,17 @@ pub fn barycentric_co(simp: &Vec<Vector>, p: &Point) -> Vec<f64>{
 }
 */
 
-// gram shmitt algorithm 
-pub fn extract_base(simp: &Vec<Vector>, i: usize) -> Plane{
+// Gram Shmitt algorithm 
+pub fn extract_base(simp: &Vec<Vector>, i: usize) -> Plane {
     let n = simp.len();
 
     let mut h = 0;
-    if i == 0 { h = 1}
+    if i == 0 { h = 1 }
 
-    let mut res = Plane {dim: n-2, base: Vec::with_capacity(n-1), o: simp[h].clone()};
+    let mut res = Plane{ dim: n-2, base: Vec::with_capacity(n-2), o: simp[h].clone() };
 
-    for j in 0..n{
-        if j != i && j != h{
+    for j in 0..n {
+        if j != i && j != h {
             // println!("u : {}, v : {}", simp[j], simp[h]);
 
             let f = &simp[j] - &res.o;
@@ -60,13 +60,13 @@ pub fn extract_base(simp: &Vec<Vector>, i: usize) -> Plane{
                 e.sub_in_place(&(&res.base[k]*f.dot(&res.base[k])));
             }
 
-            res.base.push(&e*(1.0/e.len()));
+            res.base.push(&e * (1.0 / e.len()));
         }
     }
     res
 }
 
-pub fn barycentric_co(simp: &Vec<Vector>, p: &Point) -> Vec<f64>{
+pub fn barycentric_co(simp: &Vec<Vector>, p: &Point) -> Vec<f64> {
     let n = simp.len();
     let mut res = Vec::with_capacity(n);
 
@@ -74,8 +74,8 @@ pub fn barycentric_co(simp: &Vec<Vector>, p: &Point) -> Vec<f64>{
         let base = extract_base(simp, i);
         // println!("base : {}, base.len() : {}", base.base[0], base.base[0].len());
 
-        let big_h = base.dist_to_point(&Point {pos: simp[i].clone(), val: 0.0});
-        let small_h = base.dist_to_point(p); 
+        let big_h = base.dist_to_point(&simp[i]);
+        let small_h = base.dist_to_point(&p.pos); 
 
         // println!("h : {}, H : {}", small_h, big_h);
 
