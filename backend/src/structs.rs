@@ -26,6 +26,7 @@ pub struct Space {
 pub struct Plane {
     pub dim: usize,
     pub base: Vec<Vector>,
+    pub o: Vector,
 }
 
 
@@ -88,9 +89,10 @@ impl std::ops::Mul<f64> for &Vector {
 impl Clone for Vector {
     fn clone(&self) -> Vector {
         let n = self.dim();
+        // println!("n : {}, self.co : {:?}", n, self.co);
         let mut res = Vector { co: Vec::with_capacity(n) };
         for i in 0..n{
-            res.co[i] = self.co[i];
+            res.co.push(self.co[i]);
         }
         res
     }
@@ -107,6 +109,17 @@ impl Display for Vector {
         res.push_str("]");
 
         write!(f, "{}", res)
+    }
+}
+
+impl Clone for Plane {
+    fn clone(&self) -> Plane {
+        let n = self.base.len();
+        let mut res = Plane { dim: n, base: Vec::with_capacity(n), o: self.o.clone()};
+        for i in 0..n{
+            res.base.push(self.base[i].clone());
+        }
+        res
     }
 }
 
@@ -130,25 +143,21 @@ impl Vector {
     }
 
     // Same as add, but write the result in self
-    pub fn add_in_place(mut self, other: &Vector) -> Vector {
+    pub fn add_in_place(&mut self, other: &Vector){
         assert!(self.dim() == other.dim(), "Tried to add vectors with different dimensions!");
 
         for i in 0..self.dim() {
             self.co[i] += other.co[i];
         }
-
-        self
     }
 
     // Same as subtraction, but write the result in self
-    pub fn sub_in_place(mut self, other: &Vector) -> Vector {
+    pub fn sub_in_place(&mut self, other: &Vector){
         assert!(self.dim() == other.dim(), "Tried to subtract vectors with different dimensions!");
 
         for i in 0..self.dim() {
             self.co[i] -= other.co[i];
         }
-
-        self
     }
 
     // scalar multiplication, in place
@@ -183,16 +192,21 @@ impl Plane {
     pub fn projection(self: &Plane, p: &Vector) -> Vector {
         let n = self.dim;
         let mut res = &self.base[0] * self.base[0].dot(p);
-        for i in 0..n {
-            res = res.add_in_place(&(&self.base[i] * self.base[i].dot(p)));
+        for i in 1..n {
+            res.add_in_place(&(&self.base[i] * self.base[i].dot(p)));
         }
         res
     }
 
     // Distance beetween the plane and a point
     pub fn dist_to_point(self: &Plane, p: &Point) -> f64 {
-        let proj = self.projection(&p.pos);
-        (&proj - &p.pos).len()
+        // println!("o : {}, p : {}", self.o, p.pos);
+        let u = &p.pos - &self.o;
+        // println!("u : {}", u);
+        let proj = self.projection(&u);
+        // println!("proj : {}", proj);
+        // println!("dot {}", (&proj - &u).dot(&proj));
+        (&proj - &u).len()
     }
 }
 
