@@ -42,6 +42,12 @@ export function IsMouseOverElement(element) {
 
 }
 
+export function IsElementVisible(element) {
+    let rect = element.getBoundingClientRect();
+    return rect.top < window.innerWidth // document.body.scrollTop + document.documentElement.clientHeight
+        && rect.bottom > 0 // document.body.scrollTop;
+}
+
 export function WorldToScreenPos(canvasInfo, position) {
     let res = position.clone();
     res.project(canvasInfo.camera);

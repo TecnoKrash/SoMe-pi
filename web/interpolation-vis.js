@@ -34,7 +34,7 @@ export function Update(canvasInfo, interpolationFn) {
     }
 
     let texture = new Three.DataTexture(buffer, texWidth, TEXTURE_HEIGHT);
-    texture.magFilter = Three.NearestFilter;
+texture.magFilter = Three.NearestFilter;
     canvasInfo.visQuad.material = new Three.MeshBasicMaterial({ map: texture });
     texture.needsUpdate = true;
 }
