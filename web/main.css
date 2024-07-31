@@ -49,6 +49,7 @@ figure {
     left: 20px; 
     top : 20px; 
     font-size: 1.8rem;
+    user-select: none;
 }
 
 hidden {
@@ -105,5 +106,18 @@ def, prop {
 .space {
     display: inline-block;
     width: 2em;
+}
+
+.reset-btn {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    opacity: 0.3;
+    padding: 3px;
+    font-size: 0.8rem;
+}
+
+.reset-btn:hover {
+    opacity: 1;
 }
 

@@ -219,6 +219,20 @@ function CreateCanvas(id, is3D, init, update) {
 
     init(canvasInfo);
 
+    // Add rest btn
+    let resetBtn = document.createElement("button");
+    resetBtn.textContent = "Reset";
+    resetBtn.classList.add("reset-btn");
+    resetBtn.addEventListener("click", () => {
+        canvasInfo.renderer.dispose();
+        parent.removeChild(canvasInfo.renderer.domElement);
+        parent.removeChild(resetBtn);
+        CreateCanvas(id, is3D, init, update);
+    });
+    canvasInfo.parent.appendChild(resetBtn);
+
+    canvasInfo.resetBtn = resetBtn;
+
     return canvasInfo;
 }
 
