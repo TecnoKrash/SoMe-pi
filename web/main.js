@@ -113,8 +113,10 @@ function CreateCanvas(id, is3D, init, update) {
     const renderer = new Three.WebGLRenderer();
 
     function animate() {
-        update(canvasInfo);
-        renderer.render(canvasInfo.scene, canvasInfo.camera);
+        if (Util.IsElementVisible(parent)) {   
+            update(canvasInfo);
+            renderer.render(canvasInfo.scene, canvasInfo.camera);
+        }
     }
 
     renderer.setSize(parent.clientWidth, parent.clientHeight);
