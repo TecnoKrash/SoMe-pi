@@ -123,14 +123,14 @@
                 Let $M € E$, we suppose that $(a_k)_{k € [0, n]}$ et $(b_k)_{k € [0, n]}$ are barycentric coordinates for $M$ in $(A_k)_{k € [0, n]}$.
                 We have then:
                 $$
-                    |§S__{k=1}^^n §a_k ?v{MA_k} = |§S__{k=1}^^n §b_k ?v{MA_k}
+                    |§S__{k=0}^^n §a_k ?v{MA_k} = |§S__{k=0}^^n §b_k ?v{MA_k}
                 $$
 
                 Then:
                 $$
-                    |§S__{k=1}^^n ?v{MA_k} (§a_k - §b_k) &= 0 &&
-                    |§S__{k=1}^^n ?v{A_0M} (§a_k - §b_k) + |§S__{k=1}^^n ?v{MA_k} (§a_k - §b_k) &= 0 &&
-                    |§S__{k=1}^^n ?v{A_0A_k} (§a_k - §b_k) &= 0
+                    |§S__{k=0}^^n ?v{MA_k} (§a_k - §b_k) &= 0 &&
+                    |§S__{k=0}^^n ?v{A_0M} (§a_k - §b_k) + |§S__{k=0}^^n ?v{MA_k} (§a_k - §b_k) &= 0 &&
+                    |§S__{k=0}^^n ?v{A_0A_k} (§a_k - §b_k) &= 0
                 $$
 
                 But $(?v{A_0A_1} ... ?v{A_0A_n})$ form a basis of $?v E$, so for all $k € [0 ; n]$, $§a_k - §b_k = 0 <=> a_k = b_k$

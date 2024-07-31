@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 mod structs;
 mod barycenter;
 mod interpolate;
@@ -6,7 +8,6 @@ use structs::*;
 use barycenter::*;
 use interpolate::*;
 
-#[allow(dead_code)]
 
 fn vector_operation_test(){
     let mut u = vect_from_arr(&[1.0, 2.0, 3.0]);
@@ -76,16 +77,15 @@ fn get_simplex_test() {
 
     let res = get_valid_simplex(&cloud, &p);
 
-    println!("ok ?");
+    let mut sum = 0.0;
 
-    
-
-    for simp in res.iter() {
-        println!(" Next simp");
-        for u in simp.iter() {
-            println!("{}", u);
-        }
+    for comb in res.iter() {
+        let val = interpolate(&cloud, comb.to_vec(), &p);
+        println!("val : {}", val);
+        sum += val;
     }
+
+    println!("interpolation : {}", sum/(res.len() as f64));
 
 }
 

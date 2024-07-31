@@ -38,7 +38,7 @@ pub fn new_comb(comb: &mut Vec<usize>, n: usize) {
         
 
 
-pub fn get_valid_simplex(space: &Space, p: &Point) -> Vec<Vec<Vector>> {
+pub fn get_valid_simplex(space: &Space, p: &Point) -> Vec<Vec<usize>> {
     let n = space.size;
     let dim = p.pos.dim() + 1;
     if dim > n {
@@ -60,7 +60,7 @@ pub fn get_valid_simplex(space: &Space, p: &Point) -> Vec<Vec<Vector>> {
         let sum: f64 = bary.iter().sum();
 
         if (sum -1.0).abs() < THRESHOLD {
-            res.push(simp);
+            res.push(comb.clone());
         }
 
         new_comb(&mut comb, n);
@@ -69,4 +69,14 @@ pub fn get_valid_simplex(space: &Space, p: &Point) -> Vec<Vec<Vector>> {
 }
 
 
+pub fn interpolate(space: &Space, comb: Vec<usize>, p: &Point) -> f64{
+    let n = comb.len();
+    let simp: Vec<Vector> = comb.iter().map(|i| space.points[*i].pos.clone()).collect();
+    let bary = barycentric_co(&simp, &p);
+    let mut sum = 0.0;
+    for i in 0..n{
+        sum += space.points[comb[i]].val * bary[i];
+    }
+    return sum;
+}
 
