@@ -75,7 +75,65 @@
                 $$
 
                 We have $|§S__{k=1}^^n §a_k = |§S__{k=1}^^n §b_k = 1$, so the last expression in null. $(A_k - A_0)_{k € [1, n]}$ is a basis,
-                so $?a k € [1, n], §a_k - §b_k = 0$, and finally $(a_k)_{k € [0, n]} = (b_k)_{k € [0, n]}$.
+                so $?a k € [1, n], §a_k - §b_k = 0$, and finally $(§a_k)_{k € [0, n]} = (§b_k)_{k € [0, n]}$.
+
+            </hidden>
+
+            
+            <!hidden id="existence-proof2" :id="existence-proof2" :title="Existence et unicité dans un simplexe version points et vecteur">
+                
+                <h4>Existence</h4>
+
+                Let $(A_k)_{k € [0, n]} € E^{n + 1}$, so that $(?v{A_0A_k})_{k € [1, n]}$ is a basis of ?v E.
+                (We say that (A_0 ... A_n) form an affine basis).
+                Let $M € E$.
+                There exists $(§a_k)_{k € [1, n]}$ so that:
+                $$
+                    ?v{A_0M} = |§S__{k=1}^^n §a_k (?v{A_0A_k})
+                $$
+
+                Thus:
+                $$
+                    ?v{OM} = |§S__{k=1}^^n §a_k ?v{OA_k} + ?v{OA_0}(1 - |§S__{k=1}^^n §a_k)
+                $$
+
+                We can then define:
+                $$
+                    ?a k € [0; n], §b_k = <!system style="vertical-align: middle;">
+                        1 - |§S__{k=1}^^n §a_k & ?txt{if} k = 0 &&
+                        §a_k & ?txt{otherwise}
+                    </system>
+                $$
+
+                And so we have
+                $$
+                    ?v{OM} &= |§S__{k=0}^^n §b_k ?v{OA_k} &&
+                    |§S__{k=0}^^n §b_k ?v{OM} &= |§S__{k=0}^^n §b_k ?v{OA_k} ?txt{Because} |§S__{k=0}^^n §b_k = 1 &&
+                    |§S__{k=0}^^n §b_k ?v{MA_k} &= 0
+                $$
+
+
+                That satisfies the definition of barycentric coordinates:
+                $$
+                    M = |{bar}((A_k, §b_k)_{k € [0, n]}) ?txt{et} |§S__{k=0}^^n §b_k = 1
+                $$
+
+                <h4>Uniqueness</h4>
+                
+                Let $M € E$, we suppose that $(a_k)_{k € [0, n]}$ et $(b_k)_{k € [0, n]}$ are barycentric coordinates for $M$ in $(A_k)_{k € [0, n]}$.
+                We have then:
+                $$
+                    |§S__{k=1}^^n §a_k ?v{MA_k} = |§S__{k=1}^^n §b_k ?v{MA_k}
+                $$
+
+                Then:
+                $$
+                    |§S__{k=1}^^n ?v{MA_k} (§a_k - §b_k) &= 0 &&
+                    |§S__{k=1}^^n ?v{A_0M} (§a_k - §b_k) + |§S__{k=1}^^n ?v{MA_k} (§a_k - §b_k) &= 0 &&
+                    |§S__{k=1}^^n ?v{A_0A_k} (§a_k - §b_k) &= 0
+                $$
+
+                But $(?v{A_0A_1} ... ?v{A_0A_n})$ form a basis of $?v E$, so for all $k € [0 ; n]$, $§a_k - §b_k = 0 <=> a_k = b_k$
 
             </hidden>
 
@@ -87,29 +145,45 @@
                 $$
             </def>
 
-            Let $k € [0, n]$. $(A_1 ... A_n) \\ {A_k}$ defines a hyperplane $£B_k$ of dimension $n - 1$.
+            <!def :title="Alternativ definition of Barycentric coordinates">
+                Like before, let $(A_k)_{k € [0, n]} € E^{n + 1}$, so that $(?v{A_0A_k})_{k € [1, n]}$ is a basis of $?v E$, and let $M € E$.
+                For all $i € [0, n]$, $§l_i(M)$ is the $n$<sup>th</sup> barycentric coordinate for $M$, so:
+                $$
+                    |§S__{k=0}^^{n} §l_k(M) ?v{MA_k} = 0
+                $$
+            </def>
+
+            Let set for all $k € [1, n]$, $b_k = (?v{A_0A_k})$.  $(b_1 ... b_n) \\ {b_k}$ defines a hyperplane $£B_k$ of $?v E$. We will name $P_k$ the associated plane in $E$
 
             <!prop :title="Barycentric coordinates expression">
-                Let $H$ be the orthogonal projection of $M$ on $|{Vect}(£B_k)$
-                and $K$ the orthogonal projection of $A_k$ on $|{Vect}(£B_k)$.
+                Let $H$ be the orthogonal projection of $M$ on $£B_k$
+                and $K$ the orthogonal projection of $A_k$ on $£B_k$.
                 $$
                     §l_k(M) = {?norm{M - H}} / {?norm{A_k - K}}
                 $$
             </prop>
 
+            <!prop :title="Barycentric coordinates expression">
+                Let $H$ be the orthogonal projection of $M$ on $£B_k$
+                and $K$ the orthogonal projection of $A_k$ on $£B_k$.
+                $$
+                    §l_k(M) = {?norm{?v{HM}}} / {?norm{?v{KA_k}}}
+                $$
+            </prop>
+
             <!hidden id="expression-proof" :id="expression-proof" :title="Proof">
-                Let $k € [0, n]$ and $l € [0, n]$ so that $l !=k$.
-                Let $J € £B_k$ so that $M = J + x (A_k - A_l)$ where $x € ||R$.
+                Let $k € [0, n]$, and
+                let $J € £B_k$ so that $(M - A_0)= J + x (A_k - A_0)$ where $x € ||R$.
                 Let $N$ the normal vector of $£B_k$.
 
                 We have:
                 $$
-                    x (A_k - A_l) . N &= ?norm{M - H} &&
-                    x (A_k - A_l) . (M - H) &= ?norm{M - H}^2 &&
-                    x ((A_k - K) . (M - H) + (K - A_l) . (M - H)) &= ?norm{M - H}^2 &&
+                    x (A_k - A_0) . N &= ?norm{M - H} &&
+                    x (A_k - A_0) . (M - H) &= ?norm{M - H}^2 &&
+                    x ((A_k - K) . (M - H) + (K - A_0) . (M - H)) &= ?norm{M - H}^2 &&
                 $$
 
-                Then $K$ and $A_l$ are both in $£B_k$, and (A_k - K) and (M - H) are both normal to $£B_k$.
+                Then $K$ and $A_0$ are both in $£B_k$, and (A_k - K) and (M - H) are both normal to $£B_k$.
                 $$
                     x (?norm{A_k - K} . ?norm{M - H} + 0) &= ?norm{M - H}^2&&
                     x &= { ?norm{M - H} } / { ?norm{A_k - K} }
@@ -117,7 +191,7 @@
 
                 Then by expressing $J$ with it's barycentric coordinates in $£B_k$, that we will note $(§g_i)_{i € [0, n] \\ {k}}$:
                 $$
-                    M = |§S__{i € [0, n] \\ {k}} §g_i A_i + { ?norm{M - H} } / { ?norm{A_k - K} } (A_k - A_l)
+                    M - A_0 = |§S__{i € [1, n] \\ {k}} §g_i A_i + A_0 + { ?norm{M - H} } / { ?norm{A_k - K} } (A_k - A_0)
                 $$
 
                 The sum of these coordinates are $1$, so we obtained barycentric coordinates.
@@ -125,6 +199,37 @@
                 $$
                     §l_k(M) = { ?norm{M - H} } / { ?norm{A_k - K} }
                 $$
+            </hidden>
+
+
+            <!hidden id="expression-proof2" :id="expression-proof2" :title="Proof with vectors">
+                Let $k € [0, n]$.
+                We have : 
+                $$
+                    (?v{A_0M}) = |§S__{i = 1}^^n x_i ?v{A_0A_i} &&
+                    (?v{A_0M}) = |§S__{i € [1, n] \\ {k}}^^n x_i ?v{A_0A_i} + x_k ?v{A_0A_k}
+                $$
+                Where $(x_i)_{i € [0 ; n]}$ are the barycentric coordinate of $M$ in $(A_0 ... A_n)$
+
+                Let $?v n$ the normal vector of $£B_k$.
+
+                We have:
+                $$
+                    x_k ?v{A_0A_k} . ?v n &= ?norm{?v{HM}} &&
+                    x_k ?v{A_0A_k} . ?v{HM} &= ?norm{?v{HM}}^2 &&
+                    x_k ?v{KA_k} . ?v{HM} + ?v{A_0K} . ?v{HM} &= ?norm{?v{HM}}^2 
+                $$
+
+                Then $K$ and $A_0$ are both in $P_k$, and $?v{KA_k}$ and $?v{HM}$ are both normal to $£B_k$.
+                $$
+                    x_k . ?norm{?v{KA_k}} . ?norm{?v{HM}} &= ?norm{?v{HM}}^2&&
+                $$
+
+                This gives us the expretion of $x_k$ :
+                $$
+                    x_k &= { ?norm{?v{HM}} } / { ?norm{?v{KA_k}} }
+                $$
+
             </hidden>
         </main>
     </body>
