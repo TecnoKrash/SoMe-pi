@@ -2,8 +2,9 @@
 // Import wasm
 import init, { test_export_function } from './wasm-gen/somepi_backend.js';
 
-// Import three.js
+// Import three.js, with addons
 import * as Three from 'three';
+import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
 
 import * as Handle from './handle.js';
 import * as Geometry from './geometry.js';
@@ -15,20 +16,6 @@ init().then(() => {
     
     let res = test_export_function(5, 6);
     console.log("This result was produced by RUST: " + res);
-
-    CreateCanvas("test-canvas", true, 
-        function Init(info) {
-            const geometry = new Three.BoxGeometry(1, 1, 1);
-            const material = new Three.MeshBasicMaterial({ color: 0x00ff00 });
-            info.cube = new Three.Mesh(geometry, material);
-            info.scene.add(info.cube);
-            info.camera.position.z = 5;
-        },
-        function Update(info) {
-            info.cube.rotation.x += 0.01;
-            info.cube.rotation.y += 0.01;
-        }
-    );
 
     CreateCanvas("nearest", false, 
         function Init(info) {
@@ -104,7 +91,7 @@ init().then(() => {
 
     CreateCanvas("barycentric-area", false, 
         function Init(info) {
-            Handle.CreateHandle(info, new Three.Vector3(0.0, 0.3, 0), 0.01, 0x00ff00);
+            Handle.CreateHandle(info, new Three.Vector3(0.0, 0.3, 0), 0.01, 0xff0000);
             Handle.CreateHandle(info, new Three.Vector3(0.4, -0.1, 0), 0.01, 0xff0000);
             Handle.CreateHandle(info, new Three.Vector3(-0.4, -0.3, 0), 0.01, 0x0000ff);
             Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.02, 0xffffff);
@@ -140,6 +127,62 @@ init().then(() => {
             document.getElementById("ba-res").textContent = Util.RoundForDisplay(smallArea / bigArea);
         }
     );
+    
+    CreateCanvas("barycentric-volume", true, 
+        function Init(info) {
+            Handle.CreateHandle(info, new Three.Vector3(-0.3, -0.3, 0.2), 0.01, 0x0000ff);
+            Handle.CreateHandle(info, new Three.Vector3(0.4, -0.2, 0.2), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(-0.1, 0.1, -0.4), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.0, 0.4, 0.1), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.0, 0.0, 0.0), 0.02, 0xffffff);
+
+            Geometry.CreateLine(info, 0, 1, 0xffffff, 0.005);
+            Geometry.CreateLine(info, 1, 2, 0xffffff, 0.005);
+            Geometry.CreateLine(info, 2, 0, 0xffffff, 0.005);
+            Geometry.CreateLine(info, 0, 3, 0xffffff, 0.005);
+            Geometry.CreateLine(info, 1, 3, 0xffffff, 0.005);
+            Geometry.CreateLine(info, 2, 3, 0xffffff, 0.005);
+
+            Geometry.CreateLine(info, 0, 4, 0xffffff, 0.002);
+            Geometry.CreateLine(info, 1, 4, 0xffffff, 0.002);
+            Geometry.CreateLine(info, 2, 4, 0xffffff, 0.002);
+            Geometry.CreateLine(info, 3, 4, 0xffffff, 0.002);
+
+            Geometry.CreateTriangle(info, 2, 1, 4, 0x0000ff, 0.5);
+            Geometry.CreateTriangle(info, 3, 2, 4, 0x0000ff, 0.5);
+            Geometry.CreateTriangle(info, 1, 3, 4, 0x0000ff, 0.5);
+            Geometry.CreateTriangle(info, 1, 2, 3, 0x0000ff, 0.5);
+
+            info.camera.position.z = 1.5;
+            info.controls = new TrackballControls(info.camera, info.renderer.domElement);
+            info.controls.target.set(0, 0, 0);
+        },
+        function Update(info) {
+            Geometry.UpdateGeometry(info);
+            Handle.UpdateHandles(info);
+
+            if (!info.isDraggingAHandle) {
+                info.controls.update();
+            }
+
+            let smallVolume = Util.TetrahedronVolume(
+                info.handles[1].position,
+                info.handles[2].position,
+                info.handles[3].position,
+                info.handles[4].position,
+            );
+            let bigVolume = Util.TetrahedronVolume(
+                info.handles[0].position,
+                info.handles[1].position,
+                info.handles[2].position,
+                info.handles[3].position,
+            );
+
+            document.getElementById("bv-frac-top").textContent = Util.RoundForDisplay(smallVolume);
+            document.getElementById("bv-frac-btm").textContent = Util.RoundForDisplay(bigVolume);
+            document.getElementById("bv-res").textContent = Util.RoundForDisplay(smallVolume / bigVolume);
+        }
+    );
 })
 
 function CreateCanvas(id, is3D, init, update) {
@@ -154,27 +197,27 @@ function CreateCanvas(id, is3D, init, update) {
     };
 
     if (is3D) {
-        canvasInfo.camera = new Three.PerspectiveCamera(80, canvasInfo.ratio, 0.1, 1000);
+        canvasInfo.camera = new Three.PerspectiveCamera(70, canvasInfo.ratio, 0.1, 1000);
     }
     else {
         canvasInfo.camera = new Three.OrthographicCamera(-0.5 * ratio, 0.5 * ratio, 0.5, -0.5, 0.1, 1000);
         canvasInfo.camera.position.z = 100;
     }
 
-    init(canvasInfo);
-
-    const renderer = new Three.WebGLRenderer({ antialias: true });
+    canvasInfo.renderer = new Three.WebGLRenderer({ antialias: true });
 
     function animate() {
         if (Util.IsElementVisible(parent)) {   
             update(canvasInfo);
-            renderer.render(canvasInfo.scene, canvasInfo.camera);
+            canvasInfo.renderer.render(canvasInfo.scene, canvasInfo.camera);
         }
     }
 
-    renderer.setSize(parent.clientWidth, parent.clientHeight);
-    renderer.setAnimationLoop(animate);
-    parent.appendChild(renderer.domElement);
+    canvasInfo.renderer.setSize(parent.clientWidth, parent.clientHeight);
+    canvasInfo.renderer.setAnimationLoop(animate);
+    parent.appendChild(canvasInfo.renderer.domElement);
+
+    init(canvasInfo);
 
     return canvasInfo;
 }

@@ -21,12 +21,13 @@ export function CreateLine(canvasInfo, handleAId, handleBId, color, width) {
     }
 }
 
-export function CreateTriangle(canvasInfo, handleAId, handleBId, handleCId, color) {
+export function CreateTriangle(canvasInfo, handleAId, handleBId, handleCId, color, alpha = 1) {
     let triangle = {
         handleAId: handleAId,
         handleBId: handleBId,
         handleCId: handleCId,
         color : color,
+        alpha : alpha,
     };
 
     if (canvasInfo.triangles) {
@@ -57,15 +58,18 @@ export function UpdateGeometry(canvasInfo) {
             let b = canvasInfo.handles[line.handleBId].position;
     
             let middle = a.clone().add(b).multiplyScalar(0.5);
-            middle.z = -1;
             line.mesh.position.copy(middle);
-    
+
             let delta = b.clone().sub(a);
-            let angle = Math.atan(delta.y / delta.x);
-            line.mesh.rotation.z = angle;
+            let camVector = canvasInfo.camera.position.clone().sub(middle);
+            let up = camVector.cross(delta);
+            let direction = up.cross(delta);
+
+            line.mesh.up = delta;
+            line.mesh.lookAt(direction.multiplyScalar(-1).add(middle));
     
-            line.mesh.scale.x = delta.length();
-            line.mesh.scale.y = line.width;
+            line.mesh.scale.x = line.width;
+            line.mesh.scale.y = delta.length();
         }
     }
 
@@ -81,7 +85,12 @@ export function UpdateGeometry(canvasInfo) {
                 c.z -= 2;
             }
 
-            let material = new Three.MeshBasicMaterial({ color: triangle.color, side: Three.DoubleSide });
+            let material = new Three.MeshBasicMaterial({ 
+                color: triangle.color, 
+                side: triangle.alpha < 1 ? Three.FrontSide : Three.DoubleSide, 
+                opacity: triangle.alpha,
+                transparent: triangle.alpha < 1,
+            });
 
             let geom = new Three.BufferGeometry();
             geom.setFromPoints([a, b, c]);

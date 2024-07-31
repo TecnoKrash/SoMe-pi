@@ -71,7 +71,10 @@ export function UpdateHandles(info) {
             }
 
             // Update position
-            handle.mesh.position.set(handle.position.x, handle.position.y, handle.position.z);
+            let vectCam = info.camera.position.clone().sub(handle.position);
+            let meshPos = handle.position.clone().add(vectCam.normalize().multiplyScalar(0.01));
+            handle.mesh.position.set(meshPos.x, meshPos.y, meshPos.z);
+            handle.mesh.lookAt(info.camera.position);
         }
 
         if (isDraggingAHandle) {
@@ -83,6 +86,9 @@ export function UpdateHandles(info) {
         else {
             info.parent.style.cursor = "auto";
         }
+
+        info.isHoveringAHandle = isHoveringAHandle;
+        info.isDraggingAHandle = isDraggingAHandle;
     }
     else {
         console.log("No handles in this canvas! Non need to call UpdateHandles()");

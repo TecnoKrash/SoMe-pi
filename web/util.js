@@ -85,9 +85,22 @@ export function ScreenToWorldPos(canvasInfo, position, depth) {
 export function TriangleArea(a, b, c) {
     let abNorm = b.clone().sub(a).normalize();
     let ac = c.clone().sub(a);
-    let ah = abNorm.clone().dot(ac);
+    let ah = abNorm.dot(ac);
     return ac.clone().sub(abNorm.multiplyScalar(ah)).length() * b.clone().sub(a).length();
 }
+
+export function TetrahedronVolume(a, b, c, d) {
+    let ab = b.clone().sub(a);
+    let ac = c.clone().sub(a);
+    let ad = d.clone().sub(a);
+    
+    let p = ac.clone().sub(ab.multiplyScalar(ab.dot(ac) / ab.dot(ab)));
+    let height = ad.sub(ab.multiplyScalar(ab.dot(ad) / ab.dot(ab)))
+                   .sub(p.multiplyScalar(p.dot(ad) / p.dot(p))).length();
+
+    return TriangleArea(a, b, c) * height; 
+}
+
 
 export function RoundForDisplay(val) {
     let exp = Math.pow(10, DISPLAY_DIGITS);

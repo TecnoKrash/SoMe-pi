@@ -12,20 +12,6 @@
         <main>
             <h1>This is a title</h1>
 
-            This is some text with maths: 
-            $$
-                {?sqrt 2} / 2 = 1 / {?sqrt 2} 
-            $$
-
-            And this is a test canvas with an animation: 
-            <!figure id="test-canvas" :caption="A rotating cube"></figure>
-
-            Look in the console to see rust in action (ignore all the errors)!
-
-            <br/>
-            <br/>
-
-            There is also draggable handles:
             <!figure id="nearest" :caption="Nearest neighbor interpolation"></figure>
             <!figure id="inverse-distance" :caption="Inverse distance interpolation"></figure>
 
@@ -43,10 +29,21 @@
             </figure>
 
             <!figure id="barycentric-area" :caption="Barycentric coordinates with area">
-                <div style="position: absolute; left: 20px; top : 20px; font-size: 1.8rem;">
+                <div class="figure-math">
                     $
-                        {<%span id="ba-frac-top" style="color: #0000ff">999</span>} / {<%span id="ba-frac-btm" style="color: #777">999</span>}
+                        {|{blue\ area}} / {|{gray\ area}}
+                        = {<%span id="ba-frac-top" style="color: #0000ff">999</span>} / {<%span id="ba-frac-btm" style="color: #777">999</span>}
                         = <%span id="ba-res">999</span>
+                    $
+                </div>
+            </figure>
+
+            <!figure id="barycentric-volume" :caption="Barycentric coordinates with volume">
+                <div class="figure-math">
+                    $
+                        {|{blue\ volume}} / {|{total\ volume}}
+                        = {<%span id="bv-frac-top" style="color: #0000ff">999</span>} / {<%span id="bv-frac-btm" style="color: #777">999</span>}
+                        = <%span id="bv-res">999</span>
                     $
                 </div>
             </figure>
