@@ -29,6 +29,28 @@
             <!figure id="nearest" :caption="Nearest neighbor interpolation"></figure>
             <!figure id="inverse-distance" :caption="Inverse distance interpolation"></figure>
 
+            <!figure :caption="Bad interpolation example">
+                <div id="inverse-distance-fail-1" class="half-figure">
+                    <div class="figure">
+                        <inner></inner>
+                    </div>
+                </div>
+                <div id="inverse-distance-fail-2" class="half-figure">
+                    <div class="figure">
+                        <inner></inner>
+                    </div>
+                </div>
+            </figure>
+
+            <!figure id="barycentric-area" :caption="Barycentric coordinates with area">
+                <div style="position: absolute; left: 20px; top : 20px; font-size: 1.8rem;">
+                    $
+                        {<%span id="ba-frac-top" style="color: #0000ff">999</span>} / {<%span id="ba-frac-btm" style="color: #777">999</span>}
+                        = <%span id="ba-res">999</span>
+                    $
+                </div>
+            </figure>
+
             <h2>Proofs</h2>
 
             <!hidden id="existence-proof" :id="existence-proof" :title="Existence et unicité dans un simplexe">

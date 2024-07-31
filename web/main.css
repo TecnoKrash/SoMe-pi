@@ -14,24 +14,35 @@ figure {
     margin: 30px calc(50% - 400px);
 }
 
-figure > .figure {
+.figure {
     margin: 0 0 20px 0;
     overflow: hidden;
-    width: 800px;
+    width: 100%;
     height: 500px;
-    background-color: black;
     border-radius: 10px;
 }
 
-figure > .figure-caption {
+.figure-caption {
     color: var(--txt-d);
 }
 
-figure > .figure > inner {
+.figure > inner {
     width: 100%;
     height: 100%;
     margin: 0;
+    position: relative;
 } 
+
+.figure mathnode * {
+    transition: 200ms;
+} 
+
+.half-figure {
+    display: inline-block;
+    width: calc(50% - 10px);
+    height: 100%;
+    margin: 0 5px;
+}
 
 hidden {
     display: flex;

@@ -1,6 +1,8 @@
 
 import * as Three from 'three';
 
+const DISPLAY_DIGITS = 2;
+
 export let mouseX = 0.0;
 export let mouseY = 0.0;
 export let lastMouseX = 0.0;
@@ -78,6 +80,18 @@ export function ScreenToWorldPos(canvasInfo, position, depth) {
 
     res.unproject(canvasInfo.camera);
     return res;
+}
+
+export function TriangleArea(a, b, c) {
+    let abNorm = b.clone().sub(a).normalize();
+    let ac = c.clone().sub(a);
+    let ah = abNorm.clone().dot(ac);
+    return ac.clone().sub(abNorm.multiplyScalar(ah)).length() * b.clone().sub(a).length();
+}
+
+export function RoundForDisplay(val) {
+    let exp = Math.pow(10, DISPLAY_DIGITS);
+    return Math.round(val * exp) / exp;
 }
 
 
