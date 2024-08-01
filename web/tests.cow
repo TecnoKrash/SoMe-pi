@@ -190,6 +190,21 @@
                 $$
             </prop>
 
+            <!prop :title="Barycentric coordinates expression">
+                Let $H$ be the orthogonal projection of $M$ on $£B_k$
+                and $K$ the orthogonal projection of $A_k$ on $£B_k$.
+                $$
+                    §l_k(M) = {?norm{?v{HM}}} / {?norm{?v{KA_k}}}
+                $$
+            </prop>
+
+            <!prop :title="Barycentric coordinates expression, 3rd try">
+                Let $k € [1, n]$, and $?v n$ the normal vector of $£B_k$ pointing towards $A_k$.
+                $$
+                    §l_k(M) = { ?norm{M - H} } / { ?norm{A_k - K} }
+                $$
+            </prop>
+
             <!hidden id="expression-proof" :id="expression-proof" :title="Proof">
                 Let $k € [0, n]$, and
                 let $J € £B_k$ so that $(M - A_0)= J + x (A_k - A_0)$ where $x € ||R$.
@@ -246,8 +261,28 @@
 
                 This gives us the expretion of $x_k$ :
                 $$
-                    x_k &= { ?norm{?v{HM}} } / { ?norm{?v{KA_k}} }
+                    §l_k(M) = { ?norm{M - H} } / { ?norm{A_k - K} }
                 $$
+
+            </hidden>
+
+
+            <!hidden id="expression-proof3" :id="expression-proof3" :title="3rd try">
+                Let $k € [1, n]$.
+                We have : 
+                $$
+                    ?v{A_0M} = |§S__{i = 1}^^n x_i ?v{A_0A_i} &&
+                    ?v{A_0M} = |§S__{i € [1, n] \\ {k}}^^n x_i ?v{A_0A_i} + x_k ?v{A_0A_k} &&
+                    ?v{A_0M} . ?v{n} = |§S__{i € [1, n] \\ {k}}^^n x_i ?v{A_0A_i} . ?v{n} + x_k ?v{A_0A_k} . ?v{n} &&
+                    ?v{A_0M} . ?v{n} = x_k ?v{A_0A_k} . ?v{n}
+                $$
+
+                Thus:
+                $$
+                    x_k &= { ?v{A_0M} . ?v{n} } / { ?v{A_0A_k} . ?v{n} }
+                $$
+
+                If $k = 0$, just reorder the points.
 
             </hidden>
         </main>
