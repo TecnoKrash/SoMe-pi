@@ -46,7 +46,7 @@ export function IsMouseOverElement(element) {
 
 export function IsElementVisible(element) {
     let rect = element.getBoundingClientRect();
-    return rect.top < window.innerWidth // document.body.scrollTop + document.documentElement.clientHeight
+    return rect.top < window.innerHeight // document.body.scrollTop + document.documentElement.clientHeight
         && rect.bottom > 0 // document.body.scrollTop;
 }
 

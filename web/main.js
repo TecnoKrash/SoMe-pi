@@ -89,6 +89,26 @@ init().then(() => {
         }
     );
 
+    CreateCanvas("inverse-distance-fail-3", false, 
+        function Init(info) {
+            InterpolationVis.Init(info);
+
+            for (let a = 0; a < 1; a += 1 / 8) {
+                let angle = a * Math.PI * 2;
+                let x = Math.cos(angle);
+                let y = Math.sin(angle);
+                Handle.CreateHandle(info, new Three.Vector3(x * 0.15, y * 0.15, 0), 0.01, 0x0000ff);
+                Handle.CreateHandle(info, new Three.Vector3(x * 0.2, y * 0.2, 0), 0.01, 0xff0000);
+            }
+
+            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.01, 0x0000ff);
+        },
+        function Update(info) {
+            InterpolationVis.Update(info, InverseDistanceInterpolation);
+            Handle.UpdateHandles(info);
+        }
+    );
+
     CreateCanvas("barycentric-area", false, 
         function Init(info) {
             Handle.CreateHandle(info, new Three.Vector3(0.0, 0.3, 0), 0.01, 0xff0000);
@@ -187,6 +207,11 @@ init().then(() => {
 
 function CreateCanvas(id, is3D, init, update) {
     let parent = document.querySelector(`#${id} > .figure > inner`);
+    if (parent == null) {
+        console.log(`No parent element found for canvas with id ${id}!`);
+        return;
+    }
+
     let ratio = parent.clientWidth / parent.clientHeight
 
     let canvasInfo = {

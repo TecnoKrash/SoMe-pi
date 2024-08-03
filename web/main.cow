@@ -10,9 +10,79 @@
         <!include-things/> // Links in head don't work, so they are added manually with this
 
         <main>
-            TODO: do everything
-            <br/>
             <a href="tests.html">Navigate to test page</a>
+
+            <br/>
+            <br/>
+
+            //TODO: intro
+
+            <h2>Visualization</h2>
+
+            To visualize how each method produces results, we will use some interactive figure such as 
+            <!pagelink :id="nearest">this one</pagelink>.
+
+            It represents the problem with two parameters. 
+            
+            Each point you see (you can also drag them around) is a measure. It's X and Y coordinates are the value of its two parameters,
+            and its color represent the measured value.
+
+            Each pixel in the background indicates the result of the interpolation at its position.
+
+            For this example, we used a very simple interpolation method: the output value is the value of the nearest measure. 
+
+            <!figure id="nearest" :caption="Nearest neighbor interpolation"></figure>
+
+            <h2>Inverse distance</h2>
+
+            We can start by trying a very simple method: the inverse distance weighting.
+            If $A_0...A_n$ are the measures points and $§a_0...§a_n$ are their value, and we want to get a result on the point $M$, 
+            we calculate:
+
+            $$
+                {|§S__{i=0}^^{n} a_i / {A_iM}} / {|§S__{j=0}^^{n} 1 / {A_jM}} 
+            $$
+
+            What if a distance is zero? Then it means that $M$ is directly on a measured point, so you can take its value instead.
+
+            It's a weighted average, where the weight are the inverse distances between the points.
+            This way, the more a point is far from $M$, the less it will impact the result.
+
+            <!figure id="inverse-distance" :caption="Inverse distance interpolation"></figure> 
+
+            <h2>Problems with inverse distance</h2>
+            While this method seems at first to be doing well, it has some drawbacks.
+
+            <br/>
+            <br/>
+
+            First, if there is a lot of points at the same place (if for instance you want more precision around a particular point),
+            their values will impact the result more.
+            
+            <!figure :caption="Bad interpolation example">
+                <div id="inverse-distance-fail-1" class="half-figure">
+                    <div class="figure">
+                        <inner></inner>
+                    </div>
+                </div>
+                <div id="inverse-distance-fail-2" class="half-figure">
+                    <div class="figure">
+                        <inner></inner>
+                    </div>
+                </div>
+            </figure>
+
+            On the right, 4 additional measures have been made around the red point, and it impacts the results for the entire space!
+            (the color of the borders aren't the same)
+            The impact should instead be limited to the zone around the red point.
+
+            <br/>
+            <br/>
+
+            This method has also another drawback: it takes all the points into account, event when it shouldn't.
+            On the next figure you would expect the center of the screen to be completely blue, but the red point impacted the result and
+            the center is purple-ish.
+            <!figure id="inverse-distance-fail-3" :caption="Another bad interpolation example"></figure> 
         </main>
     </body>
 </document>

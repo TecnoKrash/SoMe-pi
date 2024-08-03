@@ -55,3 +55,27 @@
     ?abs{?abs{<:inner/>}}
 </norm>
 
+<!pagelink :id :inner>
+    <:inner/>
+
+    <!evaluate>
+        function ScrollToElement(el) {
+            let rect = el.getBoundingClientRect();
+            let height = rect.bottom - rect.top;
+            let width = rect.right - rect.left;
+
+            document.body.scrollTo(
+                document.body.scrollLeft + rect.left + width / 2 - window.innerWidth / 2, 
+                document.body.scrollTop + rect.top + height / 2 - window.innerHeight / 2
+            );
+        }
+
+        this.parentElement.addEventListener("click", () => {
+            let id = this.parentElement.getAttribute(":id");
+            ScrollToElement(document.getElementById(id));
+        });
+
+        ""
+    </evaluate>
+</pagelink>
+
