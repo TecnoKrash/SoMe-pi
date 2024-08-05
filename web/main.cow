@@ -16,6 +16,7 @@
             <br/>
 
             //TODO: intro
+            // Je sais pas du tout ce que je fais, j'ai l’impression que Phongmany ve vouloir m'assassiner a chaque fin de phrase
 
             <h2>Visualization</h2>
 
@@ -43,10 +44,10 @@
                 {|§S__{i=0}^^{n} a_i / {A_iM}} / {|§S__{j=0}^^{n} 1 / {A_jM}} 
             $$
 
-            What if a distance is zero? Then it means that $M$ is directly on a measured point, so you can take its value instead.
-
             It's a weighted average, where the weight are the inverse distances between the points.
             This way, the more a point is far from $M$, the less it will impact the result.
+            
+            What if a distance is zero? Then it means that $M$ is directly on a measured point, so you can take its value instead.
 
             <!figure id="inverse-distance" :caption="Inverse distance interpolation"></figure> 
 

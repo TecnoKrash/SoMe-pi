@@ -1,5 +1,7 @@
 #![allow(dead_code)]
 
+extern crate wasm_bindgen;
+
 mod structs;
 mod barycenter;
 mod interpolate;
@@ -41,7 +43,7 @@ fn bary_test(){
 
     let p = Point { pos: vect_from_arr(&[0.2, 0.3, 0.1]), val: 0.0};
 
-    println!("{:?}", barycentric_co(&simp, &p));
+    println!("{:?}", barycentric_co(&simp, &p.pos));
 
 }
 
@@ -68,19 +70,17 @@ fn get_simplex_test() {
             Point { pos: Vector { co: vec![3.2, 3.8] }, val: 6.0 },
             Point { pos: Vector { co: vec![2.8, 1.8] }, val: 3.4 },
             Point { pos: Vector { co: vec![1.5, 4.0] }, val: 4.8 },
-        ],
-        size: 9
+        ]
     };
 
-    let p = Point { pos: Vector { co: vec![2.0, 2.0] }, val: 3.2 };
-
+    let p = Vector { co: vec![2.0, 2.0] };
 
     let res = get_valid_simplex(&cloud, &p);
 
     let mut sum = 0.0;
 
     for comb in res.iter() {
-        let val = interpolate(&cloud, comb.to_vec(), &p);
+        let val = interpolate(&cloud, comb, &p);
         println!("val : {}", val);
         sum += val;
     }

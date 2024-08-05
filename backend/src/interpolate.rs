@@ -1,5 +1,8 @@
 use crate::barycenter::*;
 use crate::structs::*;
+extern crate wasm_bindgen;
+
+use wasm_bindgen::prelude::*;
 
 const THRESHOLD: f64 = 0.001;
 
@@ -37,29 +40,18 @@ pub fn new_comb(comb: &mut Vec<usize>, n: usize) {
 }
         
 
-
-pub fn get_valid_simplex(space: &Space, p: &Point) -> Vec<Vec<usize>> {
-    let n = space.size;
-    let dim = p.pos.dim() + 1;
+pub fn get_valid_simplex(space: &Space, p: &Vector) -> Vec<Vec<usize>> {
+    let n = space.points.len();
+    let dim = p.dim() + 1;
     if dim > n {
-        return vec![vec![]];
+        return vec![vec![]]; // Not enough points to form a simplex
     }
     
     let mut res = vec![];
     let mut comb: Vec<usize> = (0..dim).collect();
 
     while comb.len() != 0 {
-        let simp: Vec<Vector> = comb.iter().map(|i| space.points[*i].pos.clone()).collect();
-        
-        for _u in simp.iter() {
-            //println!();
-        }
-
-        let bary = barycentric_co(&simp, &p);
-
-        let sum: f64 = bary.iter().sum();
-
-        if (sum -1.0).abs() < THRESHOLD {
+        if is_point_inside_simplex(p, &comb, space) {
             res.push(comb.clone());
         }
 
@@ -69,7 +61,20 @@ pub fn get_valid_simplex(space: &Space, p: &Point) -> Vec<Vec<usize>> {
 }
 
 
-pub fn interpolate(space: &Space, comb: Vec<usize>, p: &Point) -> f64{
+pub fn is_point_inside_simplex(p: &Vector, s: &Vec<usize>, space: &Space) -> bool {
+    let sim_with_coord: Vec<Vector> = s.iter().map(|i| space.points[*i].pos.clone()).collect();
+    let coord = barycentric_co(&sim_with_coord, p);
+    let sum: f64 = coord.iter().sum();
+    return (sum - 1.0).abs() < THRESHOLD;
+}
+
+#[wasm_bindgen]
+pub fn is_point_inside_simplex_export(p: &Vector, s: Vec<usize>, space: &Space) -> bool {
+    is_point_inside_simplex(p, &s, space)
+}
+
+
+pub fn interpolate(space: &Space, comb: &Vec<usize>, p: &Vector) -> f64 {
     let n = comb.len();
     let simp: Vec<Vector> = comb.iter().map(|i| space.points[*i].pos.clone()).collect();
     let bary = barycentric_co(&simp, &p);
@@ -78,5 +83,10 @@ pub fn interpolate(space: &Space, comb: Vec<usize>, p: &Point) -> f64{
         sum += space.points[comb[i]].val * bary[i];
     }
     return sum;
+}
+
+#[wasm_bindgen]
+pub fn interpolate_export(space: &Space, comb: Vec<usize>, p: &Vector) -> f64 {
+    interpolate(space, &comb, p)
 }
 

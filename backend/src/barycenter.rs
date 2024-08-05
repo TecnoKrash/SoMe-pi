@@ -66,7 +66,7 @@ pub fn extract_base(simp: &Vec<Vector>, i: usize) -> Plane {
     res
 }
 
-pub fn barycentric_co(simp: &Vec<Vector>, p: &Point) -> Vec<f64> {
+pub fn barycentric_co(simp: &Vec<Vector>, p: &Vector) -> Vec<f64> {
     let n = simp.len();
     let mut res = Vec::with_capacity(n);
 
@@ -75,7 +75,7 @@ pub fn barycentric_co(simp: &Vec<Vector>, p: &Point) -> Vec<f64> {
         // println!("base : {}, base.len() : {}", base.base[0], base.base[0].len());
 
         let big_h = base.dist_to_point(&simp[i]);
-        let small_h = base.dist_to_point(&p.pos); 
+        let small_h = base.dist_to_point(&p); 
 
         // println!("h : {}, H : {}", small_h, big_h);
 

@@ -3,26 +3,30 @@
 #![allow(dead_code)]
 
 use std::fmt::Display;
+use wasm_bindgen::prelude::*;
 
 // Struct for points
+#[wasm_bindgen(getter_with_clone)]
 pub struct Point {
     pub pos: Vector,
     pub val: f64
 }
 
 // Struct for Vectors to handle the calculation of the projection 
+#[wasm_bindgen(getter_with_clone)]
 pub struct Vector {
     pub co: Vec<f64>,
 }
 
 // To store the points we want to interpolate
+#[wasm_bindgen(getter_with_clone)]
 pub struct Space {
     pub dim: usize,
     pub points: Vec<Point>,
-    pub size: usize,
 }
 
 // For projection
+#[wasm_bindgen(getter_with_clone)]
 pub struct Plane {
     pub dim: usize,
     pub base: Vec<Vector>,
@@ -98,6 +102,15 @@ impl Clone for Vector {
     }
 }
 
+impl Clone for Point {
+    fn clone(&self) -> Point {
+        Point {
+            pos: self.pos.clone(),
+            val: self.val
+        }
+    }
+}
+
 impl Display for Vector {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut res = String::from("[");
@@ -135,8 +148,15 @@ pub fn vect_from_vec(v: Vec<f64>) -> Vector {
     }
 }
 
-
+#[wasm_bindgen]
 impl Vector {
+    #[wasm_bindgen(constructor)]
+    pub fn new(values: Vec<f64>) -> Vector {
+        Vector {
+            co: values
+        }
+    }
+
     // Get dimension
     pub fn dim(self: &Vector) -> usize {
         self.co.len()
@@ -210,4 +230,31 @@ impl Plane {
         (&proj - &u).len()
     }
 }
+
+
+#[wasm_bindgen]
+impl Point {
+    // For JS
+    #[wasm_bindgen(constructor)]
+    pub fn new(pos: Vector, val: f64) -> Point {
+        Point {
+            pos: pos,
+            val: val
+        }
+    }
+}
+
+
+#[wasm_bindgen]
+impl Space {
+    // For JS
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Space {
+        Space {
+            dim: 0,
+            points: vec![]
+        }
+    }
+}
+
 

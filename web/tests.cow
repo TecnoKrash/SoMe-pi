@@ -48,6 +48,8 @@
                 </div>
             </figure>
 
+            <!figure id="single-simplex" :caption="Barycentric interpolation in one simplex"></figure>
+
             <h2>Proofs</h2>
 
             <!hidden id="existence-proof" :id="existence-proof" :title="Existence et unicité dans un simplexe">
