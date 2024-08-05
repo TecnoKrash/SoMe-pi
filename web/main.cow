@@ -18,6 +18,10 @@
             //TODO: intro
             // Je sais pas du tout ce que je fais, j'ai l’impression que Phongmany ve vouloir m'assassiner a chaque fin de phrase
 
+            <h1> Mesure Interpolation in any dimention with barycentric coordinate <h1/>
+
+            <h2> Introduction <h2/>
+
             <h2>Visualization</h2>
 
             To visualize how each method produces results, we will use some interactive figure such as 
@@ -84,6 +88,64 @@
             On the next figure you would expect the center of the screen to be completely blue, but the red point impacted the result and
             the center is purple-ish.
             <!figure id="inverse-distance-fail-3" :caption="Another bad interpolation example"></figure> 
+
+            <h2> Barycentric coordinate in a simplex </h2>
+
+            As we saw before, the barycentric coordinate of a vertex $A_k$ is equal to the coeficient $x_k$ of the vector to this vertex $?v{A_0A_k}$ 
+            in the triangle base. Thus, we just need to find  an expretion for that coefficient. If we take all the other vertexs
+            of the triangle, we know that they define a plane $P_k$, and that $A_k$ is the only point out of it. This means that $?v{A_0A_k}$ is the only 
+            contributing to the normal direction from the plane $P_k$ (we will represent this direction by the normal vector $?v n$)
+            We have 
+            $$
+                x_k ?x ?v{A_0A_k}.?v n = ?v{A_0M}.?v n
+            $$
+            
+            Since the direction is the same, we can take the norm on both sides : 
+
+            $$
+                x_k ?x ?norm{?v{A_0A_k}.?v n} = ?norm{?v{A_0M}.?v n}
+            $$
+
+            $?norm{?v{A_0A_k}.?v n}$ is just the height of the triangle and $?norm{?v{A_0M}.?v n}$ is just the height of M.
+
+            Thus we have 
+
+            $$
+                x_k = {?txt{Height}\ ?txt{of}\ ?txt{M}}/{?txt{Height}\ ?txt{of}\ ?txt{A_k}}
+            $$
+
+            <!hidden id="expression-proof2" :id="expression-proof2" :title="Complete proof">
+                Let $k € [0, n]$.
+                We have : 
+                $$
+                    (?v{A_0M}) = |§S__{i = 1}^^n x_i ?v{A_0A_i} &&
+                    (?v{A_0M}) = |§S__{i € [1, n] \\ {k}}^^n x_i ?v{A_0A_i} + x_k ?v{A_0A_k}
+                $$
+                Where $(x_i)_{i € [0 ; n]}$ are the barycentric coordinate of $M$ in $(A_0 ... A_n)$
+
+                Let $?v n$ the normal vector of $£B_k$.
+
+                We have:
+                $$
+                    x_k ?v{A_0A_k} . ?v n &= ?norm{?v{HM}} &&
+                    x_k ?v{A_0A_k} . ?v{HM} &= ?norm{?v{HM}}^2 &&
+                    x_k ?v{KA_k} . ?v{HM} + ?v{A_0K} . ?v{HM} &= ?norm{?v{HM}}^2 
+                $$
+
+                Then $K$ and $A_0$ are both in $P_k$, and $?v{KA_k}$ and $?v{HM}$ are both normal to $£B_k$.
+                $$
+                    x_k . ?norm{?v{KA_k}} . ?norm{?v{HM}} &= ?norm{?v{HM}}^2&&
+                $$
+
+                This gives us the expretion of $x_k$ :
+                $$
+                    §x_k = { ?norm{M - H} } / { ?norm{A_k - K} }
+                $$
+
+            </hidden>
+
+
+
         </main>
     </body>
 </document>
