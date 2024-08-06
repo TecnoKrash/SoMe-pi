@@ -123,6 +123,38 @@ init().then(() => {
         }
     );
 
+    CreateCanvas("barycentric-height", false, 
+        function Init(info) {
+            Handle.CreateHandle(info, new Three.Vector3(-0.4, -0.3, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.4, -0.1, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.0, 0.3, 0), 0.01, 0x0000ff);
+            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.02, 0xffffff);
+
+            Geometry.CreateLine(info, 0, 1, 0xffffff, 0.005);
+            Geometry.CreateLine(info, 1, 2, 0xffffff, 0.005);
+            Geometry.CreateLine(info, 2, 0, 0xffffff, 0.005);
+
+            info.smallHeight = Geometry.CreateFreeLine(info, 0x33dd33, 0.002);
+            info.bigHeight = Geometry.CreateFreeLine(info, 0x33dd33, 0.002);
+        },
+        function Update(info) {
+            Geometry.UpdateGeometry(info);
+
+            let base = info.handles[1].position.clone().sub(info.handles[0].position);
+            let big = info.handles[2].position.clone().sub(info.handles[0].position);
+            let small = info.handles[3].position.clone().sub(info.handles[0].position);
+
+            let bigHeight = base.clone().multiplyScalar(big.dot(base) / base.dot(base)).add(info.handles[0].position);
+            let smallHeight = base.clone().multiplyScalar(small.dot(base) / base.dot(base)).add(info.handles[0].position);
+
+            Geometry.UpdateLine(info, info.bigHeight, info.handles[2].position, bigHeight);
+            Geometry.UpdateLine(info, info.smallHeight, info.handles[3].position, smallHeight);
+
+            Handle.UpdateHandles(info);
+        }
+    );
+    
+
     CreateCanvas("barycentric-area", false, 
         function Init(info) {
             Handle.CreateHandle(info, new Three.Vector3(0.0, 0.3, 0), 0.01, 0xff0000);

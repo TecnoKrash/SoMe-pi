@@ -28,6 +28,8 @@
                 </div>
             </figure>
 
+            <!figure id="barycentric-height" :caption="Idk"></figure>
+
             <!figure id="barycentric-area" :caption="Barycentric coordinates with area">
                 <div class="figure-math">
                     $

@@ -293,26 +293,26 @@
                 <br/>
                 <br/>
 
-                Let $k € [0, n]$.
+                Let $k € [1, n]$.
                 We have : 
                 $$
-                    (?v{A_0M}) = |§S__{i = 1}^^n x_i ?v{A_0A_i} &&
-                    (?v{A_0M}) = |§S__{i € [1, n] \\ {k}}^^n x_i ?v{A_0A_i} + x_k ?v{A_0A_k}
+                    ?v{A_0M} = |§S__{i = 1}^^n x_i ?v{A_0A_i} &&
+                    ?v{A_0M} = |§S__{i € [1, n] \\ {k}}^^n x_i ?v{A_0A_i} + x_k ?v{A_0A_k}
                 $$
                 Where $(x_i)_{i € [0 ; n]}$ are the barycentric coordinate of $M$ in $(A_0 ... A_n)$
 
-                Let $?v n$ the normal vector of $£B_k$.
+                Let $?v n$ the normal vector of $£B_k$ pointing towards $A_k$.
 
                 We have:
                 $$
                     x_k ?v{A_0A_k} . ?v n &= ?norm{?v{HM}} &&
-                    x_k ?v{A_0A_k} . ?v{HM} &= ?norm{?v{HM}}^2 &&
-                    x_k ?v{KA_k} . ?v{HM} + ?v{A_0K} . ?v{HM} &= ?norm{?v{HM}}^2 
+                    x_k ?v{A_0A_k} . ?v{n} &= ?norm{?v{HM}} &&
+                    x_k ?v{KA_k} . ?v{n} + ?v{A_0K} . ?v{n} &= ?norm{?v{HM}}
                 $$
 
                 Then $K$ and $A_0$ are both in $P_k$, and $?v{KA_k}$ and $?v{HM}$ are both normal to $£B_k$.
                 $$
-                    x_k . ?norm{?v{KA_k}} . ?norm{?v{HM}} &= ?norm{?v{HM}}^2&&
+                    x_k ?x ?norm{?v{KA_k}} &= ?norm{?v{HM}}&&
                 $$
 
                 This gives us the expression of $x_k$ :
@@ -320,6 +320,7 @@
                     x_k = { ?norm{?v{HM}} } / { ?norm{?v{KA_k}} }
                 $$
 
+                Now by following the proof of the existence of the coordinates, we have $§l_k = x_k$.
             </hidden>
 
             <h2 id="area-and-volume">Area and volume</h2>

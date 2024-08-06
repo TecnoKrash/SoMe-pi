@@ -21,6 +21,20 @@ export function CreateLine(canvasInfo, handleAId, handleBId, color, width) {
     }
 }
 
+export function CreateFreeLine(canvasInfo, color, width) {
+    let line = {
+        color: color,
+        width: width,
+    };
+
+    let material = new Three.MeshBasicMaterial({ color: color });
+    let quad = new Three.PlaneGeometry(1, 1);
+    line.mesh = new Three.Mesh(quad, material);
+    canvasInfo.scene.add(line.mesh); 
+
+    return line;
+}
+
 export function CreateTriangle(canvasInfo, handleAId, handleBId, handleCId, color, alpha = 1) {
     let triangle = {
         handleAId: handleAId,
@@ -56,20 +70,7 @@ export function UpdateGeometry(canvasInfo) {
         for (let line of canvasInfo.lines) {
             let a = canvasInfo.handles[line.handleAId].position;
             let b = canvasInfo.handles[line.handleBId].position;
-    
-            let middle = a.clone().add(b).multiplyScalar(0.5);
-            line.mesh.position.copy(middle);
-
-            let delta = b.clone().sub(a);
-            let camVector = canvasInfo.camera.position.clone().sub(middle);
-            let up = camVector.cross(delta);
-            let direction = up.cross(delta);
-
-            line.mesh.up = delta;
-            line.mesh.lookAt(direction.multiplyScalar(-1).add(middle));
-    
-            line.mesh.scale.x = line.width;
-            line.mesh.scale.y = delta.length();
+            UpdateLine(canvasInfo, line, a, b);
         }
     }
 
@@ -101,5 +102,21 @@ export function UpdateGeometry(canvasInfo) {
         }
     }
 
+}
+
+export function UpdateLine(canvasInfo, line, a, b) {
+    let middle = a.clone().add(b).multiplyScalar(0.5);
+    line.mesh.position.copy(middle);
+
+    let delta = b.clone().sub(a);
+    let camVector = canvasInfo.camera.position.clone().sub(middle);
+    let up = camVector.cross(delta);
+    let direction = up.cross(delta);
+
+    line.mesh.up = delta;
+    line.mesh.lookAt(direction.multiplyScalar(-1).add(middle));
+
+    line.mesh.scale.x = line.width;
+    line.mesh.scale.y = delta.length();
 }
 
