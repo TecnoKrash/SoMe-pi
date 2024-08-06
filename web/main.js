@@ -336,11 +336,12 @@ function OneSimplexInterpolation(pos, handles) {
     
     let inside = Backend.is_point_inside_simplex_export(vec, [0, 1, 2], spaces[0]);
 
-    let r = Backend.interpolate_export(spaces[0], [0, 1, 2], vec) / 255;
-    let g = Backend.interpolate_export(spaces[1], [0, 1, 2], vec) / 255;
-    let b = Backend.interpolate_export(spaces[2], [0, 1, 2], vec) / 255;
-
     if (inside) {
+
+        let r = Backend.interpolate_export(spaces[0], [0, 1, 2], vec) / 255;
+        let g = Backend.interpolate_export(spaces[1], [0, 1, 2], vec) / 255;
+        let b = Backend.interpolate_export(spaces[2], [0, 1, 2], vec) / 255;
+        
         return new Three.Color(r, g, b);
     }
     else {

@@ -166,7 +166,7 @@
                 $$
             </def>
 
-            <!def :title="Alternativ definition of Barycentric coordinates">
+            <!def :title="Alternative definition of Barycentric coordinates">
                 Like before, let $(A_k)_{k € [0, n]} € E^{n + 1}$, so that $(?v{A_0A_k})_{k € [1, n]}$ is a basis of $?v E$, and let $M € E$.
                 For all $i € [0, n]$, $§l_i(M)$ is the $n$<sup>th</sup> barycentric coordinate for $M$, so:
                 $$
@@ -261,7 +261,7 @@
                     x_k . ?norm{?v{KA_k}} . ?norm{?v{HM}} &= ?norm{?v{HM}}^2&&
                 $$
 
-                This gives us the expretion of $x_k$ :
+                This gives us the expression of $x_k$ :
                 $$
                     §l_k(M) = { ?norm{M - H} } / { ?norm{A_k - K} }
                 $$

@@ -18,9 +18,9 @@
             //TODO: intro
             // Je sais pas du tout ce que je fais, j'ai l’impression que Phongmany ve vouloir m'assassiner a chaque fin de phrase
 
-            <h1> Mesure Interpolation in any dimention with barycentric coordinate <h1/>
+            <h1> Mesure Interpolation in any dimension with barycentric coordinate </h1>
 
-            <h2> Introduction <h2/>
+            <h2> Introduction </h2>
 
             <h2>Visualization</h2>
 
@@ -48,7 +48,7 @@
                 {|§S__{i=0}^^{n} a_i / {A_iM}} / {|§S__{j=0}^^{n} 1 / {A_jM}} 
             $$
 
-            It's a weighted average, where the weight are the inverse distances between the points.
+            It's a weighted average, where the weights are the inverse distances between the points.
             This way, the more a point is far from $M$, the less it will impact the result.
             
             What if a distance is zero? Then it means that $M$ is directly on a measured point, so you can take its value instead.
@@ -89,10 +89,128 @@
             the center is purple-ish.
             <!figure id="inverse-distance-fail-3" :caption="Another bad interpolation example"></figure> 
 
-            <h2> Barycentric coordinate in a simplex </h2>
+            <h2>A simpler problem</h2>
 
-            As we saw before, the barycentric coordinate of a vertex $A_k$ is equal to the coeficient $x_k$ of the vector to this vertex $?v{A_0A_k}$ 
-            in the triangle base. Thus, we just need to find  an expretion for that coefficient. If we take all the other vertexs
+            Before trying another method, we will reduce the number of points.
+            We will first interpolate in the simplest shape possible: in a triangle.
+            If we're in a 3-dimensional space (with 3 parameters), it will be a tetrahedron, and if there are more 
+            dimensions, the equivalent object.
+
+            Generally speaking, in any dimension, this thing is called a <em>simplex</em>.
+
+            <br/>
+            <br/>
+
+            We'll consider a non-degenerated simplex (not completely flat, points aren't all at the same position)
+            in dimension $n$ defined by the points $A_0 .. A_n$, and try to interpolate inside it.
+
+            <br/>
+            <br/>
+
+            Fortunately, there is a nice tool for that: <em>barycentric coordinates</em>.
+
+            <!def :title="Barycentric coordinates">
+                Given a point $M$, $(§l_0 ... §l_n)$ are the barycentric coordinate of $M$ for $A_0...A_n$ if:
+                
+                $$
+                    |§S__{k=0}^^{n} §l_k ?v{A_k M} = 0 ?txt{and} |§S__{k=0}^^{n} §l_k = 1
+                $$
+            </def>
+
+            But what does it means? The first condition means that if you consider $§l_0 ... §l_n$ as weights on the points $A_0 ... A_n$,
+            $M$ is the barycenter of these points.
+            The second condition is there just for convenience.
+
+            <!hidden id="bary-reformulate" :id="bary-reformulate" :title="Reformulation">
+                If we consider another point $O$ as an origin then we have:
+                $$
+                    ?v{OM} = |§S__{k=0}^^{n} §l_k ?v{OA_k}
+                $$
+
+                $M$ is the weighted average of the points, and the weights are its barycentric coordinates.
+            </hidden>
+
+            <h2>Why barycentric coordinates?</h2>
+
+            First, we can prove that in a simplex (that is not degenerated), barycentric coordinates exist and are unique.
+
+            <!hidden id="existence-proof2" :id="existence-proof2" :title="Complete proof">
+                
+                <h4>Existence</h4>
+
+                Let $(A_k)_{k € [0, n]} € E^{n + 1}$, so that $(?v{A_0A_k})_{k € [1, n]}$ is a basis of $?v E$.
+                (We say that $(A_0 ... A_n)$ form an affine basis).
+                These points represent a non degenerated simplex.
+                Let $M € E$.
+                There exists $(§a_k)_{k € [1, n]}$ so that:
+                $$
+                    ?v{A_0M} = |§S__{k=1}^^n §a_k (?v{A_0A_k})
+                $$
+
+                Thus:
+                $$
+                    ?v{OM} = |§S__{k=1}^^n §a_k ?v{OA_k} + ?v{OA_0}(1 - |§S__{k=1}^^n §a_k)
+                $$
+
+                We can then define:
+                $$
+                    ?a k € [0; n], §b_k = <!system style="vertical-align: middle;">
+                        1 - |§S__{k=1}^^n §a_k & ?txt{if} k = 0 &&
+                        §a_k & ?txt{otherwise}
+                    </system>
+                $$
+
+                And so we have
+                $$
+                    ?v{OM} &= |§S__{k=0}^^n §b_k ?v{OA_k} &&
+                    |§S__{k=0}^^n §b_k ?v{OM} &= |§S__{k=0}^^n §b_k ?v{OA_k} ?txt{Because} |§S__{k=0}^^n §b_k = 1 &&
+                    |§S__{k=0}^^n §b_k ?v{MA_k} &= 0
+                $$
+
+
+                That satisfies the definition of barycentric coordinates:
+                $$
+                    M = |{bar}((A_k, §b_k)_{k € [0, n]}) ?txt{and} |§S__{k=0}^^n §b_k = 1
+                $$
+
+                <h4>Uniqueness</h4>
+                
+                Let $M € E$, we suppose that $(a_k)_{k € [0, n]}$ et $(b_k)_{k € [0, n]}$ are barycentric coordinates for $M$ in $(A_k)_{k € [0, n]}$.
+                We have then:
+                $$
+                    |§S__{k=0}^^n §a_k ?v{MA_k} = |§S__{k=0}^^n §b_k ?v{MA_k}
+                $$
+
+                Then:
+                $$
+                    |§S__{k=0}^^n ?v{MA_k} (§a_k - §b_k) &= 0 &&
+                    |§S__{k=0}^^n ?v{A_0M} (§a_k - §b_k) + |§S__{k=0}^^n ?v{MA_k} (§a_k - §b_k) &= 0 &&
+                    |§S__{k=0}^^n ?v{A_0A_k} (§a_k - §b_k) &= 0
+                $$
+
+                But $(?v{A_0A_1} ... ?v{A_0A_n})$ form a basis of $?v E$, so for all $k € [0 ; n]$, $§a_k - §b_k = 0 <=> a_k = b_k$
+
+            </hidden> 
+
+            We can also make a few remarks:
+            <ul>
+                <li>
+                    If $M$ is on $A_k$, then its coordinate for $k$ is $1$, the others are $0$.
+                    For interpolation, if we use its coordinates as weights for the measures, we will obtain the value of $A_k$,
+                    and this is what we're looking for. 
+                </li>
+                <li>
+                    If $M$ is the center of gravity of the simplex (the average of all the points), its barycentric coordinates
+                    will all be equal to $1 / {n + 1}$ where $n$ is the dimension. This is also coherent.
+                </li>
+            </ul>
+
+            That make them good candidates for interpolation. As we will see in the next paragraph, they're also easy to compute.
+
+            <h2>Barycentric coordinates in a simplex </h2>
+
+            As we saw before, the barycentric coordinate of a vertex $A_k$ is equal to the coefficient $x_k$ of the vector to this vertex $?v{A_0A_k}$ 
+            in the triangle base. Thus, we just need to find  an expression for that coefficient. If we take all the other vertices
             of the triangle, we know that they define a plane $P_k$, and that $A_k$ is the only point out of it. This means that $?v{A_0A_k}$ is the only 
             contributing to the normal direction from the plane $P_k$ (we will represent this direction by the normal vector $?v n$)
             We have 
@@ -111,7 +229,7 @@
             Thus we have 
 
             $$
-                x_k = {?txt{Height}\ ?txt{of}\ ?txt{M}}/{?txt{Height}\ ?txt{of}\ ?txt{A_k}}
+                x_k = {|{Height\ of\ }?txt{M}}/{|{Height\ of\ }A_k}
             $$
 
             <!hidden id="expression-proof2" :id="expression-proof2" :title="Complete proof">
@@ -137,14 +255,55 @@
                     x_k . ?norm{?v{KA_k}} . ?norm{?v{HM}} &= ?norm{?v{HM}}^2&&
                 $$
 
-                This gives us the expretion of $x_k$ :
+                This gives us the expression of $x_k$ :
                 $$
                     §x_k = { ?norm{M - H} } / { ?norm{A_k - K} }
                 $$
 
             </hidden>
 
+        <h2>Area and volume</h2>
 
+        Since in 2 dimensions, the area of a triangle is ${|{base} ?x |{height}} / 2$, we can reformulate the expression:
+        Let $l != m != k$
+
+        $$
+            x_k &= {|{Height\ of\ }?txt{M}}/{|{Height\ of\ }A_k} &&
+                &= { £A(A_l A_m M)} / {£A(A_l A_m A_k)}
+        $$
+
+        So this is the quotient of the area of the whole triangle with $A_k$ replaced by $M$, by the area of the whole triangle.
+
+        Here is an example:
+    
+        <!figure id="barycentric-area" :caption="Barycentric coordinates with area">
+            <div class="figure-math">
+                $
+                    {|{blue\ area}} / {|{gray\ area}}
+                    = {<%span id="ba-frac-top" style="color: #0000ff">999</span>} / {<%span id="ba-frac-btm" style="color: #777">999</span>}
+                    = <%span id="ba-res">999</span>
+                $
+            </div>
+        </figure>
+
+        It work the same in 3 dimensions: the coordinates are the quotient of the volumes.
+
+        <!figure id="barycentric-volume" :caption="Barycentric coordinates with volume">
+            <div class="figure-math">
+                $
+                    {|{blue\ volume}} / {|{total\ volume}}
+                    = {<%span id="bv-frac-top" style="color: #0000ff">999</span>} / {<%span id="bv-frac-btm" style="color: #777">999</span>}
+                    = <%span id="bv-res">999</span>
+                $
+            </div>
+        </figure>
+
+        It makes sense because the sum of the small areas/volumes will be the total simplex area/volume, so the sum
+        of the coordinates will be $1$.
+
+        You can finally that it works well for interpolation:
+
+        <!figure id="single-simplex" :caption="Barycentric interpolation in one simplex"></figure> 
 
         </main>
     </body>
