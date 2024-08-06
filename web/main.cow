@@ -18,11 +18,48 @@
             //TODO: intro
             // Je sais pas du tout ce que je fais, j'ai l’impression que Phongmany ve vouloir m'assassiner a chaque fin de phrase
 
-            <h1> Mesure Interpolation in any dimension with barycentric coordinate </h1>
+            <h1> Interpolation in any dimension with barycentric coordinate </h1>
 
-            <h2> Introduction </h2>
+            <h2> Summary </h2>
 
-            <h2>Visualization</h2>
+            - <!pagelink :id="intro">Introduction</pagelink>
+            <br/>
+            - <!pagelink :id="visu">Visualisation</pagelink>
+            <br/>
+            - <!pagelink :id="inverse-distance-title">Inverse distance</pagelink>
+            <br/>
+            - <!pagelink :id="pb-inverse-distance">Problem with inverse distance</pagelink>
+            <br/>
+            - <!pagelink :id="simpler-problem">A simpler problem</pagelink>
+            <br/>
+            - <!pagelink :id="barycentric-co-title">Why barycentric coordinate</pagelink>
+            <br/>
+            - <!pagelink :id="barycentric-co-in-simplex">Barycentric coordianate in a simplex</pagelink>
+            <br/>
+            - <!pagelink :id="area-and-volume">Area and volume</pagelink>
+            <br/>
+            - <!pagelink :id="cloud-of-points">Interpolation in a cloud of points</pagelink>
+
+            <h2 id="intro"> Introduction </h2>
+
+            Interpolation is a method used to create a new point in a data set without doing new mesurement, based on the original data set.
+            It can be used simply to create a continuous function from a set of points to scaling up the framerate of a video. In this article, 
+            we will focus on finding an efficient method that could be easaly generalised to mesure with a lot of parameters. 
+
+            <br/>
+            <br/>
+
+            Here is our problem : we have a set of mesure that depend on a hight number of parameters that we optained with experimental mesurement.
+            We can't do new mesurements, but we want to study what could happen to a particular parameters in a certain state of the other parameters.
+
+            <br/>
+            <br/>
+
+            Let's say we have $n+1$ parameters, we will represent our mesure as point in an n-dimentional space (the coordinate of each point corespond to 
+            the value of each parameters we want to fix), where each point contains a mesured value. We can now try to interpolate on 
+            the particular points where we don't have any mesurement.
+
+            <h2 id="visu">Visualization</h2>
 
             To visualize how each method produces results, we will use some interactive figure such as 
             <!pagelink :id="nearest">this one</pagelink>.
@@ -38,7 +75,7 @@
 
             <!figure id="nearest" :caption="Nearest neighbor interpolation"></figure>
 
-            <h2>Inverse distance</h2>
+            <h2 id="inverse-distance-title">Inverse distance</h2>
 
             We can start by trying a very simple method: the inverse distance weighting.
             If $A_0...A_n$ are the measures points and $§a_0...§a_n$ are their value, and we want to get a result on the point $M$, 
@@ -55,7 +92,7 @@
 
             <!figure id="inverse-distance" :caption="Inverse distance interpolation"></figure> 
 
-            <h2>Problems with inverse distance</h2>
+            <h2 id="pb-inverse-distance">Problems with inverse distance</h2>
             While this method seems at first to be doing well, it has some drawbacks.
 
             <br/>
@@ -89,7 +126,7 @@
             the center is purple-ish.
             <!figure id="inverse-distance-fail-3" :caption="Another bad interpolation example"></figure> 
 
-            <h2>A simpler problem</h2>
+            <h2 id="simpler-problem">A simpler problem</h2>
 
             Before trying another method, we will reduce the number of points.
             We will first interpolate in the simplest shape possible: in a triangle.
@@ -130,7 +167,18 @@
                 $M$ is the weighted average of the points, and the weights are its barycentric coordinates.
             </hidden>
 
-            <h2>Why barycentric coordinates?</h2>
+            For the mathematical proofs up ahead, we will provide simple explenations with interactive visualisation, as well as more formal proofs
+
+            <!hidden id="formal-framework" :id="formal-framework" :title="Formal framework">
+
+                For the formal proofs, we will represent our points in an Euclidian space, meaning an affine space $E$, 
+                with the associated real vectorial space $?v E$ of dimention $n$, containing 
+                an inner product $x . y = |§S__{k = 1}^^n x_k ?x y_k$ where $(x_1 ... x_n)$ and $(y_1 .. y_n)$ are the coordinate of the coresponding points.
+
+            </hidden>
+
+
+            <h2 id="barycentric-co-title">Why barycentric coordinates?</h2>
 
             First, we can prove that in a simplex (that is not degenerated), barycentric coordinates exist and are unique.
 
@@ -207,7 +255,7 @@
 
             That make them good candidates for interpolation. As we will see in the next paragraph, they're also easy to compute.
 
-            <h2>Barycentric coordinates in a simplex </h2>
+            <h2 id="barycentric-co-in-simplex">Barycentric coordinates in a simplex </h2>
 
             As we saw before, the barycentric coordinate of a vertex $A_k$ is equal to the coefficient $x_k$ of the vector to this vertex $?v{A_0A_k}$ 
             in the triangle base. Thus, we just need to find  an expression for that coefficient. If we take all the other vertices
@@ -233,6 +281,18 @@
             $$
 
             <!hidden id="expression-proof2" :id="expression-proof2" :title="Complete proof">
+                
+                Let set for all $k € [1, n]$, $b_k = (?v{A_0A_k})$.  $(b_1 ... b_n) \\ {b_k}$ defines a hyperplane $£B_k$ of $?v E$. 
+                We will name $P_k$ the associated plane in $E$.
+
+                <br/>
+
+                Let $H$ be the orthogonal projection of $M$ on $£B_k$
+                and $K$ the orthogonal projection of $A_k$ on $£B_k$.
+
+                <br/>
+                <br/>
+
                 Let $k € [0, n]$.
                 We have : 
                 $$
@@ -257,53 +317,74 @@
 
                 This gives us the expression of $x_k$ :
                 $$
-                    §x_k = { ?norm{M - H} } / { ?norm{A_k - K} }
+                    x_k = { ?norm{?v{HM}} } / { ?norm{?v{KA_k}} }
                 $$
 
             </hidden>
 
-        <h2>Area and volume</h2>
+            <h2 id="area-and-volume">Area and volume</h2>
 
-        Since in 2 dimensions, the area of a triangle is ${|{base} ?x |{height}} / 2$, we can reformulate the expression:
-        Let $l != m != k$
+            Since in 2 dimensions, the area of a triangle is ${|{base} ?x |{height}} / 2$, we can reformulate the expression:
+            Let $l != m != k$
 
-        $$
-            x_k &= {|{Height\ of\ }?txt{M}}/{|{Height\ of\ }A_k} &&
-                &= { £A(A_l A_m M)} / {£A(A_l A_m A_k)}
-        $$
+            $$
+                x_k &= {|{Height\ of\ }?txt{M}}/{|{Height\ of\ }A_k} &&
+                    &= { £A(A_l A_m M)} / {£A(A_l A_m A_k)}
+            $$
 
-        So this is the quotient of the area of the whole triangle with $A_k$ replaced by $M$, by the area of the whole triangle.
+            So this is the quotient of the area of the whole triangle with $A_k$ replaced by $M$, by the area of the whole triangle.
 
-        Here is an example:
+            Here is an example:
     
-        <!figure id="barycentric-area" :caption="Barycentric coordinates with area">
-            <div class="figure-math">
-                $
-                    {|{blue\ area}} / {|{gray\ area}}
-                    = {<%span id="ba-frac-top" style="color: #0000ff">999</span>} / {<%span id="ba-frac-btm" style="color: #777">999</span>}
-                    = <%span id="ba-res">999</span>
-                $
-            </div>
-        </figure>
+            <!figure id="barycentric-area" :caption="Barycentric coordinates with area">
+                <div class="figure-math">
+                    $
+                        {|{blue\ area}} / {|{gray\ area}}
+                        = {<%span id="ba-frac-top" style="color: #0000ff">999</span>} / {<%span id="ba-frac-btm" style="color: #777">999</span>}
+                        = <%span id="ba-res">999</span>
+                    $
+                </div>
+            </figure>
 
-        It work the same in 3 dimensions: the coordinates are the quotient of the volumes.
+            It work the same in 3 dimensions: the coordinates are the quotient of the volumes.
 
-        <!figure id="barycentric-volume" :caption="Barycentric coordinates with volume">
-            <div class="figure-math">
-                $
-                    {|{blue\ volume}} / {|{total\ volume}}
-                    = {<%span id="bv-frac-top" style="color: #0000ff">999</span>} / {<%span id="bv-frac-btm" style="color: #777">999</span>}
-                    = <%span id="bv-res">999</span>
-                $
-            </div>
-        </figure>
+            <!figure id="barycentric-volume" :caption="Barycentric coordinates with volume">
+                <div class="figure-math">
+                    $
+                        {|{blue\ volume}} / {|{total\ volume}}
+                        = {<%span id="bv-frac-top" style="color: #0000ff">999</span>} / {<%span id="bv-frac-btm" style="color: #777">999</span>}
+                        = <%span id="bv-res">999</span>
+                    $
+                </div>
+            </figure>
 
-        It makes sense because the sum of the small areas/volumes will be the total simplex area/volume, so the sum
-        of the coordinates will be $1$.
+            It makes sense because the sum of the small areas/volumes will be the total simplex area/volume, so the sum
+            of the coordinates will be $1$.
 
-        You can finally that it works well for interpolation:
+            You can finally that it works well for interpolation:
 
-        <!figure id="single-simplex" :caption="Barycentric interpolation in one simplex"></figure> 
+            <!figure id="single-simplex" :caption="Barycentric interpolation in one simplex"></figure> 
+
+            Since we stayed very generic all the way, this method works in any dimention !
+
+            <h2 id="cloud-of-points"> Interpolation in a cloud of points </h2>
+
+            Even tho barycentric interpolation works very well, the case presented above isn't very practical : we only have n points and a small 
+            zone where we can interpolate. What we would like is to be able to interpolate in any cloud of points on a large area.
+
+            <br/>
+            <br/>
+
+            A first idear can be to take the n-nearest point that form a simplex containing the point we want to interpolate and do a barycentric
+            interpolation from there.
+
+            // Insert demo
+
+            <br/>
+
+            We could also do a list of all the valid simplexes we can find around our point, and do an average of the interpolations in the diffrent simplex. 
+
+            // Insert demo
 
         </main>
     </body>
