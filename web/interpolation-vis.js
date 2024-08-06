@@ -24,7 +24,7 @@ export function Update(canvasInfo, interpolationFn) {
             let x = (canvasInfo.camera.bottom + j / (texWidth - 1) * (canvasInfo.camera.top - canvasInfo.camera.bottom)) * texWidth / TEXTURE_HEIGHT;
             let y = canvasInfo.camera.bottom + i / (TEXTURE_HEIGHT - 1) * (canvasInfo.camera.top - canvasInfo.camera.bottom);
             
-            let color = interpolationFn(new Three.Vector3(x, y, 0), canvasInfo.handles);
+            let color = interpolationFn(canvasInfo, new Three.Vector3(x, y, 0));
 
             buffer[4 * (j + i * texWidth)] = Math.round(color.r * 255 * 0.5);
             buffer[4 * (j + i * texWidth) + 1] = Math.round(color.g * 255 * 0.5);
@@ -34,7 +34,7 @@ export function Update(canvasInfo, interpolationFn) {
     }
 
     let texture = new Three.DataTexture(buffer, texWidth, TEXTURE_HEIGHT);
-texture.magFilter = Three.NearestFilter;
+    texture.magFilter = Three.NearestFilter;
     canvasInfo.visQuad.material = new Three.MeshBasicMaterial({ map: texture });
     texture.needsUpdate = true;
 }

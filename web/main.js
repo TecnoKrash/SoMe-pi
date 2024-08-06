@@ -41,11 +41,11 @@ init().then(() => {
             Handle.CreateHandle(info, new Three.Vector3(-0.4, -0.3, 0.0), 0.01, 0x3300cc)
         },
         function Update(info) {
-            InterpolationVis.Update(info, (pos, handles) => {
+            InterpolationVis.Update(info, (info, pos) => {
                 let minDist = 1000000;
                 let res = 0xffffff;
 
-                for (let h of handles) {
+                for (let h of info.handles) {
                     let l = (h.position.clone().sub(pos)).length();
                     if (l <= minDist) {
                         minDist = l;
@@ -226,6 +226,7 @@ init().then(() => {
             Handle.CreateHandle(info, new Three.Vector3(-0.4, -0.3, 0), 0.01, 0x0000ff);
         },
         function Update(info) {
+            CreateRustSpaces(info);
             InterpolationVis.Update(info, OneSimplexInterpolation);
             Handle.UpdateHandles(info);
         }
@@ -289,16 +290,16 @@ function CreateCanvas(id, is3D, init, update) {
 }
 
 
-function InverseDistanceInterpolation(pos, handles) {
+function InverseDistanceInterpolation(info, pos) {
     let invDistSum = 0;
     let colorSum = new Three.Color(0x000000);
 
-    for (let h of handles) {
+    for (let h of info.handles) {
         let dist = (h.position.clone().sub(pos)).length();
         invDistSum += 1 / dist;
     }
 
-    for (let h of handles) {
+    for (let h of info.handles) {
         let dist = (h.position.clone().sub(pos)).length();
         colorSum.add(new Three.Color(h.color).multiplyScalar(1 / dist / invDistSum));
     }
@@ -306,12 +307,33 @@ function InverseDistanceInterpolation(pos, handles) {
     return colorSum;
 }
 
+function OneSimplexInterpolation(info, pos) {
+    let vec = RustVector2FromThreeVector3(pos);
+    
+    let inside = Backend.is_point_inside_simplex_export(vec, [0, 1, 2], info.spaces[0]);
 
-function OneSimplexInterpolation(pos, handles) {
-    let spaces = [];
+    if (inside) {
+
+        let r = Backend.interpolate_export(info.spaces[0], [0, 1, 2], vec) / 255;
+        let g = Backend.interpolate_export(info.spaces[1], [0, 1, 2], vec) / 255;
+        let b = Backend.interpolate_export(info.spaces[2], [0, 1, 2], vec) / 255;
+        
+        return new Three.Color(r, g, b);
+    }
+    else {
+        return new Three.Color(0, 0, 0);
+    }
+}
+
+function RustVector2FromThreeVector3(vec3) {
+    return new Backend.Vector([vec3.x, vec3.y]);
+}
+
+function CreateRustSpaces(info) {
+    info.spaces = [];
     let points = [[], [], []];
 
-    for (let h of handles) {
+    for (let h of info.handles) {
         points[0].push(new Backend.Point(
             RustVector2FromThreeVector3(h.position),
             (h.color & 0xff0000) >> 16
@@ -327,30 +349,10 @@ function OneSimplexInterpolation(pos, handles) {
     }
     
     for (let i = 0; i < 3; i++) {
-        spaces.push(new Backend.Space());
-        spaces[i].dim = 2;
-        spaces[i].points = points[i];
+        info.spaces.push(new Backend.Space());
+        info.spaces[i].dim = 2;
+        info.spaces[i].points = points[i];
     }
-
-    let vec = RustVector2FromThreeVector3(pos);
-    
-    let inside = Backend.is_point_inside_simplex_export(vec, [0, 1, 2], spaces[0]);
-
-    if (inside) {
-
-        let r = Backend.interpolate_export(spaces[0], [0, 1, 2], vec) / 255;
-        let g = Backend.interpolate_export(spaces[1], [0, 1, 2], vec) / 255;
-        let b = Backend.interpolate_export(spaces[2], [0, 1, 2], vec) / 255;
-        
-        return new Three.Color(r, g, b);
-    }
-    else {
-        return new Three.Color(0, 0, 0);
-    }
-}
-
-function RustVector2FromThreeVector3(vec3) {
-    return new Backend.Vector([vec3.x, vec3.y]);
 }
 
 
