@@ -136,8 +136,20 @@ init().then(() => {
 
             info.smallHeight = Geometry.CreateFreeLine(info, 0x33dd33, 0.002);
             info.bigHeight = Geometry.CreateFreeLine(info, 0x33dd33, 0.002);
+
+            info.upVect = Geometry.CreateFreeLine(info, 0x3333dd, 0.007);
+            info.baseVect = Geometry.CreateFreeLine(info, 0x3333dd, 0.007);
+            info.upSmallVect = Geometry.CreateFreeLine(info, 0x111144, 0.005);
+            info.baseSmallVect = Geometry.CreateFreeLine(info, 0x111144, 0.005);
         },
         function Update(info) {
+            if (!Util.IsPointInsideTriangle(info.handles[3].position, info.handles[0].position, info.handles[1].position, info.handles[2].position)) {
+                Handle.CancelMovement(info);
+                Handle.UpdateHandles(info);
+                return;
+            }
+
+            Handle.UpdateHandles(info);
             Geometry.UpdateGeometry(info);
 
             let base = info.handles[1].position.clone().sub(info.handles[0].position);
@@ -147,10 +159,35 @@ init().then(() => {
             let bigHeight = base.clone().multiplyScalar(big.dot(base) / base.dot(base)).add(info.handles[0].position);
             let smallHeight = base.clone().multiplyScalar(small.dot(base) / base.dot(base)).add(info.handles[0].position);
 
+            let totalArea = Util.TriangleArea(
+                info.handles[0].position,
+                info.handles[1].position,
+                info.handles[2].position,
+            );
+
+            let baseArea = Util.TriangleArea(
+                info.handles[0].position,
+                info.handles[2].position,
+                info.handles[3].position,
+            );
+
+            let upArea = Util.TriangleArea(
+                info.handles[0].position,
+                info.handles[1].position,
+                info.handles[3].position,
+            );
+
+            let upVect = big.clone().multiplyScalar(upArea / totalArea).add(info.handles[0].position);
+            let baseVect = base.clone().multiplyScalar(baseArea / totalArea).add(info.handles[0].position);
+
             Geometry.UpdateLine(info, info.bigHeight, info.handles[2].position, bigHeight);
             Geometry.UpdateLine(info, info.smallHeight, info.handles[3].position, smallHeight);
+            
+            Geometry.UpdateLine(info, info.upVect, info.handles[0].position, upVect);
+            Geometry.UpdateLine(info, info.baseVect, info.handles[0].position, baseVect);
+            Geometry.UpdateLine(info, info.upSmallVect, info.handles[3].position, upVect);
+            Geometry.UpdateLine(info, info.baseSmallVect, info.handles[3].position, baseVect);
 
-            Handle.UpdateHandles(info);
         }
     );
     
@@ -174,6 +211,12 @@ init().then(() => {
             Geometry.CreateLine(info, 2, 3, 0xffffff, 0.002);
         },
         function Update(info) {
+            if (!Util.IsPointInsideTriangle(info.handles[3].position, info.handles[0].position, info.handles[1].position, info.handles[2].position)) {
+                Handle.CancelMovement(info);
+                Handle.UpdateHandles(info);
+                return;
+            }
+            
             Geometry.UpdateGeometry(info);
             Handle.UpdateHandles(info);
 

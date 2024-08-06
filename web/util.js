@@ -89,6 +89,15 @@ export function TriangleArea(a, b, c) {
     return ac.clone().sub(abNorm.multiplyScalar(ah)).length() * b.clone().sub(a).length();
 }
 
+export function IsPointInsideTriangle(m, a, b, c) {
+    let totalArea = TriangleArea(a, b, c);
+    let aArea = TriangleArea(m, b, c);
+    let bArea = TriangleArea(a, m, c);
+    let cArea = TriangleArea(a, b, m);
+
+    return Math.abs(totalArea - aArea - bArea - cArea) < 0.0001;
+}
+
 export function TetrahedronVolume(a, b, c, d) {
     let ab = b.clone().sub(a);
     let ac = c.clone().sub(a);

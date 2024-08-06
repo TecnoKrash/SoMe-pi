@@ -8,6 +8,7 @@ const HANDLE_HOVER_SIZE_MULTIPLIER = 1.5;
 export function CreateHandle(info, position, size, color) {
     let handleObject = {
         position: position,
+        lastPosition: position,
         baseSize: size,
         color: color,
         dragged: false,
@@ -64,6 +65,7 @@ export function UpdateHandles(info) {
                 handle.dragDepth = Util.GetScreenDepth(info, handle.position);
             }
             else if (handle.dragged && Util.mouseHold) { // Move with drag
+                handle.lastPosition = handle.position;
                 handle.position = Util.ScreenToWorldPos(info, mousePos.sub(handle.dragDelta), handle.dragDepth);
             }
             else if (handle.dragged) {
@@ -92,6 +94,19 @@ export function UpdateHandles(info) {
     }
     else {
         console.log("No handles in this canvas! Non need to call UpdateHandles()");
+    }
+}
+
+export function CancelMovement(info) {
+    if (!info.handles) { return; }
+
+    for (let handle of info.handles) {
+        handle.position = handle.lastPosition;
+
+        let vectCam = info.camera.position.clone().sub(handle.position);
+        let meshPos = handle.position.clone().add(vectCam.normalize().multiplyScalar(0.01));
+        handle.mesh.position.set(meshPos.x, meshPos.y, meshPos.z);
+        handle.mesh.lookAt(info.camera.position);
     }
 }
 
