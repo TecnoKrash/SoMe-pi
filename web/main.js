@@ -125,14 +125,17 @@ init().then(() => {
 
     CreateCanvas("barycentric-height", false, 
         function Init(info) {
-            Handle.CreateHandle(info, new Three.Vector3(-0.4, -0.3, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(-0.4, -0.3, 0), 0.01, 0xff0000, "A<sub>0</sub>");
             Handle.CreateHandle(info, new Three.Vector3(0.4, -0.1, 0), 0.01, 0xff0000);
-            Handle.CreateHandle(info, new Three.Vector3(0.0, 0.3, 0), 0.01, 0x0000ff);
-            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.02, 0xffffff);
+            Handle.CreateHandle(info, new Three.Vector3(0.0, 0.3, 0), 0.01, 0x0000ff, "A<sub>k</sub>");
+            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.02, 0xffffff, "M");
 
             Geometry.CreateLine(info, 0, 1, 0xffffff, 0.005);
             Geometry.CreateLine(info, 1, 2, 0xffffff, 0.005);
             Geometry.CreateLine(info, 2, 0, 0xffffff, 0.005);
+
+            info.HLabel = Handle.CreateLabel(info, "H", 0x33dd33);
+            info.KLabel = Handle.CreateLabel(info, "K", 0x33dd33);
 
             info.smallHeight = Geometry.CreateFreeLine(info, 0x33dd33, 0.002);
             info.bigHeight = Geometry.CreateFreeLine(info, 0x33dd33, 0.002);
@@ -188,6 +191,8 @@ init().then(() => {
             Geometry.UpdateLine(info, info.upSmallVect, info.handles[3].position, upVect);
             Geometry.UpdateLine(info, info.baseSmallVect, info.handles[3].position, baseVect);
 
+            Handle.UpdateLabel(info, info.HLabel, smallHeight);
+            Handle.UpdateLabel(info, info.KLabel, bigHeight);
         }
     );
     

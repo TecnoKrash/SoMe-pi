@@ -360,6 +360,7 @@ x>svg {
 
 x {
     transform: rotate(45deg);
+    filter: invert(1); /* HACK: make it white, should instead change color to currentColor in cowtchoox but too lazy to rebuild */
 }
 
 /* ?inf */

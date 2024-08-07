@@ -129,3 +129,11 @@ pagelink {
     font-size: 0.85em;
 }
 
+.figure-label {
+    user-select: none;
+    position: absolute;
+    transform: translateX(-50%);
+    padding-top: 5px;
+    text-shadow: black 0 0 5px, black 0 0 5px;
+}
+

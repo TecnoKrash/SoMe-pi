@@ -5,7 +5,7 @@ import * as Util from './util.js';
 const HANDLE_INTERACT_RADIUS = 15;
 const HANDLE_HOVER_SIZE_MULTIPLIER = 1.5;
 
-export function CreateHandle(info, position, size, color) {
+export function CreateHandle(info, position, size, color, label="") {
     let handleObject = {
         position: position,
         lastPosition: position,
@@ -27,6 +27,10 @@ export function CreateHandle(info, position, size, color) {
     }
     else {
         info.handles = [handleObject];
+    }
+
+    if (label != "") {
+        handleObject.label = CreateLabel(info, label, color);
     }
 
     return handleObject;
@@ -77,6 +81,10 @@ export function UpdateHandles(info) {
             let meshPos = handle.position.clone().add(vectCam.normalize().multiplyScalar(0.01));
             handle.mesh.position.set(meshPos.x, meshPos.y, meshPos.z);
             handle.mesh.lookAt(info.camera.position);
+            
+            if (handle.label) {
+                UpdateLabel(info, handle.label, handle.position);
+            }
         }
 
         if (isDraggingAHandle) {
@@ -96,6 +104,30 @@ export function UpdateHandles(info) {
         console.log("No handles in this canvas! Non need to call UpdateHandles()");
     }
 }
+
+export function CreateLabel(info, text, color) {
+    let label = {
+        text: text,
+        color: color,
+    };
+
+    label.element = document.createElement("span");
+    label.element.innerHTML = text;
+    label.element.classList.add("figure-label");
+    label.element.style.setProperty("color", "#" + color.toString(16), "important");
+
+    info.parent.appendChild(label.element);
+
+    return label;
+}
+
+export function UpdateLabel(info, label, worldPos) {
+    let screenPos = Util.WorldToScreenPos(info, worldPos);
+
+    label.element.style.left = screenPos.x;
+    label.element.style.top = screenPos.y;
+}
+
 
 export function CancelMovement(info) {
     if (!info.handles) { return; }
