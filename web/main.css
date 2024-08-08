@@ -5,7 +5,7 @@ body {
 }
 
 main {
-    margin: 100px 200px 200px 200px;
+    margin: 100px 200px 200px 500px;
     font-size: 1.3rem;
 }
 
@@ -135,5 +135,37 @@ pagelink {
     transform: translateX(-50%);
     padding-top: 5px;
     text-shadow: black 0 0 5px, black 0 0 5px;
+}
+
+aside {
+    position: fixed;
+    left: 20px;
+    top: 100px;
+    background-color: var(--bg-l);
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+}
+
+aside #summary-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+aside a {
+    display: block;
+    margin-bottom: 5px;
+}
+
+@media screen and (max-width: 1400px) {
+    main {
+        margin: 100px 50px 200px 300px;
+    }
+
+    aside {
+        left: 20px;
+        width: 260px;
+    }
 }
 

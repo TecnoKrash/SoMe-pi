@@ -9,6 +9,8 @@
     <body>
         <!include-things/> // Links in head don't work, so they are added manually with this
 
+        <!article-summary :_1=" " :_2=" "/>
+
         <main>
             <a href="tests.html">Navigate to test page</a>
 
@@ -19,27 +21,7 @@
             // Je sais pas du tout ce que je fais, j'ai l’impression que Phongmany ve vouloir m'assassiner a chaque fin de phrase
 
             <h1> Interpolation in any dimension with barycentric coordinate </h1>
-
-            <h2> Summary </h2>
-
-            - <!pagelink :id="intro">Introduction</pagelink>
-            <br/>
-            - <!pagelink :id="visu">Visualisation</pagelink>
-            <br/>
-            - <!pagelink :id="inverse-distance-title">Inverse distance</pagelink>
-            <br/>
-            - <!pagelink :id="pb-inverse-distance">Problem with inverse distance</pagelink>
-            <br/>
-            - <!pagelink :id="simpler-problem">A simpler problem</pagelink>
-            <br/>
-            - <!pagelink :id="barycentric-co-title">Why barycentric coordinate</pagelink>
-            <br/>
-            - <!pagelink :id="barycentric-co-in-simplex">Barycentric coordianate in a simplex</pagelink>
-            <br/>
-            - <!pagelink :id="area-and-volume">Area and volume</pagelink>
-            <br/>
-            - <!pagelink :id="cloud-of-points">Interpolation in a cloud of points</pagelink>
-
+            
             <h2 id="intro"> Introduction </h2>
 
             Interpolation is a method used to create a new point in a data set without doing new mesurement, based on the original data set.

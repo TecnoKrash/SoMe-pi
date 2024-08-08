@@ -79,3 +79,45 @@
     </evaluate>
 </pagelink>
 
+
+// HACK
+// The arguments are completely useless but if you remove them, cowtchoox crashes because of some bug
+<!article-summary :_1 :_2>
+    <aside>
+        <div id="summary-title">Summary</div>
+        <!summary :root-selector="main" :tags="h2"/>
+    </aside>
+</article-summary>
+
+
+// Displays a summary
+// root-selector: the element into which the headers are located (CSS selector)
+// tags: headers to be included (CSS selector)
+<!summary :root-selector :tags>
+    <!evaluate>
+        let root = document.querySelector("<:root-selector/>");
+
+        let headers = root.querySelectorAll("<:tags/>");
+
+        let i = 0;
+        for (let t of headers) {
+            let el = document.createElement("a");
+            el.innerHTML = t.innerHTML;
+            el.classList.add("summary-element-" + t.tagName);
+            
+            if (t.id == "") {
+                t.id = "auto-header-id-" + i.toString();
+            }
+
+            el.setAttribute("href", "#" + t.id);
+
+            this.parentElement.appendChild(el);
+
+            i++;
+        }
+
+        ""
+    </evaluate>
+</summary>
+
+
