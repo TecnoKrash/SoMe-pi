@@ -17,12 +17,37 @@
             <br/>
             <br/>
 
-            //TODO: intro
-            // Je sais pas du tout ce que je fais, j'ai l’impression que Phongmany ve vouloir m'assassiner a chaque fin de phrase
-
             <h1> Interpolation in any dimension with barycentric coordinate </h1>
             
             <h2 id="intro"> Introduction </h2>
+
+            <!hidden id="intro-other" :id="intro-other" :title="Other intro">
+                This article presents a method to interpolate data. 
+                Given a set of points, each of them representing the association of parameters (the inputs) with a value (the output),
+                we want to predict what will happen for an input that is not present in the dataset.
+
+                <br/>
+                <br/>
+
+                For instance, if a company wants to determine how efficient a machine is, depending on specific conditions (like temperature, used materials, etc),
+                they measure it multiple times under different situations and then interpolate the results to guess what would happen is the cases that weren't tested.
+
+                The goal is not to correct the measurements, nor to reduce noise in data, but simply to create a plausible continuous function
+                from a set of points.
+
+                We will try to solve a more specific problem, that doesn't allow many other methods:
+                <ul>
+                    <li>
+                        the measures can be impacted by a potentially large number of independent parameters,
+                    </li>
+                    <li>
+                        the measurements aren't equally distributed: the're not on a "grid" of predefined values, and there can be more points for some values than others,
+                    </li>
+                    <li>
+                        and the partial derivatives of the output on the points aren't available.
+                    </li>
+                </ul>
+            </hidden>
 
             Interpolation is a method used to create a new point in a data set without doing new mesurement, based on the original data set.
             It can be used simply to create a continuous function from a set of points to scaling up the framerate of a video. In this article, 
