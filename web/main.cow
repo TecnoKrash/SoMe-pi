@@ -145,7 +145,8 @@
             <br/>
             <br/>
 
-            We'll consider a non-degenerated simplex (not completely flat, points aren't all at the same position)
+            We'll consider a non-degenerated simplex 
+            (not completely flat, points aren't all contained in the same plane, meaning we can't find any n-1 dimention splice of the space where all the can fit)
             in dimension $n$ defined by the points $A_0 .. A_n$, and try to interpolate inside it.
 
             <br/>
@@ -188,6 +189,48 @@
             <h2 id="barycentric-co-title">Why barycentric coordinates?</h2>
 
             First, we can prove that in a simplex (that is not degenerated), barycentric coordinates exist and are unique.
+
+            For that, we will need to introduce what we'll called the "simplex base". To define a point in space, we often use an orthonormal base, 
+            meaning a point O, being the origin of the space, and n unit vector (n is still the dimention of the space) all orthogonal to each other.
+            But we don't actually need the base to be orthogonal for it to uniquely define each point of the space. The vectors can be of any legth,
+            and be in any direction as long as they do not belong to the same plane .
+
+            <br/>
+            <br/>
+
+            With that in mind, we can now construct a good base for our simplex. First we will take a random point of the triangle that we will 
+            name $A_0$ and that will serve as the origine of the plane. We will then named those other points $A_1$ to $A_n$ in a random order.
+
+            For the vectors of the base we can now take ($?v{A_OA_1},...,?v{A_OA_n}$). From the properties of the simplex, we know that this 
+            base is valid and that they don't belong to the same plane. you can convince yourself, or look at the proofs below. 
+            From now on we will refer to this base as the "simplex base".
+
+
+            <!hidden id="base-proof1" :id="base-proof1" :title="Basic explanation">
+
+                Let's do a proof by contradiction. We suppose that we have a valid simplex in an n dimentional space, 
+                and that the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contain in a same plain of n-1 dimention. 
+
+                <br/>
+
+                This means that any vectors optained by a linear composition of those vector will be contained in that plain as well. 
+                we can optain a vector linking any two points $A_i$, $A_j$ of the triangle by doing $?v{A_0A_j} - ?v{A_0A_i} = ?v{A_iA_j}$.
+
+                #TODO
+            </hidden>
+
+            
+            <!hidden id="base-proof2" :id="base-proof2" :title="Real proof">
+                We can do a recurcive proof on $n$ :
+                <br/>
+                - if $n = 1$, a simplex is a line, and there is only two point $A_0$ and $A_1$. if $A_0 != A_1$ then $?v{A_0A_1} != ?v0$
+                <br/>
+                - Let's suppose that for some $n € ||N$, any given simplex in n dimention, the vectors 
+
+                #TODO
+
+            </hidden>
+
 
             <!hidden id="existence-proof2" :id="existence-proof2" :title="Complete proof">
                 
@@ -286,6 +329,20 @@
             $$
                 x_k = {|{Height\ of\ }?txt{M}}/{|{Height\ of\ }A_k}
             $$
+
+            Just below is a visualization of the situation for a 2-simplex (a triangle). The blue lines are the vector representing 
+            $M$ in the triangle base, and the green lines represent the heights of $M$, the yellow line the height of $A_k$.
+
+            <!figure id="barycentric-height" :caption="Coefficient visualisation">
+                <div class="figure-math">
+                    $
+                        x_k = {|{Height\ of\ }M}/{|{Height\ of\ }\ A_k}
+                            = {<%span id="bh-frac-top" style="color: #00ff00">999</span>} / {<%span id="bh-frac-btm" style="color: #ffff00">999</span>}
+                            = <%span id="bh-res">999</span>
+                    $
+                </div>
+            </figure>
+
 
             <!hidden id="expression-proof2" :id="expression-proof2" :title="Complete proof">
                 
