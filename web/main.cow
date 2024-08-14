@@ -198,8 +198,8 @@
             <br/>
             <br/>
 
-            With that in mind, we can now construct a good base for our simplex. First we will take a random point of the triangle that we will 
-            name $A_0$ and that will serve as the origine of the plane. We will then named those other points $A_1$ to $A_n$ in a random order.
+            With that in mind, we can now construct a good base for our simplex. First we will take a random point of the simplex that we will 
+            name $A_0$ and that will serve as the origine of the plane. We will then named all the other points $A_1$ to $A_n$ in a random order.
 
             For the vectors of the base we can now take ($?v{A_OA_1},...,?v{A_OA_n}$). From the properties of the simplex, we know that this 
             base is valid and that they don't belong to the same plane. you can convince yourself, or look at the proofs below. 
@@ -214,7 +214,7 @@
                 <br/>
 
                 This means that any vectors optained by a linear composition of those vector will be contained in that plain as well. 
-                we can optain a vector linking any two points $A_i$, $A_j$ of the triangle by doing $?v{A_0A_j} - ?v{A_0A_i} = ?v{A_iA_j}$.
+                we can optain a vector linking any two points $A_i$, $A_j$ of the simplex by doing $?v{A_0A_j} - ?v{A_0A_i} = ?v{A_iA_j}$.
 
                 #TODO
             </hidden>
@@ -231,8 +231,49 @@
 
             </hidden>
 
+            We will now use the simplex base to build the barycentric coordinate of a point $M$, located in the simplex, for each vertex.
 
-            <!hidden id="existence-proof2" :id="existence-proof2" :title="Complete proof">
+            First we know that there exists $(x_k)_{k € [1, n]}$ so that:   
+            
+            $$
+                ?v{A_0M} = |§S__{k = 1}^^n x_k ?v{A_0A_k}
+            $$
+
+            (This is the representation of $M$ in the  simplex base.)
+
+            Here all the vectors are comming from $A_0$, but we want them to come from $M$ (like in the definition of barycentric coordinates).
+            Thus what we can do is adding $?v{MA_0}$ on both side of the equation to recenter all the vectors 
+            (using the fact that $?v{MA_0} =  |§S__{k = 1}^^n x_k ?v{MA_0}  + (1 - |§S__{k = 1}^^n §x_k) ?v{MA_0}$):
+
+            $$
+                ?v{MA_0} + ?v{A_0M} &= |§S__{k = 1}^^n x_k ?v{MA_0}  + (1 - |§S__{k = 1}^^n x_k) ?v{MA_0} + |§S__{k = 1}^^n x_k ?v{A_0A_k}&&
+                ?v 0 &= |§S__{k = 1}^^n x_k ?v{MA_k}  + (1 - |§S__{k = 1}^^n x_k) ?v{MA_0}&&
+            $$
+
+            We almost have the good expretion. We just need to set for all $k € [0 ; n]$ 
+            $$
+                y_k = <!system style="vertical-align: middle;">
+                    \ 1 - |§S__{k=1}^^n x_k & ?txt{if} k = 0 &&
+                    \ x_k & ?txt{otherwise}
+                </system>
+            $$
+
+            This gives us what we want :
+            $$
+                |§S__{k = 1}^^n y_k ?v{MA_k}  = ?v 0
+
+            $$
+
+            and the segond condition is also verified : $|§S__{k=0}^^n y_k = 1$
+
+            <br/>
+
+            More that proving the existence of barycentric coordinates in a simplex, 
+            we've shown that for all the vertex $A_k$ appart from the origin, the coordinate of that vertex is equal to the coefficient $x_k$ 
+            the vector to this vertex $?v{A_0A_k}$ in the simplex base. This property will be usefull later.
+
+
+            <!hidden id="existence-proof2" :id="existence-proof2" :title="Rigourous existence proof">
                 
                 <h4>Existence</h4>
 
@@ -308,8 +349,8 @@
             <h2 id="barycentric-co-in-simplex">Barycentric coordinates in a simplex </h2>
 
             As we saw before, the barycentric coordinate of a vertex $A_k$ is equal to the coefficient $x_k$ of the vector to this vertex $?v{A_0A_k}$ 
-            in the triangle base. Thus, we just need to find  an expression for that coefficient. If we take all the other vertices
-            of the triangle, we know that they define a plane $P_k$, and that $A_k$ is the only point out of it. This means that $?v{A_0A_k}$ is the only 
+            in the simplex base. Thus, we just need to find  an expression for that coefficient. If we take all the other vertices
+            of the simplex, we know that they define a plane $P_k$, and that $A_k$ is the only point out of it. This means that $?v{A_0A_k}$ is the only 
             contributing to the normal direction from the plane $P_k$ (we will represent this direction by the normal vector $?v n$)
             We have 
             $$
@@ -322,7 +363,7 @@
                 x_k ?x ?norm{?v{A_0A_k}.?v n} = ?norm{?v{A_0M}.?v n}
             $$
 
-            $?norm{?v{A_0A_k}.?v n}$ is just the height of the triangle and $?norm{?v{A_0M}.?v n}$ is just the height of M.
+            $?norm{?v{A_0A_k}.?v n}$ is just the height of the simplex and $?norm{?v{A_0M}.?v n}$ is just the height of M.
 
             Thus we have 
 
@@ -331,7 +372,7 @@
             $$
 
             Just below is a visualization of the situation for a 2-simplex (a triangle). The blue lines are the vector representing 
-            $M$ in the triangle base, and the green lines represent the heights of $M$, the yellow line the height of $A_k$.
+            $M$ in the simplex base, and the green lines represent the heights of $M$, the yellow line the height of $A_k$.
 
             <!figure id="barycentric-height" :caption="Coefficient visualisation">
                 <div class="figure-math">
