@@ -11,7 +11,7 @@ export function Init(canvasInfo) {
     canvasInfo.scene.add(canvasInfo.visQuad);
 }
 
-export function Update(canvasInfo, interpolationFn) {
+export function Update(canvasInfo, interpolationFn, resolutionMultiplier = 1) {
     if (canvasInfo.is3D) {
         console.error("Must be 2D!");
     }

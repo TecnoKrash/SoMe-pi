@@ -1,27 +1,25 @@
 use crate::structs::*;
 
-// Useless
-/*
 
 pub fn simplex_volume(simp: &Vec<Vector>) -> f64 {
     if simp.len() <= 2 {
         return (&simp[0]- &simp[1]).len();
     }
 
-    let mut p = Point { pos: vect_from_arr(&[]), val: 0.0 };
-
     let mut s_base = simp.clone(); 
 
-    match s_base.pop(){
-        Some(x) => p.pos = x,
+    let top = match s_base.pop(){
+        Some(x) => x,
         None    => panic!("should not happen"),
-    }
+    };
 
-    let plane = simplex_to_plane(&s_base);
+    let plane = extract_base(simp, usize::MAX);
 
-    (plane.dist_to_point(&p) * simplex_volume(&s_base))/ (simp.len()-1) as f64
-    
+    (plane.dist_to_point(&top) * simplex_volume(&s_base))/ (simp.len()-1) as f64   
 }
+
+// Useless
+/*
 
 pub fn barycentric_co(simp: &Vec<Vector>, p: &Point) -> Vec<f64> {
     let n = simp.len();

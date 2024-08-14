@@ -309,10 +309,152 @@ init().then(() => {
             Handle.CreateHandle(info, new Three.Vector3(0.0, 0.3, 0), 0.01, 0xff0000);
             Handle.CreateHandle(info, new Three.Vector3(0.4, -0.1, 0), 0.01, 0x00ff00);
             Handle.CreateHandle(info, new Three.Vector3(-0.4, -0.3, 0), 0.01, 0x0000ff);
+
+            info.simplexList = [
+                [0, 1, 2],
+            ];
         },
         function Update(info) {
             CreateRustSpaces(info);
-            InterpolationVis.Update(info, OneSimplexInterpolation);
+            InterpolationVis.Update(info, SimplexInterpolation);
+            Handle.UpdateHandles(info);
+        }
+    );
+
+    CreateCanvas("triangulation-1", false, 
+        function Init(info) {
+            InterpolationVis.Init(info);
+            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.01, 0x0000ff);
+            Handle.CreateHandle(info, new Three.Vector3(0.2, 0.2, 0.0), 0.01, 0x00ff00);
+            Handle.CreateHandle(info, new Three.Vector3(-0.15, 0.3, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.2, -0.1, 0.0), 0.01, 0xdd2200);
+            Handle.CreateHandle(info, new Three.Vector3(-0.2, -0.2, 0.0), 0.01, 0x3300cc);
+            Handle.CreateHandle(info, new Three.Vector3(0.25, -0.35, 0.0), 0.01, 0xccdd22);
+            Handle.CreateHandle(info, new Three.Vector3(-0.25, -0.4, 0.0), 0.01, 0x229922);
+
+            info.simplexList = [
+                [0, 1, 2],
+                [0, 1, 3],
+                [0, 2, 4],
+                [0, 3, 4],
+                [3, 4, 5],
+                [4, 5, 6],
+            ]
+        },
+        function Update(info) {
+            CreateRustSpaces(info);
+            InterpolationVis.Update(info, SimplexInterpolation);
+            Handle.UpdateHandles(info);
+        }
+    );
+
+    CreateCanvas("triangulation-2", false, 
+        function Init(info) {
+            InterpolationVis.Init(info);
+            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.01, 0x0000ff);
+            Handle.CreateHandle(info, new Three.Vector3(0.2, 0.2, 0.0), 0.01, 0x00ff00);
+            Handle.CreateHandle(info, new Three.Vector3(-0.15, 0.3, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.2, -0.1, 0.0), 0.01, 0xdd2200);
+            Handle.CreateHandle(info, new Three.Vector3(-0.2, -0.2, 0.0), 0.01, 0x3300cc);
+            Handle.CreateHandle(info, new Three.Vector3(0.25, -0.35, 0.0), 0.01, 0xccdd22);
+            Handle.CreateHandle(info, new Three.Vector3(-0.25, -0.4, 0.0), 0.01, 0x229922);
+
+            info.simplexList = [
+                [0, 1, 2],
+                [0, 2, 4],
+                [0, 1, 3],
+                [0, 4, 6],
+                [3, 5, 6],
+                [0, 3, 6],
+            ]
+        },
+        function Update(info) {
+            CreateRustSpaces(info);
+            InterpolationVis.Update(info, SimplexInterpolation);
+            Handle.UpdateHandles(info);
+        }
+    );
+
+    CreateCanvas("triangulation-bad", false, 
+        function Init(info) {
+            InterpolationVis.Init(info);
+            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.01, 0x0000ff);
+            Handle.CreateHandle(info, new Three.Vector3(0.2, 0.2, 0.0), 0.01, 0x00ff00);
+            Handle.CreateHandle(info, new Three.Vector3(-0.15, 0.3, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.2, -0.1, 0.0), 0.01, 0xdd2200);
+            Handle.CreateHandle(info, new Three.Vector3(-0.2, -0.2, 0.0), 0.01, 0x3300cc);
+            Handle.CreateHandle(info, new Three.Vector3(0.25, -0.35, 0.0), 0.01, 0xccdd22);
+            Handle.CreateHandle(info, new Three.Vector3(-0.25, -0.4, 0.0), 0.01, 0x229922);
+
+            info.simplexList = [
+                [0, 1, 2],
+                [0, 2, 4],
+                [0, 4, 6],
+                [3, 5, 6],
+                [0, 1, 6],
+                [3, 1, 6],
+            ]
+        },
+        function Update(info) {
+            CreateRustSpaces(info);
+            InterpolationVis.Update(info, SimplexInterpolation);
+            Handle.UpdateHandles(info);
+        }
+    );
+
+    CreateCanvas("outside-triangle", false, 
+        function Init(info) {
+            Handle.CreateHandle(info, new Three.Vector3(-0.1, 0.1, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.2, 0.1, 0.0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(-0.05, 0.2, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.1, -0.3, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(-0.15, -0.35, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.02, 0xffffff);
+
+            info.triangleLines = [
+                Geometry.CreateFreeLine(info, 0xffffff, 0.005),
+                Geometry.CreateFreeLine(info, 0xffffff, 0.005),
+                Geometry.CreateFreeLine(info, 0xffffff, 0.005),
+            ];
+        },
+        function Update(info) {
+
+            let distances = []
+            for (let i = 0; i < info.handles.length - 1; i++) {
+                distances.push({
+                    index: i,
+                    distance: info.handles[i].position.clone().sub(info.handles[info.handles.length - 1].position).length()
+                })
+            }
+
+            distances.sort((a, b) => a.distance - b.distance);
+
+            for (let i = 0; i < 3; i++) {
+                Geometry.UpdateLine(
+                    info, 
+                    info.triangleLines[i], 
+                    info.handles[distances[i].index].position, 
+                    info.handles[distances[(i + 1) % 3].index].position
+                );
+            }
+
+            Handle.UpdateHandles(info);
+        }
+    );
+    
+    CreateCanvas("final-interpolation", false, 
+        function Init(info) {
+            InterpolationVis.Init(info);
+
+            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.01, 0x0000ff);
+            Handle.CreateHandle(info, new Three.Vector3(0.2, 0.2, 0.0), 0.01, 0x00ff00);
+            Handle.CreateHandle(info, new Three.Vector3(-0.15, 0.3, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.2, -0.1, 0.0), 0.01, 0xdd2200);
+            Handle.CreateHandle(info, new Three.Vector3(-0.2, -0.2, 0.0), 0.01, 0x3300cc);
+        },
+        function Update(info) {
+            CreateRustSpaces(info);
+            InterpolationVis.Update(info, BestSimplexInterpolation);
             Handle.UpdateHandles(info);
         }
     );
@@ -392,22 +534,32 @@ function InverseDistanceInterpolation(info, pos) {
     return colorSum;
 }
 
-function OneSimplexInterpolation(info, pos) {
+function SimplexInterpolation(info, pos) {
     let vec = RustVector2FromThreeVector3(pos);
+
+    for (let simplex of info.simplexList) {
+        let inside = Backend.is_point_inside_simplex_export(vec, simplex, info.spaces[0]);
+
+        if (inside) {
+            let r = Backend.interpolate_export(info.spaces[0], simplex, vec) / 255;
+            let g = Backend.interpolate_export(info.spaces[1], simplex, vec) / 255;
+            let b = Backend.interpolate_export(info.spaces[2], simplex, vec) / 255;
+            
+            return new Three.Color(r, g, b);
+        }
+    }
     
-    let inside = Backend.is_point_inside_simplex_export(vec, [0, 1, 2], info.spaces[0]);
+    return new Three.Color(0, 0, 0);
+}
 
-    if (inside) {
+function BestSimplexInterpolation(info, pos) {
+    let vec = RustVector2FromThreeVector3(pos);
 
-        let r = Backend.interpolate_export(info.spaces[0], [0, 1, 2], vec) / 255;
-        let g = Backend.interpolate_export(info.spaces[1], [0, 1, 2], vec) / 255;
-        let b = Backend.interpolate_export(info.spaces[2], [0, 1, 2], vec) / 255;
-        
-        return new Three.Color(r, g, b);
-    }
-    else {
-        return new Three.Color(0, 0, 0);
-    }
+    let r = Backend.interpolate_bests(info.spaces[0], vec) / 255;
+    let g = Backend.interpolate_bests(info.spaces[1], vec) / 255;
+    let b = Backend.interpolate_bests(info.spaces[2], vec) / 255;
+    
+    return new Three.Color(r, g, b);
 }
 
 function RustVector2FromThreeVector3(vec3) {

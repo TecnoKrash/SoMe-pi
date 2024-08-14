@@ -481,17 +481,66 @@
             <br/>
             <br/>
 
-            A first idear can be to take the n-nearest point that form a simplex containing the point we want to interpolate and do a barycentric
-            interpolation from there.
+            We can try to triangulate the space with those points (choose simplexes that cover the entier space), but there are some drawbacks:
+            <ul>
+                <li>
+                    First, there isn't one way to do that (see figures below);
+                </li>
+                <li>
+                    The triangulation algorithms are already complicated in two dimensions, doing it in any dimention is probably very difficult;
+                </li>
+                <li>
+                    If the interpolation happens on a single point, there is no need to compute triangulation on the whole space,
+                    it would be more efficient to just consider simplexes around the point.
+                </li>
+            </ul>
 
-            // Insert demo
+            <!figure :caption="Two different interpolations">
+                <div id="triangulation-1" class="half-figure">
+                    <div class="figure">
+                        <inner></inner>
+                    </div>
+                </div>
+                <div id="triangulation-2" class="half-figure">
+                    <div class="figure">
+                        <inner></inner>
+                    </div>
+                </div>
+            </figure>
+
+            Also, bad triangulations can lead to terrible interpolation results.
+            
+            <!figure id="triangulation-bad" :caption="A terrible triangulation"></figure> 
 
             <br/>
+            <br/>
 
-            We could also do a list of all the valid simplexes we can find around our point, and do an average of the interpolations in the diffrent simplex. 
+            Another idea can be to take the $n$ nearest points to form a simplex.
+            However there is cases where the formed simplex is not containing the point.  
 
-            // Insert demo
+            <!figure id="outside-triangle" :caption="The white point is not the the triangle formed by the 3 nearest points"></figure> 
 
+            <h2 id="last-method">The final method</h2>
+
+            To get better result, we can try interpolating in multiple simplexes.
+            We can select an arbitrary amount of simplexes that contains the point, and get the average of their interpolations.
+            To pick the best simplexes, there are multiple criteria:
+            <ul>
+                <li>Select simplexes with the smallest volume,</li>
+                <li>with the smallest surface,</li>
+                <li>or with the smallest ${|{surface}}/{|{volume}}$ quotient (to prevent stretched simplexes).</li>
+            </ul>
+
+            The choice of criteria and the amount of simplexes to consider should be adapted to the nature of the interpolation problem:
+            some datasets can be more adapted to a specific method.
+
+            <br/>
+            <br/>
+
+            Here is an example with the volume criterium, with 2 simplexes used to interpolate:
+
+            <!figure id="final-interpolation" :caption="Average of interpolations of the 2 smallest simplexes" class="half-figure">
+            </figure>
         </main>
     </body>
 </document>

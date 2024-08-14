@@ -1,3 +1,4 @@
+use crate::barycenter;
 use crate::barycenter::*;
 use crate::structs::*;
 extern crate wasm_bindgen;
@@ -5,6 +6,13 @@ extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
 
 const THRESHOLD: f64 = 0.001;
+
+const SIMPLEX_USED: usize = 2;
+
+struct SimplexWithWeight {
+    pub simplex: Vec<usize>,
+    pub weight: f64,
+}
 
 pub fn new_comb(comb: &mut Vec<usize>, n: usize) {
     let mut max = n;
@@ -44,7 +52,7 @@ pub fn get_valid_simplex(space: &Space, p: &Vector) -> Vec<Vec<usize>> {
     let n = space.points.len();
     let dim = p.dim() + 1;
     if dim > n {
-        return vec![vec![]]; // Not enough points to form a simplex
+        return vec![]; // Not enough points to form a simplex
     }
     
     let mut res = vec![];
@@ -58,6 +66,40 @@ pub fn get_valid_simplex(space: &Space, p: &Vector) -> Vec<Vec<usize>> {
         new_comb(&mut comb, n);
     }
     res   
+}
+
+#[wasm_bindgen]
+pub fn interpolate_bests(space: &Space, p: &Vector) -> f64 {
+    let simplexes = get_valid_simplex(space, p);
+    let mut weighted = Vec::with_capacity(simplexes.len());
+
+    for simplex in simplexes {
+        let mut simplex_with_vectors = Vec::with_capacity(simplex.len());
+        for id in &simplex {
+            simplex_with_vectors.push(space.points[*id].pos.clone());
+        } 
+
+        weighted.push(SimplexWithWeight {
+            simplex: simplex,
+            weight: barycenter::simplex_volume(&simplex_with_vectors)
+        });
+    }
+
+    weighted.sort_unstable_by(|a, b| a.weight.partial_cmp(&b.weight).unwrap());
+
+    let mut res = 0.0;
+    let count = std::cmp::min(SIMPLEX_USED, weighted.len());
+
+    if count == 0 {
+        return 0.0;
+    }
+    else {
+        for i in 0..count {
+            res += interpolate(space, &weighted[i].simplex, p);
+        }
+    
+        return res / count as f64;
+    }
 }
 
 
