@@ -567,13 +567,16 @@
             and $i$ a functions that returns the interpolated value in the simplex. We can then output:
 
             $$
-                |§S__{S € A} { i(s) } / { w(s) ^ n }
+                { |§S__{S € A} { i(s) } / { w(s) ^ n } } / { |§S__{S € A} { 1 } / { w(s) ^ n } }
             $$ 
 
             Here, $w$ returns the surface of the simplex, and $n = 2$:
 
             <!figure id="weighted-interpolation" :caption="Interpolation with average of multiple simplexes">
             </figure>
+
+            The result is not perfect, but if seams are really a problem, it is still possible to smooth the results
+            by calculating the interpolation on multiple points around the desired value. 
         </main>
     </body>
 </document>
