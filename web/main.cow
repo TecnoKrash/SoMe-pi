@@ -190,8 +190,15 @@
 
             First, we can prove that in a simplex (that is not degenerated), barycentric coordinates exist and are unique.
 
-            For that, we will need to introduce what we'll called the "simplex base". To define a point in space, we often use an orthonormal base, 
-            meaning a point O, being the origin of the space, and n unit vector (n is still the dimention of the space) all orthogonal to each other.
+            <br/>
+            <br/>
+
+            For that, we will need to introduce what we'll called the "simplex base".
+
+            <br/>
+
+            To define a point in space, we often use an orthonormal base, 
+            meaning a point $O$, being the origin of the space, and n unit vector (n is still the dimention of the space) all orthogonal to each other.
             But we don't actually need the base to be orthogonal for it to uniquely define each point of the space. The vectors can be of any legth,
             and be in any direction as long as they do not belong to the same plane .
 
@@ -201,34 +208,41 @@
             With that in mind, we can now construct a good base for our simplex. First we will take a random point of the simplex that we will 
             name $A_0$ and that will serve as the origine of the plane. We will then named all the other points $A_1$ to $A_n$ in a random order.
 
+            <br/>
+            <br/>
+
             For the vectors of the base we can now take ($?v{A_OA_1},...,?v{A_OA_n}$). From the properties of the simplex, we know that this 
             base is valid and that they don't belong to the same plane. you can convince yourself, or look at the proofs below. 
             From now on we will refer to this base as the "simplex base".
 
 
-            <!hidden id="base-proof1" :id="base-proof1" :title="Basic explanation">
-
+            <!hidden id="base-proof1" :id="base-proof1" :title="Explanation">
                 Let's do a proof by contradiction. We suppose that we have a valid simplex in an n dimentional space, 
-                and that the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contain in a same plain of n-1 dimention. 
+                and that the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contain in a same plaine of n-1 dimention $£P$ 
+                (we need a point to fully describe this plain, we will take $A_0$). 
 
                 <br/>
+                <br/>
 
-                This means that any vectors optained by a linear composition of those vector will be contained in that plain as well. 
-                we can optain a vector linking any two points $A_i$, $A_j$ of the simplex by doing $?v{A_0A_j} - ?v{A_0A_i} = ?v{A_iA_j}$.
+                Since $A_0$ is the origine of $£P$, $A_0$ is contain in $£P$.
+                So for all $k € [0 , n]$, $A_0$ and $?v{A_0A_k}$ are contain in $£P$ witch means $A_k$ is contain in $£P$ as well
 
-                #TODO
+                <br/>
+                <br/>
+
+                This mean that all the vertexes of the simplex are contain in $£P$, this is not a valid simplex ; this is a contradiction, so our
+                hypothesis is false and the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are not contain in the same plain.
             </hidden>
-
-            
-            <!hidden id="base-proof2" :id="base-proof2" :title="Real proof">
-                We can do a recurcive proof on $n$ :
+ 
+            <!hidden id="base-proof2" :id="base-proof2" :title="precision to be rigourous">
+                The proof above is correct but we need to do a little prescition:
                 <br/>
-                - if $n = 1$, a simplex is a line, and there is only two point $A_0$ and $A_1$. if $A_0 != A_1$ then $?v{A_0A_1} != ?v0$
+                - <em>the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contain in a same plaine of n-1 dimention $£P$</em>
+
                 <br/>
-                - Let's suppose that for some $n € ||N$, any given simplex in n dimention, the vectors 
-
-                #TODO
-
+                    To be more exact, the vectors form an hyperplane of dimention n-1 $H$ in $?v E$, witch is canonicaly associated
+                    to the coresponding plane $£P$ in $E$, witch will pass throw the center of the space. 
+                    We've set the center to $A_0$, so everything after that is correct.
             </hidden>
 
             We will now use the simplex base to build the barycentric coordinate of a point $M$, located in the simplex, for each vertex.
@@ -243,7 +257,7 @@
 
             Here all the vectors are comming from $A_0$, but we want them to come from $M$ (like in the definition of barycentric coordinates).
             Thus what we can do is adding $?v{MA_0}$ on both side of the equation to recenter all the vectors 
-            (using the fact that $?v{MA_0} =  |§S__{k = 1}^^n x_k ?v{MA_0}  + (1 - |§S__{k = 1}^^n §x_k) ?v{MA_0}$):
+            (using the fact that $?v{MA_0} =  |§S__{k = 1}^^n x_k ?v{MA_0}  + (1 - |§S__{k = 1}^^n x_k) ?v{MA_0}$):
 
             $$
                 ?v{MA_0} + ?v{A_0M} &= |§S__{k = 1}^^n x_k ?v{MA_0}  + (1 - |§S__{k = 1}^^n x_k) ?v{MA_0} + |§S__{k = 1}^^n x_k ?v{A_0A_k}&&
