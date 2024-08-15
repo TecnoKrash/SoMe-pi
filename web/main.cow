@@ -12,12 +12,7 @@
         <!article-summary :_1=" " :_2=" "/>
 
         <main>
-            <a href="tests.html">Navigate to test page</a>
-
-            <br/>
-            <br/>
-
-            <h1> Interpolation in any dimension with barycentric coordinate </h1>
+            <h1> Interpolation in any dimension with barycentric coordinates </h1>
             
             <h2 id="intro"> Introduction </h2>
 
@@ -188,60 +183,73 @@
 
             <h2 id="barycentric-co-title">Why barycentric coordinates?</h2>
 
-            First, we can prove that in a simplex (that is not degenerated), barycentric coordinates exist and are unique.
+            We can first make a few remarks:
+            <ul>
+                <li>
+                    If $M$ is on $A_k$, then its coordinate for $k$ is $1$, the others are $0$.
+                    For interpolation, if we use its coordinates as weights for the measures, we will obtain the value of $A_k$,
+                    and this is what we're looking for. 
+                </li>
+                <li>
+                    If $M$ is the center of gravity of the simplex (the average of all the points), its barycentric coordinates
+                    will all be equal to $1 / {n + 1}$ where $n$ is the dimension. This is also coherent.
+                </li>
+            </ul>
+
+            That make them good candidates for interpolation. We can also prove that for all points in a simplex
+            (that is not degenerated), these coordinates exists and are unique. We will also see later that they're easy to compute.
 
             <br/>
             <br/>
 
-            For that, we will need to introduce what we'll called the "simplex base".
+            But first, we'll introduce a base of the space.
 
             <br/>
 
             To define a point in space, we often use an orthonormal base, 
-            meaning a point $O$, being the origin of the space, and n unit vector (n is still the dimention of the space) all orthogonal to each other.
-            But we don't actually need the base to be orthogonal for it to uniquely define each point of the space. The vectors can be of any legth,
-            and be in any direction as long as they do not belong to the same plane .
+            meaning a point $O$, being the origin of the space, and $n$ unit vector ($n$ is dimension of the space) all orthogonal to each other.
+            But we don't actually need the base to be orthogonal for it to uniquely define each point of the space. The vectors can be of any lengths,
+            and can be in any direction as long as they do not belong to the same plane.
 
             <br/>
             <br/>
 
-            With that in mind, we can now construct a good base for our simplex. First we will take a random point of the simplex that we will 
-            name $A_0$ and that will serve as the origine of the plane. We will then named all the other points $A_1$ to $A_n$ in a random order.
+            With that in mind, we can now construct a convenient base to define our points. First we will take a random point of the simplex that we will 
+            name $A_0$. It will be the origin of the plane. We will then name all the other points $A_1$ to $A_n$.
 
             <br/>
             <br/>
 
-            For the vectors of the base we can now take ($?v{A_OA_1},...,?v{A_OA_n}$). From the properties of the simplex, we know that this 
-            base is valid and that they don't belong to the same plane. you can convince yourself, or look at the proofs below. 
+            The vectors ($?v{A_OA_1},...,?v{A_OA_n}$) will define the base. From the properties of the simplex, we know that this 
+            base is valid and that the vectors don't belong to the same plane (see proofs below).
             From now on we will refer to this base as the "simplex base".
 
-
             <!hidden id="base-proof1" :id="base-proof1" :title="Explanation">
-                Let's do a proof by contradiction. We suppose that we have a valid simplex in an n dimentional space, 
-                and that the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contain in a same plaine of n-1 dimention $£P$ 
+                Let's do a proof by contradiction. We suppose that we have a valid simplex in an n dimensional space, 
+                and that the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contained in a $n-1$ dimensional plane $£Q$. 
                 (we need a point to fully describe this plain, we will take $A_0$). 
 
                 <br/>
                 <br/>
 
                 Since $A_0$ is the origine of $£P$, $A_0$ is contain in $£P$.
-                So for all $k € [0 , n]$, $A_0$ and $?v{A_0A_k}$ are contain in $£P$ witch means $A_k$ is contain in $£P$ as well
+                So for all $k € [0 , n]$, $A_0$ and $?v{A_0A_k}$ are contained in $£P$ witch means $A_k$ is contained in $£P$ as well.
 
                 <br/>
                 <br/>
 
-                This mean that all the vertexes of the simplex are contain in $£P$, this is not a valid simplex ; this is a contradiction, so our
-                hypothesis is false and the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are not contain in the same plain.
+                This mean that all the vertices of the simplex are contained in $£Q$. The simplex is thus degenerated (it is completely flat); 
+                this is a contradiction, so our hypothesis is false and the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are not contained in a $n-1$ dimensional plane.
             </hidden>
  
-            <!hidden id="base-proof2" :id="base-proof2" :title="precision to be rigourous">
-                The proof above is correct but we need to do a little prescition:
+            <!hidden id="base-proof2" :id="base-proof2" :title="Precision to be rigorous">
+                The proof above is correct but we need to do a little precision:
                 <br/>
-                - <em>the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contain in a same plaine of n-1 dimention $£P$</em>
+                - <em>the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contained in a $n-1$ dimensional plane $£Q$.</em>
 
                 <br/>
-                    To be more exact, the vectors form an hyperplane of dimention n-1 $H$ in $?v E$, witch is canonicaly associated
-                    to the coresponding plane $£P$ in $E$, witch will pass throw the center of the space. 
+                    To be more exact, the vectors form an hyperplane of dimension $n-1$ $H$ in $?v E$, witch is associated
+                    to the corresponding plane $£P$ in $E$, witch will pass through the center of the space. 
                     We've set the center to $A_0$, so everything after that is correct.
             </hidden>
 
@@ -253,18 +261,20 @@
                 ?v{A_0M} = |§S__{k = 1}^^n x_k ?v{A_0A_k}
             $$
 
-            (This is the representation of $M$ in the  simplex base.)
+            (This is the representation of $M$ in the simplex base.)
 
-            Here all the vectors are comming from $A_0$, but we want them to come from $M$ (like in the definition of barycentric coordinates).
-            Thus what we can do is adding $?v{MA_0}$ on both side of the equation to recenter all the vectors 
+            Here all the vectors are all relative to $A_0$, but we want them to be relative to $M$ (to match the definition of barycentric coordinates).
+            Thus we can add $?v{MA_0}$ on both side of the equation:
             (using the fact that $?v{MA_0} =  |§S__{k = 1}^^n x_k ?v{MA_0}  + (1 - |§S__{k = 1}^^n x_k) ?v{MA_0}$):
 
             $$
-                ?v{MA_0} + ?v{A_0M} &= |§S__{k = 1}^^n x_k ?v{MA_0}  + (1 - |§S__{k = 1}^^n x_k) ?v{MA_0} + |§S__{k = 1}^^n x_k ?v{A_0A_k}&&
-                ?v 0 &= |§S__{k = 1}^^n x_k ?v{MA_k}  + (1 - |§S__{k = 1}^^n x_k) ?v{MA_0}&&
+                ?v{MA_0} + ?v{A_0M} &= ?v{MA_0} + §S__{k = 1}^^n x_k ?v{A_0A_k} &&
+                ?v 0                &= ?v{MA_0} (1 - |§S__{k = 1}^^n x_k + |§S__{k = 1}^^n x_k) + §S__{k = 1}^^n x_k ?v{A_0A_k} &&
+                ?v 0                &= ?v{MA_0} (1 - |§S__{k = 1}^^n x_k) + §S__{k = 1}^^n x_k (?v{MA_0} + ?v{A_0A_k}) &&
+                ?v 0                &= ?v{MA_0} (1 - |§S__{k = 1}^^n x_k) + §S__{k = 1}^^n x_k (?v{MA_k})
             $$
 
-            We almost have the good expretion. We just need to set for all $k € [0 ; n]$ 
+            We can thee this looks like the definition. We just need to set for all $k € [0 ; n]$ 
             $$
                 y_k = <!system style="vertical-align: middle;">
                     \ 1 - |§S__{k=1}^^n x_k & ?txt{if} k = 0 &&
@@ -278,16 +288,20 @@
 
             $$
 
-            and the segond condition is also verified : $|§S__{k=0}^^n y_k = 1$
+            The second condition is also verified : $|§S__{k=0}^^n y_k = 1$
 
             <br/>
 
-            More that proving the existence of barycentric coordinates in a simplex, 
-            we've shown that for all the vertex $A_k$ appart from the origin, the coordinate of that vertex is equal to the coefficient $x_k$ 
-            the vector to this vertex $?v{A_0A_k}$ in the simplex base. This property will be usefull later.
+            We proved the existence of barycentric coordinates in a simplex! 
+            We've shown that for all the vertex $A_k$ (except the origin), the coordinate for that vertex is equal to the coefficient $x_k$. 
+            This property will be useful later.
 
+            <br/>
+            <br/>
 
-            <!hidden id="existence-proof2" :id="existence-proof2" :title="Rigourous existence proof">
+            To prove that these coordinates are unique, here is a boring proof:
+
+            <!hidden id="existence-proof2" :id="existence-proof2" :title="Uniqueness proof">
                 
                 <h4>Existence</h4>
 
@@ -345,39 +359,18 @@
 
             </hidden> 
 
-            We can also make a few remarks:
-            <ul>
-                <li>
-                    If $M$ is on $A_k$, then its coordinate for $k$ is $1$, the others are $0$.
-                    For interpolation, if we use its coordinates as weights for the measures, we will obtain the value of $A_k$,
-                    and this is what we're looking for. 
-                </li>
-                <li>
-                    If $M$ is the center of gravity of the simplex (the average of all the points), its barycentric coordinates
-                    will all be equal to $1 / {n + 1}$ where $n$ is the dimension. This is also coherent.
-                </li>
-            </ul>
-
-            That make them good candidates for interpolation. As we will see in the next paragraph, they're also easy to compute.
-
             <h2 id="barycentric-co-in-simplex">Barycentric coordinates in a simplex </h2>
 
             As we saw before, the barycentric coordinate of a vertex $A_k$ is equal to the coefficient $x_k$ of the vector to this vertex $?v{A_0A_k}$ 
-            in the simplex base. Thus, we just need to find  an expression for that coefficient. If we take all the other vertices
-            of the simplex, we know that they define a plane $P_k$, and that $A_k$ is the only point out of it. This means that $?v{A_0A_k}$ is the only 
-            contributing to the normal direction from the plane $P_k$ (we will represent this direction by the normal vector $?v n$)
+            in the simplex base. Thus, we just have to find an expression for that coefficient. If we take all the other vertices
+            of the simplex, we know that they define a plane $P_k$, and that $A_k$ is the only point out of it. 
+            This means that $?v{A_0A_k}$ is the only vector not perpendicular to $?v n$, the unit normal vector of $£P$ pointing towards $A_k$.
             We have 
             $$
-                x_k ?x ?v{A_0A_k}.?v n = ?v{A_0M}.?v n
-            $$
-            
-            Since the direction is the same, we can take the norm on both sides : 
-
-            $$
-                x_k ?x ?norm{?v{A_0A_k}.?v n} = ?norm{?v{A_0M}.?v n}
+                ?v{A_0M}.?v n = (|§S__{i=1}^^{n} x_i ?v{A_0A_i}).?v n = (x_k ?x ?v{A_0A_k}). ?v n = x_k (?v{A_0A_k}. ?v n)
             $$
 
-            $?norm{?v{A_0A_k}.?v n}$ is just the height of the simplex and $?norm{?v{A_0M}.?v n}$ is just the height of M.
+            $?v{A_0A_k}.?v n$ is just the height of the simplex and $?v{A_0M}.?v n$ is just the height of M.
 
             Thus we have 
 
