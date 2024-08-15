@@ -445,16 +445,47 @@ init().then(() => {
     CreateCanvas("final-interpolation", false, 
         function Init(info) {
             InterpolationVis.Init(info);
-
-            Handle.CreateHandle(info, new Three.Vector3(0, 0, 0), 0.01, 0x0000ff);
-            Handle.CreateHandle(info, new Three.Vector3(0.2, 0.2, 0.0), 0.01, 0x00ff00);
-            Handle.CreateHandle(info, new Three.Vector3(-0.15, 0.3, 0), 0.01, 0xff0000);
-            Handle.CreateHandle(info, new Three.Vector3(0.2, -0.1, 0.0), 0.01, 0xdd2200);
-            Handle.CreateHandle(info, new Three.Vector3(-0.2, -0.2, 0.0), 0.01, 0x3300cc);
+            Handle.CreateHandle(info, new Three.Vector3(0.05, 0.1, 0), 0.01, 0x0000ff);
+            Handle.CreateHandle(info, new Three.Vector3(0.4, 0.4, 0.0), 0.01, 0x00ff00);
+            Handle.CreateHandle(info, new Three.Vector3(-0.35, 0.3, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.3, -0.35, 0.0), 0.01, 0xdd2200);
+            Handle.CreateHandle(info, new Three.Vector3(-0.35, -0.4, 0.0), 0.01, 0x3300cc);
         },
         function Update(info) {
             CreateRustSpaces(info);
-            InterpolationVis.Update(info, BestSimplexInterpolation);
+            InterpolationVis.Update(info, BestSimplexInterpolation(2, 0), 0.5);
+            Handle.UpdateHandles(info);
+        }
+    );
+
+    CreateCanvas("final-interpolation-2", false, 
+        function Init(info) {
+            InterpolationVis.Init(info);
+            Handle.CreateHandle(info, new Three.Vector3(0.05, 0.1, 0), 0.01, 0x0000ff);
+            Handle.CreateHandle(info, new Three.Vector3(0.4, 0.4, 0.0), 0.01, 0x00ff00);
+            Handle.CreateHandle(info, new Three.Vector3(-0.35, 0.3, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.3, -0.35, 0.0), 0.01, 0xdd2200);
+            Handle.CreateHandle(info, new Three.Vector3(-0.35, -0.4, 0.0), 0.01, 0x3300cc);
+        },
+        function Update(info) {
+            CreateRustSpaces(info);
+            InterpolationVis.Update(info, BestSimplexInterpolation(2, 1), 0.5);
+            Handle.UpdateHandles(info);
+        }
+    );
+
+    CreateCanvas("weighted-interpolation", false, 
+        function Init(info) {
+            InterpolationVis.Init(info);
+            Handle.CreateHandle(info, new Three.Vector3(0.05, 0.1, 0), 0.01, 0x0000ff);
+            Handle.CreateHandle(info, new Three.Vector3(0.4, 0.4, 0.0), 0.01, 0x00ff00);
+            Handle.CreateHandle(info, new Three.Vector3(-0.35, 0.3, 0), 0.01, 0xff0000);
+            Handle.CreateHandle(info, new Three.Vector3(0.3, -0.35, 0.0), 0.01, 0xdd2200);
+            Handle.CreateHandle(info, new Three.Vector3(-0.35, -0.4, 0.0), 0.01, 0x3300cc);
+        },
+        function Update(info) {
+            CreateRustSpaces(info);
+            InterpolationVis.Update(info, BestSimplexInterpolation(10, 2), 0.5);
             Handle.UpdateHandles(info);
         }
     );
@@ -552,25 +583,30 @@ function SimplexInterpolation(info, pos) {
     return new Three.Color(0, 0, 0);
 }
 
-function BestSimplexInterpolation(info, pos) {
-    let vec = RustVector2FromThreeVector3(pos);
 
-    let r = Backend.interpolate_bests(info.spaces[0], vec) / 255;
-    let g = Backend.interpolate_bests(info.spaces[1], vec) / 255;
-    let b = Backend.interpolate_bests(info.spaces[2], vec) / 255;
-    
-    return new Three.Color(r, g, b);
+function BestSimplexInterpolation(simplexes_used, method) {
+    return (info, pos) => {
+        let vec = RustVector2FromThreeVector3(pos);
+        
+        let r = Backend.interpolate_bests(info.spaces[0], vec, method, simplexes_used) / 255;
+        let g = Backend.interpolate_bests(info.spaces[1], vec, method, simplexes_used) / 255;
+        let b = Backend.interpolate_bests(info.spaces[2], vec, method, simplexes_used) / 255;
+        
+        return new Three.Color(r, g, b);
+    }
 }
 
 function RustVector2FromThreeVector3(vec3) {
     return new Backend.Vector([vec3.x, vec3.y]);
 }
 
-function CreateRustSpaces(info) {
+function CreateRustSpaces(info, handleToIgnore=undefined) {
     info.spaces = [];
     let points = [[], [], []];
 
     for (let h of info.handles) {
+        if (h == handleToIgnore) continue;
+
         points[0].push(new Backend.Point(
             RustVector2FromThreeVector3(h.position),
             (h.color & 0xff0000) >> 16
@@ -592,4 +628,15 @@ function CreateRustSpaces(info) {
     }
 }
 
+function CreateInterpolationHandle(info) {
+    info.interpolationHandleIndex = info.handles ? info.handles.length : 0;
+    info.interpolationHandle = Handle.CreateHandle(info, new Three.Vector3(0.0, 0.0, 0.0), 0.02, 0xffffff);
+}
+
+function UpdateInterpolationHandle(info, interpolationFn) {
+    let h = info.handles[info.interpolationHandleIndex];
+    let res = interpolationFn(info, h.position);
+    h.color = res;
+    h.mesh.material = new Three.MeshBasicMaterial({ color: res.getHex() });
+}
 

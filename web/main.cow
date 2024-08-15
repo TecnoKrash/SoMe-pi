@@ -551,9 +551,28 @@
             <br/>
             <br/>
 
-            Here is an example with the volume criterium, with 2 simplexes used to interpolate:
+            Here is an example with the volume criterion, with 2 simplexes used to interpolate:
 
-            <!figure id="final-interpolation" :caption="Average of interpolations of the 2 smallest simplexes" class="half-figure">
+            <!figure id="final-interpolation" :caption="Average of interpolations of the 2 smallest simplexes">
+            </figure>
+
+            As you can see, the algorithm creates seams around points that are near the border of a triangle.
+            Also, the algorithm seems to try interpolating in stretched triangles, resulting in the blue stripes and purple stripes around the center.
+            
+            <br/>
+            <br/>
+
+            We can try to fix that by making a weighted average. Let $S$ be the set of all simplexes that contains the point to interpolate. 
+            We also define $w$ a function that takes a simplex and returns a criterion as described above,
+            and $i$ a functions that returns the interpolated value in the simplex. We can then output:
+
+            $$
+                |§S__{S € A} { i(s) } / { w(s) ^ n }
+            $$ 
+
+            Here, $w$ returns the surface of the simplex, and $n = 2$:
+
+            <!figure id="weighted-interpolation" :caption="Interpolation with average of multiple simplexes">
             </figure>
         </main>
     </body>

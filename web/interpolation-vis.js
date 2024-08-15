@@ -11,18 +11,19 @@ export function Init(canvasInfo) {
     canvasInfo.scene.add(canvasInfo.visQuad);
 }
 
-export function Update(canvasInfo, interpolationFn, resolutionMultiplier = 1) {
+export function Update(canvasInfo, interpolationFn, resolutionMultiplier=1) {
     if (canvasInfo.is3D) {
         console.error("Must be 2D!");
     }
 
-    let texWidth = Math.ceil(TEXTURE_HEIGHT * canvasInfo.ratio);
-    let buffer = new Uint8Array(4 * TEXTURE_HEIGHT * texWidth);
+    let texHeight = TEXTURE_HEIGHT * resolutionMultiplier;
+    let texWidth = Math.ceil(texHeight * canvasInfo.ratio);
+    let buffer = new Uint8Array(4 * texHeight * texWidth);
     
-    for (let i = 0; i < TEXTURE_HEIGHT; i++) {
+    for (let i = 0; i < texHeight; i++) {
         for (let j = 0; j < texWidth; j++ ) {
-            let x = (canvasInfo.camera.bottom + j / (texWidth - 1) * (canvasInfo.camera.top - canvasInfo.camera.bottom)) * texWidth / TEXTURE_HEIGHT;
-            let y = canvasInfo.camera.bottom + i / (TEXTURE_HEIGHT - 1) * (canvasInfo.camera.top - canvasInfo.camera.bottom);
+            let x = (canvasInfo.camera.bottom + j / (texWidth - 1) * (canvasInfo.camera.top - canvasInfo.camera.bottom)) * texWidth / texHeight;
+            let y = canvasInfo.camera.bottom + i / (texHeight - 1) * (canvasInfo.camera.top - canvasInfo.camera.bottom);
             
             let color = interpolationFn(canvasInfo, new Three.Vector3(x, y, 0));
 
@@ -33,7 +34,7 @@ export function Update(canvasInfo, interpolationFn, resolutionMultiplier = 1) {
         }
     }
 
-    let texture = new Three.DataTexture(buffer, texWidth, TEXTURE_HEIGHT);
+    let texture = new Three.DataTexture(buffer, texWidth, texHeight);
     texture.magFilter = Three.NearestFilter;
     canvasInfo.visQuad.material = new Three.MeshBasicMaterial({ map: texture });
     texture.needsUpdate = true;
