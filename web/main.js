@@ -136,6 +136,7 @@ init().then(() => {
 
             info.HLabel = Handle.CreateLabel(info, "H", 0x00ff00);
             info.KLabel = Handle.CreateLabel(info, "K", 0xffff00);
+            info.MMLabel = Handle.CreateLabel(info, "M'", 0xffff00);
 
             info.smallHeight = Geometry.CreateFreeLine(info, 0x00ff00, 0.002);
             info.bigHeight = Geometry.CreateFreeLine(info, 0xffff00, 0.002);
@@ -194,10 +195,12 @@ init().then(() => {
             Handle.UpdateLabel(info, info.HLabel, smallHeight);
             Handle.UpdateLabel(info, info.KLabel, bigHeight);
 
-
-            document.getElementById("bh-frac-top").textContent = Util.RoundForDisplay(smallHeight);
-            document.getElementById("bh-frac-btm").textContent = Util.RoundForDisplay(bigHeight);
-            document.getElementById("bh-res").textContent = Util.RoundForDisplay(smallHeight / bigHeight);
+            let mh = info.handles[3].position.clone().sub(smallHeight).length();
+            let ak = info.handles[2].position.clone().sub(bigHeight).length();
+        
+            document.getElementById("bh-frac-top").textContent = Util.RoundForDisplay(mh);
+            document.getElementById("bh-frac-btm").textContent = Util.RoundForDisplay(ak);
+            document.getElementById("bh-res").textContent = Util.RoundForDisplay(mh / ak);
         }
     );
     

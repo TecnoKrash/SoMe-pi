@@ -114,7 +114,7 @@ export function CreateLabel(info, text, color) {
     label.element = document.createElement("span");
     label.element.innerHTML = text;
     label.element.classList.add("figure-label");
-    label.element.style.setProperty("color", "#" + color.toString(16), "important");
+    label.element.style.setProperty("color", "#" + color.toString(16).padStart(6, '0'), "important");
 
     info.parent.appendChild(label.element);
 
