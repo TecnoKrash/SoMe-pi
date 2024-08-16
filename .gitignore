@@ -3,3 +3,4 @@
 backend/pkg
 backend/target
 *.html
+!/index.html
