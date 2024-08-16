@@ -16,128 +16,75 @@
             
             <h2 id="intro"> Introduction </h2>
 
-            <!hidden id="intro-other" :id="intro-other" :title="Other intro">
-                This article presents a method to interpolate data. 
-                Given a set of points, each of them representing the association of parameters (the inputs) with a value (the output),
-                we want to predict what will happen for an input that is not present in the dataset.
-
-                <br/>
-                <br/>
-
-                For instance, if a company wants to determine how efficient a machine is, depending on specific conditions (like temperature, used materials, etc),
-                they measure it multiple times under different situations and then interpolate the results to guess what would happen is the cases that weren't tested.
-
-                The goal is not to correct the measurements, nor to reduce noise in data, but simply to create a plausible continuous function
-                from a set of points.
-
-                We will try to solve a more specific problem, that doesn't allow many other methods:
-                <ul>
-                    <li>
-                        the measures can be impacted by a potentially large number of independent parameters,
-                    </li>
-                    <li>
-                        the measurements aren't equally distributed: the're not on a "grid" of predefined values, and there can be more points for some values than others,
-                    </li>
-                    <li>
-                        and the partial derivatives of the output on the points aren't available.
-                    </li>
-                </ul>
-            </hidden>
-
-
-            <!hidden id="intro-other-other" :id="intro-other-other" :title="another intro">
-                Interpolation is a method used to create a new point in a data set without doing new mesurement, based on the original data set.
-                It can be used simply to create a continuous function from a set of points to scaling up the framerate of a video. In this article, 
-                we will focus on finding an efficient method that could be easaly generalised to mesure with a lot of parameters. 
-
-                <br/>
-                <br/>
-
-                Here is our problem : we have a set of mesure that depend on a hight number of parameters that we optained with experimental mesurement.
-                We can't do new mesurements, but we want to study what could happen to a particular parameters in a certain state of the other parameters.
-
-                <br/>
-                <br/>
-
-                Let's say we have $n+1$ parameters, we will represent our mesure as point in an n-dimentional space (the coordinate of each point corespond to 
-                the value of each parameters we want to fix), where each point contains a mesured value. We can now try to interpolate on 
-                the particular points where we don't have any mesurement.
-            </hidden>
-
-            Interpolation is a method used to create a new point in a data set without doing new measurements, using the existing points.
-            It can be used simply to create a continuous function from a set of points to scaling up the framerate of a video. In this article, 
-            we will try to find an efficient method that could be able to handle a lot of parameters. 
+            Interpolation is a method used to create a new points in a data set without doing new measurements, using the existing points.
+            It can be used to create a continuous function from a set of points to scaling up the framerate of a video. In this article, 
+            we will try to find an efficient method that can handle a lot of parameters. 
 
             <br/>
             <br/>
 
-            Here is our problem : a company wants to determine how efficient a machine is, depending on various conditions (like temperature, materials properties, etc).
-            The company makes multiple measures under different situations and then interpolate the results to guess what would happen is the cases that weren't tested.
+            Here is our problem : a company wants to determine how efficient a machine is, depending on various conditions (such as temperature, material properties, etc).
+            The company takes multiple measurements under different conditions and then interpolates the results to guess what would happen in cases that weren't tested.
 
-            The goal is not to correct the measurements, nor to reduce noise in data, but simply to create a plausible continuous function
-            from the set of points.
+            The goal is not to correct the measurements or to reduce noise in the data, but simply to create a plausible continuous function from the set of points. 
+            More precisely, we will try to solve a more specific problem that is hard to solve with other methods:
 
-            Mre precisely, we will try to solve a more specific problem, that is hard to resolve with other methods:
             <ul>
                 <li>
-                    the measures can be impacted by a potentially large number of independent parameters,
+                    The measurements can be impacted by a potentially large number of independent parameters.
                 </li>
                 <li>
-                    the measurements aren't equally distributed: the're not on a "grid" of predefined values, and there can be more points around some values than others,
+                    The measurements aren't equally distributed: they aren't on a "grid" of predefined values, and there can be more points around some values than others.
                 </li>
                 <li>
-                    and the partial derivatives of the output on the points aren't available.
+                    The partial derivatives of the output with respect to the points aren't available.
                 </li>
             </ul>
 
             <br/>
 
-
-            Let's say we have $n$ parameters, we will represent each measure as a point in an n-dimensional space: the coordinates of the point will correspond to 
-            the value of each parameter during the measure, and each point will be associated with its measured value. We can now try to interpolate on 
-            points where we don't have any measurement.
+            Let's say we have $n$ parameters. We will represent each measurement as a point in an $n$-dimensional space: the coordinates of the point will correspond to
+            the value of each parameter during the measurement, and each point will be associated with its measured value. We can now try to interpolate at
+            points where we don't have any measurements.
 
             <h2 id="visu">Visualization</h2>
 
-            To visualize how each method produces results, we will use some interactive figure such as 
+            To visualize how each method produces results, we will use interactive figures like
             <!pagelink :id="nearest">this one</pagelink>.
 
-            It represents the problem with two parameters. 
-            
-            Each point you see (you can also drag them around) is a measure. It's X and Y coordinates are the value of its two parameters,
-            and its color represent the measured value.
-
+            It represents the problem using two parameters. Each point you see (which you can also drag around) represents a measurement.
+            Its $X$ and $Y$ coordinates represent the values of its two parameters, and its color represents the measured value.
             Each pixel in the background indicates the result of the interpolation at its position.
+            For this example, we used a very simple interpolation method: the output value is the value of the nearest measurement.
 
-            For this example, we used a very simple interpolation method: the output value is the value of the nearest measure. 
 
             <!figure id="nearest" :caption="Nearest neighbor interpolation"></figure>
 
             <h2 id="inverse-distance-title">Inverse distance</h2>
 
-            We can start by trying a very simple method: the inverse distance weighting.
-            If $A_0...A_n$ are the measures points and $§a_0...§a_n$ are their value, and we want to get a result on the point $M$, 
+            We can start by trying a very simple method: inverse distance weighting.
+            If $A_0...A_n$ are the measurement points and $§a_0...§a_n$ are their values, and we want to get a result on the point $M$, 
             we calculate:
 
             $$
                 {|§S__{i=0}^^{n} a_i / {A_iM}} / {|§S__{j=0}^^{n} 1 / {A_jM}} 
             $$
 
-            It's a weighted average, where the weights are the inverse distances between the points.
-            This way, the more a point is far from $M$, the less it will impact the result.
+            This a weighted average, where the weights are the inverse distances between the points.
+            This way, the farther a point is from $M$, the less it will impact the result.
             
-            What if a distance is zero? Then it means that $M$ is directly on a measured point, so you can take its value instead.
+            What if a distance is zero? Then it means that $M$ is directly on a measured point, so you can simply take its value instead.
 
             <!figure id="inverse-distance" :caption="Inverse distance interpolation"></figure> 
 
             <h2 id="pb-inverse-distance">Problems with inverse distance</h2>
-            While this method seems at first to be doing well, it has some drawbacks.
+            Although this method initially seems to work well, it has some drawbacks.
 
             <br/>
             <br/>
 
-            First, if there is a lot of points at the same place (if for instance you want more precision around a particular point),
-            their values will impact the result more.
+            First, if there are many points in the same location (for instance, if you want more precision around a particular point),
+            their values will disproportionately impact the result.
             
             <!figure :caption="Bad interpolation example">
                 <div id="inverse-distance-fail-1" class="half-figure">
@@ -152,33 +99,31 @@
                 </div>
             </figure>
 
-            On the right, 4 additional measures have been made around the red point, and it impacts the results for the entire space!
-            (the color of the borders aren't the same)
-            The impact should instead be limited to the zone around the red point.
+            On the right, four additional measurements have been made around the red point, and they impact the results across the entire space!
+            (The color of the borders is not the same.) The impact should instead be limited to the area around the red point.
 
             <br/>
             <br/>
 
-            This method has also another drawback: it takes all the points into account, event when it shouldn't.
-            On the next figure you would expect the center of the screen to be completely blue, but the red point impacted the result and
-            the center is purple-ish.
+            This method also has another drawback: it takes all the points into account, even when it shouldn't.
+            In the next figure, you would expect the center of the screen to be completely blue, but the red point has impacted the result, and the center is now purplish.
+
             <!figure id="inverse-distance-fail-3" :caption="Another bad interpolation example"></figure> 
 
             <h2 id="simpler-problem">A simpler problem</h2>
 
             Before trying another method, we will reduce the number of points.
-            We will first interpolate in the simplest shape possible: in a triangle.
-            If we're in a 3-dimensional space (with 3 parameters), it will be a tetrahedron, and if there are more 
-            dimensions, the equivalent object.
+            We will first interpolate within the simplest shape possible: a triangle.
+            If we are in a 3-dimensional space (with 3 parameters), it will be a tetrahedron, and in higher dimensions, the equivalent object.
 
-            Generally speaking, in any dimension, this thing is called a <em>simplex</em>.
+            Generally speaking, in any dimension, this object is called a <em>simplex</em>.
 
             <br/>
             <br/>
 
-            We'll consider a non-degenerated simplex 
-            (not completely flat, points aren't all contained in the same plane, meaning we can't find any n-1 dimention splice of the space where all the can fit)
-            in dimension $n$ defined by the points $A_0 .. A_n$, and try to interpolate inside it.
+            We will consider a non-degenerate simplex 
+            (not completely flat, meaning the points are not all contained within the same plane, so we can't find any $n−1$ dimensional subspace where they all fit)
+            in dimension $n$ defined by the point) $A_0 .. A_n$, and try to interpolate inside it.
 
             <br/>
             <br/>
@@ -193,9 +138,9 @@
                 $$
             </def>
 
-            But what does it means? The first condition means that if you consider $§l_0 ... §l_n$ as weights on the points $A_0 ... A_n$,
+            But what does it means? The first condition implies that if you consider $§l_0 ... §l_n$ as weights on the points $A_0 ... A_n$,
             $M$ is the barycenter of these points.
-            The second condition is there just for convenience.
+            The second condition is included just for convenience.
 
             <!hidden id="bary-reformulate" :id="bary-reformulate" :title="Reformulation">
                 If we consider another point $O$ as an origin then we have:
@@ -206,11 +151,11 @@
                 $M$ is the weighted average of the points, and the weights are its barycentric coordinates.
             </hidden>
 
-            For the mathematical proofs up ahead, we will provide simple explenations with interactive visualisation, as well as more formal proofs
+            For the mathematical proofs up ahead, we will provide simple explanations with interactive visualizations, as well as more formal proofs.
 
             <!hidden id="formal-framework" :id="formal-framework" :title="Formal framework">
 
-                For the formal proofs, we will represent our points in an Euclidian space, meaning an affine space $E$, 
+                For the formal proofs, we will represent our points in an Euclidean space, meaning an affine space $E$, 
                 with the associated real vectorial space $?v E$ of dimention $n$, containing 
                 an inner product $x . y = |§S__{k = 1}^^n x_k ?x y_k$ where $(x_1 ... x_n)$ and $(y_1 .. y_n)$ are the coordinate of the coresponding points.
 
@@ -223,29 +168,29 @@
             <ul>
                 <li>
                     If $M$ is on $A_k$, then its coordinate for $k$ is $1$, the others are $0$.
-                    For interpolation, if we use its coordinates as weights for the measures, we will obtain the value of $A_k$,
-                    and this is what we're looking for. 
+                    For interpolation, if we use its coordinates as weights for the measurements, we will obtain the value of $A_k$,
+                    which is what we are looking for. 
                 </li>
                 <li>
                     If $M$ is the center of gravity of the simplex (the average of all the points), its barycentric coordinates
-                    will all be equal to $1 / {n + 1}$ where $n$ is the dimension. This is also coherent.
+                    will all be equal to $1 / {n + 1}$ where $n$ is the dimension. This is also consistent.
                 </li>
             </ul>
 
-            That make them good candidates for interpolation. We can also prove that for all points in a simplex
-            (that is not degenerated), these coordinates exists and are unique. We will also see later that they're easy to compute.
+            These properties make them good candidates for interpolation. We can also prove that for all points in a simplex (that is not degenerate),
+            these coordinates exist and are unique. We will also see later that they are easy to compute.
 
             <br/>
             <br/>
 
-            But first, we'll introduce a base of the space.
+            But first, let's introduce a basis for the space.
 
             <br/>
 
-            To define a point in space, we often use an orthonormal base, 
-            meaning a point $O$, being the origin of the space, and $n$ unit vector ($n$ is dimension of the space) all orthogonal to each other.
-            But we don't actually need the base to be orthogonal for it to uniquely define each point of the space. The vectors can be of any lengths,
-            and can be in any direction as long as they do not belong to the same plane.
+            To define a point in space, we often use an orthonormal basis, which consists of a point $O$ as the origin of the space, and nn unit vectors 
+            (where nn is the dimension of the space) that are all orthogonal to each other.
+            However, the basis does not need to be orthogonal to uniquely define each point in the space.
+            The vectors can be of any length and point in any direction, as long as they do not all lie in the same plane.
 
             <br/>
             <br/>
@@ -253,28 +198,33 @@
             With that in mind, we can now construct a convenient base to define our points. First we will take a random point of the simplex that we will 
             name $A_0$. It will be the origin of the plane. We will then name all the other points $A_1$ to $A_n$.
 
+            With that in mind, we can now construct a convenient basis to define our points.
+            First, we will take a random point of the simplex, which we will name $A_0$.
+            It will serve as the origin. We will then name all the other points $A_1$ to $A_n$.
+
             <br/>
             <br/>
 
-            The vectors ($?v{A_OA_1},...,?v{A_OA_n}$) will define the base. From the properties of the simplex, we know that this 
-            base is valid and that the vectors don't belong to the same plane (see proofs below).
-            From now on we will refer to this base as the "simplex base".
+            The vectors ($?v{A_OA_1},...,?v{A_OA_n}$) will define the basis.
+            From the properties of the simplex, we know that this basis is valid and that the vectors do not all lie in the same plane 
+            (see proofs below). From now on, we will refer to this basis as the "simplex basis." 
 
             <!hidden id="base-proof1" :id="base-proof1" :title="Explanation">
-                Let's do a proof by contradiction. We suppose that we have a valid simplex in an n dimensional space, 
-                and that the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contained in a $n-1$ dimensional plane $£P$. 
-                (we need a point to fully describe this plain, we will take $A_0$). 
+
+                Let's do a proof by contradiction. We suppose that we have a valid simplex in an $n$-dimensional space,
+                and that the vectors and that the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contained in a $n-1$-dimensional plaine $£P$. 
+                (To fully describe this plane, we will use the point $A_0$ as a reference.) 
 
                 <br/>
                 <br/>
 
-                Since $A_0$ is the origine of $£P$, $A_0$ is contain in $£P$.
-                So for all $k € [0 , n]$, $A_0$ and $?v{A_0A_k}$ are contained in $£P$ witch means $A_k$ is contained in $£P$ as well.
+                Since $A_0$ is the origin of $£P$, $A_0$ is contained within $£P$.
+                Therefore, for all $k € [0 , n]$, $A_0$ and $?v{A_0A_k}$ are contained in $£P$, which means $A_k$ is contained in $£P$.
 
                 <br/>
                 <br/>
 
-                This mean that all the vertices of the simplex are contained in $£Q$. The simplex is thus degenerated (it is completely flat); 
+                This mean that all the vertices of the simplex are contained within $£P$. The simplex is thus degenerate (completely flat); 
                 this is a contradiction, so our hypothesis is false and the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are not contained in a $n-1$ dimensional plane.
             </hidden>
  
@@ -286,20 +236,20 @@
                 <br/>
                     To be more exact, the vectors form an hyperplane $H$ of dimension $n-1$ in $?v E$, witch is associated
                     to the corresponding plane $£P$ in $E$, witch will pass through the center of the space. 
-                    We've set the center to $A_0$, so everything after that is correct.
+                    We have set the center to $A_0$, so everything following that is correct.
             </hidden>
 
-            We will now use the simplex base to build the barycentric coordinate of a point $M$, located in the simplex, for each vertex.
+            We will now use the simplex basis to build the barycentric coordinates of a point $M$ located in the simplex for each vertex.
 
-            First we know that there exists $(x_k)_{k € [1, n]}$ so that:   
+            First, we know that there exist coefficients $(x_k)_{k € [1, n]}$ so that:   
             
             $$
                 ?v{A_0M} = |§S__{k = 1}^^n x_k ?v{A_0A_k}
             $$
 
-            (This is the representation of $M$ in the simplex base.)
+            (Those coefficients are the coordinates of $M$ in the simplex basis.)
 
-            Here all the vectors are all relative to $A_0$, but we want them to be relative to $M$ (to match the definition of barycentric coordinates).
+            Here all the vectors are relative to $A_0$, but we want them to be relative to $M$ (to match the definition of barycentric coordinates).
             Thus we can add $?v{MA_0}$ on both side of the equation:
             (using the fact that $?v{MA_0} =  |§S__{k = 1}^^n x_k ?v{MA_0}  + (1 - |§S__{k = 1}^^n x_k) ?v{MA_0}$):
 
@@ -310,7 +260,7 @@
                 ?v 0                &= ?v{MA_0} (1 - |§S__{k = 1}^^n x_k) + §S__{k = 1}^^n x_k (?v{MA_k})
             $$
 
-            We can thee this looks like the definition. We just need to set for all $k € [0 ; n]$ 
+            We can see that this resembles the definition of barycentric coordinates. We just need to set, for all $k € [0 ; n]$ 
             $$
                 y_k = <!system style="vertical-align: middle;">
                     \ 1 - |§S__{k=1}^^n x_k & ?txt{if} k = 0 &&
@@ -328,8 +278,8 @@
 
             <br/>
 
-            We proved the existence of barycentric coordinates in a simplex! 
-            We've shown that for all the vertex $A_k$ (except the origin), the coordinate for that vertex is equal to the coefficient $x_k$. 
+            We have proven the existence of barycentric coordinates in a simplex!
+            We have also shown that for all vertices $A_k$ (except the origin), the coordinate for that vertex is equal to the coefficient $x_k$.
             This property will be useful later.
 
             <br/>
@@ -339,19 +289,19 @@
 
             <!hidden id="existence-proof2" :id="existence-proof2" :title="Uniqueness proof">                
                 Let $M € E$, we suppose that $(a_k)_{k € [0, n]}$ et $(b_k)_{k € [0, n]}$ are barycentric coordinates for $M$ in $(A_k)_{k € [0, n]}$.
-                We have then:
+                Then we have:
                 $$
                     |§S__{k=0}^^n §a_k ?v{MA_k} = |§S__{k=0}^^n §b_k ?v{MA_k}
                 $$
 
-                Then:
+                This implies:
                 $$
                     |§S__{k=0}^^n ?v{MA_k} (§a_k - §b_k) &= 0 &&
                     |§S__{k=0}^^n ?v{A_0M} (§a_k - §b_k) + |§S__{k=0}^^n ?v{MA_k} (§a_k - §b_k) &= 0 &&
                     |§S__{k=0}^^n ?v{A_0A_k} (§a_k - §b_k) &= 0
                 $$
 
-                But $(?v{A_0A_1} ... ?v{A_0A_n})$ form a basis of $?v E$, so for all $k € [0 ; n]$, $§a_k - §b_k = 0$ so we have $a_k = b_k$
+                But $(?v{A_0A_1} ... ?v{A_0A_n})$ form a basis of $?v E$, so for all $k € [0 ; n]$, $§a_k - §b_k = 0$ which means $a_k = b_k$
 
             </hidden> 
 
@@ -418,7 +368,7 @@
                     x_k ?v{KA_k} . ?v{n} + ?v{A_0K} . ?v{n} &= ?norm{?v{HM}}
                 $$
 
-                Then $K$ and $A_0$ are both in $P_k$, and $?v{KA_k}$ and $?v{HM}$ are both normal to $£B_k$.
+                Since $K$ and $A_0$ are both in $P_k$, and $?v{KA_k}$ and $?v{HM}$ are both normal to $£B_k$.
                 $$
                     x_k ?x ?norm{?v{KA_k}} &= ?norm{?v{HM}}&&
                 $$
@@ -433,7 +383,7 @@
 
             <h2 id="area-and-volume">Area and volume</h2>
 
-            Since in 2 dimensions, the area of a triangle is ${|{base} ?x |{height}} / 2$, we can reformulate the expression:
+            In 2 dimensions, the area of a triangle is given ${|{base} ?x |{height}} / 2$. We can reformulate the expression:
             Let $l != m != k$
 
             $$
@@ -441,7 +391,7 @@
                     &= { £A(A_l A_m M)} / {£A(A_l A_m A_k)}
             $$
 
-            So this is the quotient of the area of the whole triangle with $A_k$ replaced by $M$, by the area of the whole triangle.
+            This is the ratio of the triangle's area where $A_k$ have been replaced by $M$, by the area of the original triangle.
 
             Here is an example:
     
@@ -455,7 +405,7 @@
                 </div>
             </figure>
 
-            It work the same in 3 dimensions: the coordinates are the quotient of the volumes.
+            The same concept applies in three dimensions: the coordinates are the ratio of the volumes.
 
             <!figure id="barycentric-volume" :caption="Barycentric coordinates with volume">
                 <div class="figure-math">
@@ -470,31 +420,30 @@
             It makes sense because the sum of the small areas/volumes will be the total simplex area/volume, so the sum
             of the coordinates will be $1$.
 
-            You can finally that it works well for interpolation:
+            You can see that this method works well for interpolation:
 
             <!figure id="single-simplex" :caption="Barycentric interpolation in one simplex"></figure> 
 
-            Since we stayed very generic all the way, this method works in any dimension !
+            Since we have maintained a general approach throughout, this method works in any dimension!
 
             <h2 id="cloud-of-points"> Interpolation in a cloud of points </h2>
 
-            Even tho barycentric interpolation works very well, the case presented above isn't very practical : we only have n points and a small 
-            zone where we can interpolate. What we would like is to be able to interpolate in any cloud of points on a large area.
-
+            Even tho barycentric interpolation works very well, the case presented above isn't very practical : we only have n points, and the area 
+            where we can interpolate is very small. Ideally, we would like to interpolate within any cloud of points over a larger area.
             <br/>
             <br/>
 
-            We can try to triangulate the space with those points (choose simplexes that cover the entier space), but there are some drawbacks:
+            We can try to triangulate the space with those points (by choosing simplexes that cover the entier space), but there are some drawbacks:
             <ul>
                 <li>
-                    First, there isn't one way to do that (see figures below);
+                    First, there is no unique way to achieve this (see figures below).
                 </li>
                 <li>
-                    The triangulation algorithms are already complicated in two dimensions, doing it in any dimention is probably very difficult;
+                    Triangulation algorithms are already complex in two dimensions; extending them to higher dimensions is likely to be very challenging.
                 </li>
                 <li>
-                    If the interpolation happens on a single point, there is no need to compute triangulation on the whole space,
-                    it would be more efficient to just consider simplexes around the point.
+                    If interpolation is needed at a single point, there is no need to compute a triangulation for the entire
+                    space—it would be more efficient to consider only the simplices surrounding the point.
                 </li>
             </ul>
 
@@ -511,30 +460,30 @@
                 </div>
             </figure>
 
-            Also, bad triangulations can lead to terrible interpolation results.
+            Additionally, bad triangulations can lead to terrible interpolation results.
             
             <!figure id="triangulation-bad" :caption="A terrible triangulation"></figure> 
 
             <br/>
             <br/>
 
-            Another idea can be to take the $n$ nearest points to form a simplex.
-            However there is cases where the formed simplex is not containing the point.  
+            Another approach is to select the $n$ nearest points to form a simplex.
+            However, there are cases where the formed simplex does not contain the point of interest.
 
             <!figure id="outside-triangle" :caption="The white point is not the the triangle formed by the 3 nearest points"></figure> 
 
             <h2 id="last-method">The final method</h2>
 
             To get better result, we can try interpolating in multiple simplexes.
-            We can select an arbitrary amount of simplexes that contains the point, and get the average of their interpolations.
-            To pick the best simplexes, there are multiple criteria:
+            We can select an arbitrary number of simplexes that contains the point, and calculate the average of their interpolations.
+            To choose the best simplexes, several criteria can be considered:
             <ul>
-                <li>Select simplexes with the smallest volume,</li>
-                <li>with the smallest surface,</li>
-                <li>or with the smallest ${|{surface}}/{|{volume}}$ quotient (to prevent stretched simplexes).</li>
+                <li>The smallest volumes</li>
+                <li>The smallest surfaces</li>
+                <li>The smallest ${|{surface}}/{|{volume}}$ ratio (to avoid stretched simplexes).</li>
             </ul>
 
-            The choice of criteria and the amount of simplexes to consider should be adapted to the nature of the interpolation problem:
+            The choice of criteria and the number of simplexes to consider should be adapted to the nature of the interpolation problem:
             some datasets can be more adapted to a specific method.
 
             <br/>
@@ -551,9 +500,9 @@
             <br/>
             <br/>
 
-            We can try to fix that by making a weighted average. Let $S$ be the set of all simplexes that contains the point to interpolate. 
-            We also define $w$ a function that takes a simplex and returns a criterion as described above,
-            and $i$ a functions that returns the interpolated value in the simplex. We can then output:
+            To address this issue, we can use a weighted average. Let $S$ be the set of all simplexes that contains the point to interpolate. 
+            Define $w$ a function that takes a simplex and returns a criterion as described above,
+            and $i$ a functions that returns the interpolated value in the simplex. We can then compute:
 
             $$
                 { |§S__{S € A} { i(s) } / { w(s) ^ n } } / { |§S__{S € A} { 1 } / { w(s) ^ n } }
@@ -564,26 +513,27 @@
             <!figure id="weighted-interpolation" :caption="Interpolation with average of multiple simplexes">
             </figure>
 
-            The result is not perfect, but if seams are really a problem, it is still possible to smooth the results
-            by calculating the interpolation on multiple points around the desired value. 
+            The result may not be perfect, but if seams are a significant issue,
+            it is possible to smooth the results further by calculating the interpolation at multiple points around the desired value.
 
             <h2 id="conclusion"> Conclusion </h2>
 
-                Even if we focused a lot on 2D example (most notably to be able to show the value of all the points we can interpolate with colors),
-                one of the biggest advantages of this method is its capability to be generalized to any dimension. 
+                Even though we focused primarily on 2D examples (particularly to demonstrate the value of interpolation points with colors),
+                one of the greatest advantages of this method is its ability to be generalized to any dimension.
 
                 <br/>
 
-                Even if we choose a very specific problem at the beginning, the way we used barycentric coordinate in simplexes around the point to interpolate
-                make it very flexible on what you want to do, compared to the other method we presented at the beginning.It lets you decide how to use the 
-                interpolation values in different simplexes to get the final result, as we showed in the last section.
+                We choosed a very specific problem at the beginning, but the way we used barycentric coordinate in simplexes around the point we interpolate
+                 makes this method very flexible compared to the other methods we introduced earlier. 
+                 It allows you to decide how to aggregate interpolation values from different simplices to obtain the final result, as demonstrated in the last section.
 
                 <br/>
                 <br/>
 
-                There are still some drawbacks to this method, as it his much heavier to compute than the simple methods we presented at the beginning 
-                (even if it stays reasonable), and it can only interpolate in the convex enveloppe of the points (meaning the 
-                interior of the shape created if you connect all the outer points of the cloud).
+                There are still some drawbacks to this method.
+                It is computationally more intensive than the simpler methods we discussed earlier (although it remains reasonable)
+                and can only interpolate within the convex hull of the points 
+                (i.e., the interior of the shape formed by connecting all the outer points of the cloud).
 
 
             <h2 id="source"> Links and source code </h2>
@@ -595,14 +545,15 @@
             <br/>
             <br/>
 
-            A video explaining how to find the volume of a simplex in any dimension, that we used in the last section:
+            Here is a video explaining how to find the volume of a simplex in any dimension, which we used in the last section:
             <br/>
-            <a href="https://github.com/TecnoKrash/SoMe-pi">Finding the volume of a simplex (YouTube)</a>
-            
+            <a href="https://www.youtube.com/watch?v=o9hXjCpVB10">Finding the volume of a simplex (YouTube)</a>
+
             <br/>
             <br/>
 
-            This article presents a method to have barycentric coordinates in shapes that are more complicated than simplexes, which could be
+            This article presents a method for obtaining barycentric coordinates in shapes more complex than simplexes,
+            which could be a great solution for improved results:
             a great solution to get better results:
             <br/>
             <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3549276/">Error Estimates for Generalized Barycentric Interpolation</a>

@@ -52,6 +52,54 @@
 
             <!figure id="single-simplex" :caption="Barycentric interpolation in one simplex"></figure>
 
+            <!hidden id="intro-other" :id="intro-other" :title="Other intro">
+                This article presents a method to interpolate data. 
+                Given a set of points, each of them representing the association of parameters (the inputs) with a value (the output),
+                we want to predict what will happen for an input that is not present in the dataset.
+
+                <br/>
+                <br/>
+
+                For instance, if a company wants to determine how efficient a machine is, depending on specific conditions (like temperature, used materials, etc),
+                they measure it multiple times under different situations and then interpolate the results to guess what would happen is the cases that weren't tested.
+
+                The goal is not to correct the measurements, nor to reduce noise in data, but simply to create a plausible continuous function
+                from a set of points.
+
+                We will try to solve a more specific problem, that doesn't allow many other methods:
+                <ul>
+                    <li>
+                        the measures can be impacted by a potentially large number of independent parameters,
+                    </li>
+                    <li>
+                        the measurements aren't equally distributed: the're not on a "grid" of predefined values, and there can be more points for some values than others,
+                    </li>
+                    <li>
+                        and the partial derivatives of the output on the points aren't available.
+                    </li>
+                </ul>
+            </hidden>
+
+
+            <!hidden id="intro-other-other" :id="intro-other-other" :title="another intro">
+                Interpolation is a method used to create a new point in a data set without doing new mesurement, based on the original data set.
+                It can be used simply to create a continuous function from a set of points to scaling up the framerate of a video. In this article, 
+                we will focus on finding an efficient method that could be easaly generalised to mesure with a lot of parameters. 
+
+                <br/>
+                <br/>
+
+                Here is our problem : we have a set of mesure that depend on a hight number of parameters that we optained with experimental mesurement.
+                We can't do new mesurements, but we want to study what could happen to a particular parameters in a certain state of the other parameters.
+
+                <br/>
+                <br/>
+
+                Let's say we have $n+1$ parameters, we will represent our mesure as point in an n-dimentional space (the coordinate of each point corespond to 
+                the value of each parameters we want to fix), where each point contains a mesured value. We can now try to interpolate on 
+                the particular points where we don't have any mesurement.
+            </hidden>
+
             <h2>Proofs</h2>
 
             <!hidden id="existence-proof" :id="existence-proof" :title="Existence et unicité dans un simplexe">
