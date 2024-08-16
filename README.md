@@ -12,5 +12,5 @@ You need these pieces of software
     - Python 3
     - Cowtchoox ([here, good luck installing that](https://github.com/Sergueille/cowtchoox))
 
-Call `backend/build.bat`, then call `web/run.bat`, it should then open in the browser (only tested with linux).
+Call `backend/build.bat`, then call `run.bat`, it should then open in the browser (only tested with linux).
 

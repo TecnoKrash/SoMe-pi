@@ -1,10 +1,10 @@
 
 <!include-things>
         // Manually setting up the links for default cowtchoox ressources to make it work on the web
-        <script defer="defer" src="cowtchoox-res/js/main.js"></script>
-        <link rel="stylesheet" href="cowtchoox-res/default/util.css"/>
-        <link rel="stylesheet" href="cowtchoox-res/default/default.css"/>
-        <link rel="stylesheet" href="cowtchoox-res/default/critical.css"/>
+        <script defer="defer" src="web/cowtchoox-res/js/main.js"></script>
+        <link rel="stylesheet" href="web/cowtchoox-res/default/util.css"/>
+        <link rel="stylesheet" href="web/cowtchoox-res/default/default.css"/>
+        <link rel="stylesheet" href="web/cowtchoox-res/default/critical.css"/>
 
         // Import Three.js
         <script type="importmap">
@@ -17,9 +17,9 @@
         </script>
 
         // Links for the website
-        <script defer="defer" type="module" src="main.js"></script>
-        <link rel="stylesheet" href="base.css"/>
-        <link rel="stylesheet" href="main.css"/>
+        <script defer="defer" type="module" src="web/main.js"></script>
+        <link rel="stylesheet" href="web/base.css"/>
+        <link rel="stylesheet" href="web/main.css"/>
 </include-things>
 
 <!hidden :inner :title :id>
