@@ -64,27 +64,26 @@
                 the particular points where we don't have any mesurement.
             </hidden>
 
-
-            Interpolation is a method used to create a new point in a data set without doing new mesurement, based on the original data set.
+            Interpolation is a method used to create a new point in a data set without doing new measurements, using the existing points.
             It can be used simply to create a continuous function from a set of points to scaling up the framerate of a video. In this article, 
-            we will focus on finding an efficient method that could be easaly generalised to mesure with a lot of parameters. 
+            we will try to find an efficient method that could be able to handle a lot of parameters. 
 
             <br/>
             <br/>
 
-            Here is our problem : a company wants to determine how efficient a machine is, depending on specific conditions (like temperature, used materials, etc),
-            they measure it multiple times under different situations and then interpolate the results to guess what would happen is the cases that weren't tested.
+            Here is our problem : a company wants to determine how efficient a machine is, depending on various conditions (like temperature, materials properties, etc).
+            The company makes multiple measures under different situations and then interpolate the results to guess what would happen is the cases that weren't tested.
 
             The goal is not to correct the measurements, nor to reduce noise in data, but simply to create a plausible continuous function
-            from a set of points.
+            from the set of points.
 
-            In fact we will try to solve a more specific problem, that is hard to resolved with common methods:
+            Mre precisely, we will try to solve a more specific problem, that is hard to resolve with other methods:
             <ul>
                 <li>
                     the measures can be impacted by a potentially large number of independent parameters,
                 </li>
                 <li>
-                    the measurements aren't equally distributed: the're not on a "grid" of predefined values, and there can be more points for some values than others,
+                    the measurements aren't equally distributed: the're not on a "grid" of predefined values, and there can be more points around some values than others,
                 </li>
                 <li>
                     and the partial derivatives of the output on the points aren't available.
@@ -94,10 +93,9 @@
             <br/>
 
 
-            Let's say we have $n+1$ parameters, we will represent our mesure as point in an n-dimentional space (the coordinate of each point corespond to 
-            the value of each parameters we want to fix), where each point contains a mesured value. We can now try to interpolate on 
-            the particular points where we don't have any mesurement.
-
+            Let's say we have $n$ parameters, we will represent each measure as a point in an n-dimensional space: the coordinates of the point will correspond to 
+            the value of each parameter during the measure, and each point will be associated with its measured value. We can now try to interpolate on 
+            points where we don't have any measurement.
 
             <h2 id="visu">Visualization</h2>
 
@@ -516,7 +514,7 @@
 
             <!figure id="single-simplex" :caption="Barycentric interpolation in one simplex"></figure> 
 
-            Since we stayed very generic all the way, this method works in any dimention !
+            Since we stayed very generic all the way, this method works in any dimension !
 
             <h2 id="cloud-of-points"> Interpolation in a cloud of points </h2>
 
@@ -612,28 +610,42 @@
             <h2 id="conclusion"> Conclusion </h2>
 
                 Even if we focused a lot on 2D example (most notably to be able to show the value of all the points we can interpolate with colors),
-                One of the biggest advantages of this method is it capability to generalize to any dimention. 
+                one of the biggest advantages of this method is its capability to be generalized to any dimension. 
 
                 <br/>
 
-                Even if we choose a very specific problem at the start, the way we use barycentric coordinate in simplex around the point to interpolate
-                make it very flexible on what you want to do, compared to other method we presented at the begining, letting you decide on how to use the 
-                interpolation value in diffrent simplex to get the final result, as we showed in the last section.
+                Even if we choose a very specific problem at the beginning, the way we used barycentric coordinate in simplexes around the point to interpolate
+                make it very flexible on what you want to do, compared to the other method we presented at the beginning.It lets you decide how to use the 
+                interpolation values in different simplexes to get the final result, as we showed in the last section.
 
                 <br/>
                 <br/>
 
-                There are stil some drawback to this method, as it his much hevier to compute than the simple methods we presented at the start 
-                (even if it stays resonable), and the fact that we can only interpolate in the convex enveloppe of the points (meaning the 
-                interior of the shape created if you conect all the outer points of the cloud).
+                There are still some drawbacks to this method, as it his much heavier to compute than the simple methods we presented at the beginning 
+                (even if it stays reasonable), and it can only interpolate in the convex enveloppe of the points (meaning the 
+                interior of the shape created if you connect all the outer points of the cloud).
 
-                <br/>
 
-                This method is very efficient if you have a good density of point
+            <h2 id="source"> Links and source code </h2>
 
-            <h2 id="source"> Sources and code </h2>
+            If you are really interested, here is  an implementation of this method, as well as the source code of the website:
+            <br/>
+            <a href="https://github.com/TecnoKrash/SoMe-pi">Github repository</a>
+            
+            <br/>
+            <br/>
 
-            idk
+            A video explaining how to find the volume of a simplex in any dimension, that we used in the last section:
+            <br/>
+            <a href="https://github.com/TecnoKrash/SoMe-pi">Finding the volume of a simplex (YouTube)</a>
+            
+            <br/>
+            <br/>
+
+            This article presents a method to have barycentric coordinates in shapes that are more complicated than simplexes, which could be
+            a great solution to get better results:
+            <br/>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3549276/">Error Estimates for Generalized Barycentric Interpolation</a>
 
 
         </main>

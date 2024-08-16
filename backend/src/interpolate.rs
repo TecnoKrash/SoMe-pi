@@ -46,6 +46,8 @@ pub fn new_comb(comb: &mut Vec<usize>, n: usize) {
 }
         
 
+// Get all simplexes that contains p (testing all of them)
+// Outputs a Vec of simplexes represented by a Vec containing the indexes of its points
 pub fn get_valid_simplex(space: &Space, p: &Vector) -> Vec<Vec<usize>> {
     let n = space.points.len();
     let dim = p.dim() + 1;
@@ -70,8 +72,8 @@ pub fn get_valid_simplex(space: &Space, p: &Vector) -> Vec<Vec<usize>> {
 /// 
 /// Values for `method_used` (no enum because of JS)
 /// - 0: take `simplex_count` with smallest volume 
-/// - 1: take `simplex_count` with smallest (surface / volume)
-/// - 2: take `simplex_count` with smallest (surface / volume), with weighting
+/// - 1: take `simplex_count` with smallest surface
+/// - 2: take `simplex_count` with smallest surface, with weighting
 /// 
 #[wasm_bindgen]
 pub fn interpolate_bests(space: &Space, p: &Vector, method_used: u32, simplex_count: usize) -> f64 {
@@ -133,7 +135,7 @@ pub fn is_point_inside_simplex_export(p: &Vector, s: Vec<usize>, space: &Space) 
     is_point_inside_simplex(p, &s, space)
 }
 
-
+// Interpolates p in the simplex represented by comb
 pub fn interpolate(space: &Space, comb: &Vec<usize>, p: &Vector) -> f64 {
     let n = comb.len();
     let simp: Vec<Vector> = comb.iter().map(|i| space.points[*i].pos.clone()).collect();
@@ -152,8 +154,6 @@ pub fn interpolate_export(space: &Space, comb: Vec<usize>, p: &Vector) -> f64 {
 
 /// Return surface / volume
 pub fn get_simplex_weight(simplex: &Vec<Vector>) -> f64 {
-    let volume = barycenter::simplex_volume(&simplex);
-
     let mut vec = Vec::with_capacity(simplex.len() - 1);
     for i in 0..(simplex.len() - 1) {
         vec.push(simplex[i].clone());
