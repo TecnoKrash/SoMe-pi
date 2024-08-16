@@ -44,6 +44,27 @@
                 </ul>
             </hidden>
 
+
+            <!hidden id="intro-other-other" :id="intro-other-other" :title="another intro">
+                Interpolation is a method used to create a new point in a data set without doing new mesurement, based on the original data set.
+                It can be used simply to create a continuous function from a set of points to scaling up the framerate of a video. In this article, 
+                we will focus on finding an efficient method that could be easaly generalised to mesure with a lot of parameters. 
+
+                <br/>
+                <br/>
+
+                Here is our problem : we have a set of mesure that depend on a hight number of parameters that we optained with experimental mesurement.
+                We can't do new mesurements, but we want to study what could happen to a particular parameters in a certain state of the other parameters.
+
+                <br/>
+                <br/>
+
+                Let's say we have $n+1$ parameters, we will represent our mesure as point in an n-dimentional space (the coordinate of each point corespond to 
+                the value of each parameters we want to fix), where each point contains a mesured value. We can now try to interpolate on 
+                the particular points where we don't have any mesurement.
+            </hidden>
+
+
             Interpolation is a method used to create a new point in a data set without doing new mesurement, based on the original data set.
             It can be used simply to create a continuous function from a set of points to scaling up the framerate of a video. In this article, 
             we will focus on finding an efficient method that could be easaly generalised to mesure with a lot of parameters. 
@@ -51,15 +72,32 @@
             <br/>
             <br/>
 
-            Here is our problem : we have a set of mesure that depend on a hight number of parameters that we optained with experimental mesurement.
-            We can't do new mesurements, but we want to study what could happen to a particular parameters in a certain state of the other parameters.
+            Here is our problem : a company wants to determine how efficient a machine is, depending on specific conditions (like temperature, used materials, etc),
+            they measure it multiple times under different situations and then interpolate the results to guess what would happen is the cases that weren't tested.
+
+            The goal is not to correct the measurements, nor to reduce noise in data, but simply to create a plausible continuous function
+            from a set of points.
+
+            In fact we will try to solve a more specific problem, that is hard to resolved with common methods:
+            <ul>
+                <li>
+                    the measures can be impacted by a potentially large number of independent parameters,
+                </li>
+                <li>
+                    the measurements aren't equally distributed: the're not on a "grid" of predefined values, and there can be more points for some values than others,
+                </li>
+                <li>
+                    and the partial derivatives of the output on the points aren't available.
+                </li>
+            </ul>
 
             <br/>
-            <br/>
+
 
             Let's say we have $n+1$ parameters, we will represent our mesure as point in an n-dimentional space (the coordinate of each point corespond to 
             the value of each parameters we want to fix), where each point contains a mesured value. We can now try to interpolate on 
             the particular points where we don't have any mesurement.
+
 
             <h2 id="visu">Visualization</h2>
 
@@ -226,7 +264,7 @@
 
             <!hidden id="base-proof1" :id="base-proof1" :title="Explanation">
                 Let's do a proof by contradiction. We suppose that we have a valid simplex in an n dimensional space, 
-                and that the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contained in a $n-1$ dimensional plane $£Q$. 
+                and that the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contained in a $n-1$ dimensional plane $£P$. 
                 (we need a point to fully describe this plain, we will take $A_0$). 
 
                 <br/>
@@ -245,10 +283,10 @@
             <!hidden id="base-proof2" :id="base-proof2" :title="Precision to be rigorous">
                 The proof above is correct but we need to do a little precision:
                 <br/>
-                - <em>the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contained in a $n-1$ dimensional plane $£Q$.</em>
+                - <em>the vectors $?v{A_OA_1},...,?v{A_OA_n}$ are contained in a $n-1$ dimensional plane $£P$.</em>
 
                 <br/>
-                    To be more exact, the vectors form an hyperplane of dimension $n-1$ $H$ in $?v E$, witch is associated
+                    To be more exact, the vectors form an hyperplane $H$ of dimension $n-1$ in $?v E$, witch is associated
                     to the corresponding plane $£P$ in $E$, witch will pass through the center of the space. 
                     We've set the center to $A_0$, so everything after that is correct.
             </hidden>
@@ -570,6 +608,34 @@
 
             The result is not perfect, but if seams are really a problem, it is still possible to smooth the results
             by calculating the interpolation on multiple points around the desired value. 
+
+            <h2 id="conclusion"> Conclusion </h2>
+
+                Even if we focused a lot on 2D example (most notably to be able to show the value of all the points we can interpolate with colors),
+                One of the biggest advantages of this method is it capability to generalize to any dimention. 
+
+                <br/>
+
+                Even if we choose a very specific problem at the start, the way we use barycentric coordinate in simplex around the point to interpolate
+                make it very flexible on what you want to do, compared to other method we presented at the begining, letting you decide on how to use the 
+                interpolation value in diffrent simplex to get the final result, as we showed in the last section.
+
+                <br/>
+                <br/>
+
+                There are stil some drawback to this method, as it his much hevier to compute than the simple methods we presented at the start 
+                (even if it stays resonable), and the fact that we can only interpolate in the convex enveloppe of the points (meaning the 
+                interior of the shape created if you conect all the outer points of the cloud).
+
+                <br/>
+
+                This method is very efficient if you have a good density of point
+
+            <h2 id="source"> Sources and code </h2>
+
+            idk
+
+
         </main>
     </body>
 </document>
