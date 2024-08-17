@@ -16,7 +16,7 @@
             
             <h2 id="intro"> Introduction </h2>
 
-            Interpolation is a method used to create a new points in a data set without doing new measurements, using the existing points.
+            Interpolation is a method used to create a new point in a data set without doing new measurements, using the existing points.
             It can be used to create a continuous function from a set of points, and can have applications in various domains: it can be used to
             scale up the framerate of a video, to predict phenomenons with less measurement, etc. In this article, 
             we will try to find an efficient method that can handle a lot of parameters. 
@@ -71,7 +71,7 @@
                 {|§S__{i=0}^^{n} a_i / {A_iM}} / {|§S__{j=0}^^{n} 1 / {A_jM}} 
             $$
 
-            This a weighted average, where the weights are the inverse distances between the points.
+            This is a weighted average, where the weights are the inverse distances between the points.
             This way, the farther a point is from $M$, the less it will impact the result.
             
             What if a distance is zero? Then it means that $M$ is directly on a measured point, so you can simply take its value instead.
@@ -132,7 +132,7 @@
             Fortunately, there is a nice tool for that: <em>barycentric coordinates</em>.
 
             <!def :title="Barycentric coordinates">
-                Given a point $M$, $(§l_0 ... §l_n)$ are the barycentric coordinate of $M$ for $A_0...A_n$ if:
+                Given a point $M$, $(§l_0 ... §l_n)$ are the barycentric coordinates of $M$ for $A_0...A_n$ if:
                 
                 $$
                     |§S__{k=0}^^{n} §l_k ?v{A_k M} = 0 ?txt{and} |§S__{k=0}^^{n} §l_k = 1
@@ -158,7 +158,7 @@
 
                 For the formal proofs, we will represent our points in an Euclidean space, meaning an affine space $E$, 
                 with the associated real vectorial space $?v E$ of dimension $n$, containing 
-                an inner product $x . y = |§S__{k = 1}^^n x_k ?x y_k$ where $(x_1 ... x_n)$ and $(y_1 .. y_n)$ are the coordinate of the corresponding points.
+                an inner product $x . y = |§S__{k = 1}^^n x_k ?x y_k$ where $(x_1 ... x_n)$ and $(y_1 .. y_n)$ are the coordinates of the corresponding points.
 
             </hidden>
 
@@ -188,15 +188,15 @@
 
             <br/>
 
-            To define a point in space, we often use an orthonormal basis, which consists of a point $O$ as the origin of the space, and nn unit vectors 
-            (where nn is the dimension of the space) that are all orthogonal to each other.
+            To define a point in space, we often use an orthonormal basis, which consists of a point $O$ as the origin of the space, and $n$ unit vectors 
+            (where $n$ is the dimension of the space) that are all orthogonal to each other.
             However, the basis does not need to be orthogonal to uniquely define each point in the space.
             The vectors can be of any length and point in any direction, as long as they do not all lie in the same plane.
 
             <br/>
             <br/>
 
-            With that in mind, we can now construct a convenient base to define our points. First we will take a random point of the simplex that we will 
+            With that in mind, we can now construct a convenient basis to define our points. First we will take a random point of the simplex that we will 
             name $A_0$. It will be the origin of the plane. We will then name all the other points $A_1$ to $A_n$.
 
             With that in mind, we can now construct a convenient basis to define our points.
@@ -309,7 +309,7 @@
             <h2 id="barycentric-co-in-simplex">Barycentric coordinates in a simplex </h2>
 
             As we saw before, the barycentric coordinate of a vertex $A_k$ is equal to the coefficient $x_k$ of the vector to this vertex $?v{A_0A_k}$ 
-            in the simplex base. Thus, we just have to find an expression for that coefficient. If we take all the other vertices
+            in the simplex basis. Thus, we just have to find an expression for that coefficient. If we take all the other vertices
             of the simplex, we know that they define a plane $P_k$, and that $A_k$ is the only point out of it. 
             This means that $?v{A_0A_k}$ is the only vector not perpendicular to $?v n$, the unit normal vector of $£P$ pointing towards $A_k$.
             We have 
@@ -326,7 +326,7 @@
             $$
 
             Just below is a visualization of the situation for a 2-simplex (a triangle). The blue lines are the vector representing 
-            $M$ in the simplex base, and the green lines represent the heights of $M$, the yellow line the height of $A_k$.
+            $M$ in the simplex basis, and the green line represents the heights of $M$, the yellow line the height of $A_k$.
 
             <!figure id="barycentric-height" :caption="Coefficient visualisation">
                 <div class="figure-math">
@@ -358,7 +358,7 @@
                     ?v{A_0M} = |§S__{i = 1}^^n x_i ?v{A_0A_i} &&
                     ?v{A_0M} = |§S__{i € [1, n] \\ {k}}^^n x_i ?v{A_0A_i} + x_k ?v{A_0A_k}
                 $$
-                Where $(x_i)_{i € [0 ; n]}$ are the barycentric coordinate of $M$ in $(A_0 ... A_n)$
+                Where $(x_i)_{i € [0 ; n]}$ are the barycentric coordinates of $M$ in $(A_0 ... A_n)$
 
                 Let $?v n$ the normal vector of $£B_k$ pointing towards $A_k$.
 
@@ -384,7 +384,7 @@
 
             <h2 id="area-and-volume">Area and volume</h2>
 
-            In 2 dimensions, the area of a triangle is given ${|{base} ?x |{height}} / 2$. We can reformulate the expression:
+            In 2 dimensions, the area of a triangle is given ${|{basis} ?x |{height}} / 2$. We can reformulate the expression:
             Let $l != m != k$
 
             $$
@@ -444,7 +444,7 @@
                 </li>
                 <li>
                     If interpolation is needed at a single point, there is no need to compute a triangulation for the entire
-                    space—it would be more efficient to consider only the simplices surrounding the point.
+                    space—it would be more efficient to consider only the simplexes surrounding the point.
                 </li>
             </ul>
 
@@ -471,13 +471,13 @@
             Another approach is to select the $n$ nearest points to form a simplex.
             However, there are cases where the formed simplex does not contain the point of interest.
 
-            <!figure id="outside-triangle" :caption="The white point is not the the triangle formed by the 3 nearest points"></figure> 
+            <!figure id="outside-triangle" :caption="The white point is not in the triangle formed by the 3 nearest points"></figure> 
 
             <h2 id="last-method">The final method</h2>
 
-            To get better result, we can try interpolating in multiple simplexes.
+            To get better results, we can try interpolating in multiple simplexes.
             We can select an arbitrary number of simplexes that contains the point, and calculate the average of their interpolations.
-            To choose the best simplexes, several criteria can be considered:
+            To choose the best simplexes, several criterias can be considered:
             <ul>
                 <li>The smallest volumes</li>
                 <li>The smallest surfaces</li>
@@ -503,7 +503,7 @@
 
             To address this issue, we can use a weighted average. Let $S$ be the set of all simplexes that contains the point to interpolate. 
             Define $w$ a function that takes a simplex and returns a criterion as described above,
-            and $i$ a functions that returns the interpolated value in the simplex. We can then compute:
+            and $i$ a function that returns the interpolated value in the simplex. We can then compute:
 
             $$
                 { |§S__{S € A} { i(s) } / { w(s) ^ n } } / { |§S__{S € A} { 1 } / { w(s) ^ n } }
@@ -524,9 +524,9 @@
 
                 <br/>
 
-                We choose a very specific problem at the beginning, but the way we used barycentric coordinate in simplexes around the point we interpolate
+                We choose a very specific problem at the beginning, but the way we used barycentric coordinates in simplexes around the point we interpolate
                  makes this method very flexible compared to the other methods we introduced earlier. 
-                 It allows you to decide how to aggregate interpolation values from different simplices to obtain the final result, as demonstrated in the last section.
+                 It allows you to decide how to aggregate interpolation values from different simplexes to obtain the final result, as demonstrated in the last section.
 
                 <br/>
                 <br/>
