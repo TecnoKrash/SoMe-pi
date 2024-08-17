@@ -3,4 +3,7 @@
 backend/pkg
 backend/target
 *.html
+/web/wasm-gen/*
 !/index.html
+!/web/wasm-gen/somepi_backend.js
+!/web/wasm-gen/somepi_backend_bg.wasm
