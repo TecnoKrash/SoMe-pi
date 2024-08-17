@@ -12,7 +12,7 @@ export let mouseDown = false;
 export let mouseHold = false;
 
 export function SetupMouseEvents() {
-    document.onmousemove = ev => {
+    document.onmousemove = document.ontouchmove = ev => {
         lastMouseX = mouseX;
         lastMouseY = mouseY;
 
@@ -22,12 +22,12 @@ export function SetupMouseEvents() {
         mouseDown = false;
     };
 
-    document.onmousedown = ev => {
+    document.onmousedown = document.ontouchstart = ev => {
         mouseDown = true;
         mouseHold = true;
     };
 
-    document.onmouseup = ev => {
+    document.onmouseup = document.ontouchend = ev => {
         mouseDown = false;
         mouseHold = false;
     };

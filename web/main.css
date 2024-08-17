@@ -116,6 +116,7 @@ def, prop {
     opacity: 0.3;
     padding: 3px;
     font-size: 0.8rem;
+    user-select: none;
 }
 
 .reset-btn:hover {
