@@ -4,7 +4,7 @@ import init, * as Backend from './wasm-gen/somepi_backend.js';
 
 // Import three.js, with addons
 import * as Three from 'three';
-import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
+import { TrackballControls } from 'threeTrackballControls';
 
 import * as Handle from './handle.js';
 import * as Geometry from './geometry.js';
