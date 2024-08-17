@@ -17,7 +17,8 @@
             <h2 id="intro"> Introduction </h2>
 
             Interpolation is a method used to create a new points in a data set without doing new measurements, using the existing points.
-            It can be used to create a continuous function from a set of points to scaling up the framerate of a video. In this article, 
+            It can be used to create a continuous function from a set of points, and can have applications in various domains: it can be used to
+            scale up the framerate of a video, to predict phenomenons with less measurement, etc. In this article, 
             we will try to find an efficient method that can handle a lot of parameters. 
 
             <br/>
@@ -156,8 +157,8 @@
             <!hidden id="formal-framework" :id="formal-framework" :title="Formal framework">
 
                 For the formal proofs, we will represent our points in an Euclidean space, meaning an affine space $E$, 
-                with the associated real vectorial space $?v E$ of dimention $n$, containing 
-                an inner product $x . y = |§S__{k = 1}^^n x_k ?x y_k$ where $(x_1 ... x_n)$ and $(y_1 .. y_n)$ are the coordinate of the coresponding points.
+                with the associated real vectorial space $?v E$ of dimension $n$, containing 
+                an inner product $x . y = |§S__{k = 1}^^n x_k ?x y_k$ where $(x_1 ... x_n)$ and $(y_1 .. y_n)$ are the coordinate of the corresponding points.
 
             </hidden>
 
@@ -523,7 +524,7 @@
 
                 <br/>
 
-                We choosed a very specific problem at the beginning, but the way we used barycentric coordinate in simplexes around the point we interpolate
+                We choose a very specific problem at the beginning, but the way we used barycentric coordinate in simplexes around the point we interpolate
                  makes this method very flexible compared to the other methods we introduced earlier. 
                  It allows you to decide how to aggregate interpolation values from different simplices to obtain the final result, as demonstrated in the last section.
 

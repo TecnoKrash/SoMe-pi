@@ -139,7 +139,7 @@ pagelink {
 
 aside {
     position: fixed;
-    left: 20px;
+    left: 50px;
     top: 100px;
     background-color: var(--bg-l);
     border-radius: 10px;
@@ -166,6 +166,40 @@ aside a {
     aside {
         left: 20px;
         width: 260px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    aside {
+        position: static;
+        width: 100%;
+        border-radius: 0;
+    }
+
+    main {
+        margin: 50px 20px 100px 20px;
+        font-size: 1.1rem;
+    }
+
+    figure {
+        margin: 30px 0;
+        width: 100%;
+        height: calc(0.68 * (100vw - 40px));
+    }
+  
+    .figure {
+        height: calc(0.68 * (100vw - 40px) - 50px);
+    }
+    
+    .figure-math {
+        font-size: 1.1rem;
+        left: 10px;
+        top: 10px;
+    }
+
+    summary > a {
+        display: inline;
+        margin-right: 20px;
     }
 }
 
