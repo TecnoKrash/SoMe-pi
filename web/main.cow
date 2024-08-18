@@ -38,7 +38,7 @@
                     The measurements aren't equally distributed: they aren't on a "grid" of predefined values, and there can be more points around some values than others.
                 </li>
                 <li>
-                    The partial derivatives of the output with respect to the points aren't available.
+                    The partial derivatives of the output aren't available.
                 </li>
             </ul>
 
@@ -51,7 +51,7 @@
             <h2 id="visu">Visualization</h2>
 
             To visualize how each method produces results, we will use interactive figures like
-            <!pagelink :id="nearest">this one</pagelink>.
+            the one below.
 
             It represents the problem using two parameters. Each point you see (which you can also drag around) represents a measurement.
             Its $X$ and $Y$ coordinates represent the values of its two parameters, and its color represents the measured value.
@@ -495,7 +495,7 @@
             <!figure id="final-interpolation" :caption="Average of interpolations of the 2 smallest simplexes">
             </figure>
 
-            As you can see, the algorithm creates seams around points that are near the border of a triangle.
+            As you can see, the algorithm creates discontinuities around points that are near the border of a triangle.
             Also, the algorithm seems to try interpolating in stretched triangles, resulting in the blue stripes and purple stripes around the center.
             
             <br/>
@@ -514,7 +514,7 @@
             <!figure id="weighted-interpolation" :caption="Interpolation with average of multiple simplexes">
             </figure>
 
-            The result may not be perfect, but if seams are a significant issue,
+            The result may not be perfect, but if discontinuities are a significant issue,
             it is possible to smooth the results further by calculating the interpolation at multiple points around the desired value.
 
             <h2 id="conclusion"> Conclusion </h2>
@@ -559,7 +559,10 @@
             <br/>
             <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3549276/">Error Estimates for Generalized Barycentric Interpolation</a>
 
-            Made by TecnoKrash & Sergueille Bismuth
+            <br/>
+            <br/>
+
+            Made by TecnoKrash \& Sergueille Bismuth
 
         </main>
     </body>
