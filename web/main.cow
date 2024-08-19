@@ -196,9 +196,6 @@
             <br/>
             <br/>
 
-            With that in mind, we can now construct a convenient basis to define our points. First we will take a random point of the simplex that we will 
-            name $A_0$. It will be the origin of the plane. We will then name all the other points $A_1$ to $A_n$.
-
             With that in mind, we can now construct a convenient basis to define our points.
             First, we will take a random point of the simplex, which we will name $A_0$.
             It will serve as the origin. We will then name all the other points $A_1$ to $A_n$.
@@ -207,9 +204,10 @@
             <br/>
 
             The vectors ($?v{A_OA_1},...,?v{A_OA_n}$) will define the basis.
-            From the properties of the simplex, we know that this basis is valid and that the vectors do not all lie in the same plane 
-            (see proofs below). From now on, we will refer to this basis as the "simplex basis." 
+            Because the simplex is not degenerated, we know that this basis is valid and that the vectors do not all lie in the same plane. 
+            From now on, we will refer to this basis as the "simplex basis." 
 
+/*
             <!hidden id="base-proof1" :id="base-proof1" :title="Explanation">
 
                 Let's do a proof by contradiction. We suppose that we have a valid simplex in an $n$-dimensional space,
@@ -239,6 +237,7 @@
                     to the corresponding plane $£P$ in $E$, witch will pass through the center of the space. 
                     We have set the center to $A_0$, so everything following that is correct.
             </hidden>
+*/
 
             We will now use the simplex basis to build the barycentric coordinates of a point $M$ located in the simplex for each vertex.
 
