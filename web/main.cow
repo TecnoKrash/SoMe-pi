@@ -308,18 +308,20 @@
 
             <h2 id="barycentric-co-in-simplex">Barycentric coordinates in a simplex </h2>
 
+            We will now try to find a simple (and easy to compute) expression for barycentric coordinates. 
+
             As we saw before, the barycentric coordinate of a vertex $A_k$ is equal to the coefficient $x_k$ of the vector to this vertex $?v{A_0A_k}$ 
             in the simplex basis. Thus, we just have to find an expression for that coefficient. If we take all the other vertices
-            of the simplex, we know that they define a plane $P_k$, and that $A_k$ is the only point out of it. 
-            This means that $?v{A_0A_k}$ is the only vector not perpendicular to $?v n$, the unit normal vector of $£P$ pointing towards $A_k$.
-            We have 
+            of the simplex, we know that they define a plane $£P_k$, and that $A_k$ is the only point out of it. 
+            This means that $?v{A_0A_k}$ is the only vector not perpendicular to $?v n$, the unit normal vector of $£P_k$ pointing towards $A_k$.
+            We have: 
             $$
                 ?v{A_0M}.?v n = (|§S__{i=1}^^{n} x_i ?v{A_0A_i}).?v n = (x_k ?x ?v{A_0A_k}). ?v n = x_k (?v{A_0A_k}. ?v n)
             $$
 
             $?v{A_0A_k}.?v n$ is just the height of the simplex and $?v{A_0M}.?v n$ is just the height of M.
 
-            Thus we have 
+            Thus we have: 
 
             $$
                 x_k = {|{Height\ of\ }?txt{M}}/{|{Height\ of\ }A_k}
@@ -339,7 +341,7 @@
             </figure>
 
 
-            <!hidden id="expression-proof2" :id="expression-proof2" :title="Complete proof">
+            <!hidden id="expression-proof2" :id="expression-proof2" :title="Same proof, but more rigorous">
                 
                 Let set for all $k € [1, n]$, $b_k = (?v{A_0A_k})$.  $(b_1 ... b_n) \\ {b_k}$ defines a hyperplane $£B_k$ of $?v E$. 
                 We will name $P_k$ the associated plane in $E$.
@@ -384,6 +386,8 @@
 
             <h2 id="area-and-volume">Area and volume</h2>
 
+            To better visualize how barycentric coordinates behave, we can use another formula.
+
             In 2 dimensions, the area of a triangle is given ${|{basis} ?x |{height}} / 2$. We can reformulate the expression:
             Let $l != m != k$
 
@@ -419,7 +423,17 @@
             </figure>
 
             It makes sense because the sum of the small areas/volumes will be the total simplex area/volume, so the sum
-            of the coordinates will be $1$.
+            of the coordinates will be $1$. 
+            
+            <br/>
+            <br/>
+            
+            However, this formula is only useful for visualization, since heights are easier to compute.
+            The program used to compute barycentric coordinates in the next interactive figures will only use the heights. 
+            
+            <br/>
+            <br/>
+            
 
             You can see that this method works well for interpolation:
 
