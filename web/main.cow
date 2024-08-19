@@ -239,6 +239,9 @@
             </hidden>
 */
 
+            <br/>
+            <br/>
+
             We will now use the simplex basis to build the barycentric coordinates of a point $M$ located in the simplex for each vertex.
 
             First, we know that there exist coefficients $(x_k)_{k € [1, n]}$ so that:   
@@ -307,7 +310,8 @@
 
             <h2 id="barycentric-co-in-simplex">Barycentric coordinates in a simplex </h2>
 
-            We will now try to find a simple (and easy to compute) expression for barycentric coordinates. 
+            We will now try to find a simple (and easy to compute) expression for barycentric coordinates.
+            To make things simpler, we will assume that $M$ is inside the simplex.
 
             As we saw before, the barycentric coordinate of a vertex $A_k$ is equal to the coefficient $x_k$ of the vector to this vertex $?v{A_0A_k}$ 
             in the simplex basis. Thus, we just have to find an expression for that coefficient. If we take all the other vertices
